@@ -9,19 +9,30 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@notion-render/bookmark-plugin": "^0.0.2",
+    "@notion-render/client": "^0.0.2",
+    "@notion-render/hljs-plugin": "^0.0.2",
+    "@notionhq/client": "^2.2.13",
+    "dotenv": "^16.3.1",
+    "next": "14.0.2",
+    "notion-client": "^6.16.0",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.0.2"
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
-    "postcss": "^8",
-    "tailwindcss": "^3.3.0",
+    "date-fns": "^2.30.0",
     "eslint": "^8",
-    "eslint-config-next": "14.0.2"
+    "eslint-config-next": "14.0.2",
+    "postcss": "^8",
+    "react-feather": "^2.0.10",
+    "react-icons": "^4.11.0",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
   }
 }
