@@ -9,11 +9,11 @@ import { GetStaticProps } from "next";
 import { getSectionProfile } from "./api/sectionprofile";
 
 
-export default function Home(profile: any) {
+export default function Home(profileData: any) {
   return (
     <>
       <Header></Header>
-      <HeroSection profile={profile}></HeroSection>
+      <HeroSection profileData={profileData}></HeroSection>
       <Presentation></Presentation>
       <Skills></Skills>
       <Certificates></Certificates>
@@ -24,10 +24,10 @@ export default function Home(profile: any) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = await getSectionProfile();
+  const profileData = await getSectionProfile();
   return {
     props: {
-      posts,
+      profileData,
     },
   };
 };

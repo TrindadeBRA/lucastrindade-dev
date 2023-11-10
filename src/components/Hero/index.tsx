@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-function HeroSection({profile}:any) {
+function HeroSection({ profileData }: any) {
   return (
     <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2850&q=80&blend=111827&blend-mode=multiply&sat=-100&exp=15")' }} id="hero">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
@@ -15,11 +15,38 @@ function HeroSection({profile}:any) {
           />
         </div>
         <div className="mx-auto max-w-2xl flex flex-col md:flex-row items-center justify-center">
-          <Image className="aspect-[4/5] w-52 flex-none rounded-2xl object-cover md:mr-12 mb-6 md:mb-0" src={profile.posts[0].user_avatar} alt="" width={208} height={300}/>
+          <Image className="aspect-[4/5] w-52 flex-none rounded-2xl object-cover md:mr-12 mb-6 md:mb-0" src={profileData.profileData[0].user_avatar} alt="" width={208} height={300} />
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
-            <h2 className="text-base text-center md:text-left font-semibold leading-8 text-indigo-400">{profile.posts[0].user_role}</h2>
-            <p className="mt-2 text-3xl text-center md:text-left font-bold tracking-tight text-white sm:text-4xl">{profile.posts[0].user_name}</p>
-            <p className="mt-6 text-base text-center md:text-left leading-6 text-gray-300">{profile.posts[0].user_bio}</p>
+            <h2 className="text-base text-center md:text-left font-semibold leading-8 text-indigo-400">{profileData.profileData[0].user_role}</h2>
+            <p className="mt-2 text-3xl text-center md:text-left font-bold tracking-tight text-white sm:text-4xl">{profileData.profileData[0].user_name}</p>
+            <p className="mt-6 text-base text-center md:text-left leading-6 text-gray-300">{profileData.profileData[0].user_bio}</p>
+
+            {/* <div dangerouslySetInnerHTML={{ __html: profileData.profileData[0].user_presentation }} /> */}
+
+
+            {profileData.profileData[0].user_presentation.map((item, index) => {
+              // Verifica o tipo de texto
+              if (item.type === 'text') {
+                // Aplica as anotações de formatação
+                const style = {
+                  fontWeight: item.annotations.bold ? 'bold' : 'normal',
+                  fontStyle: item.annotations.italic ? 'italic' : 'normal',
+                  textDecoration: item.annotations.strikethrough ? 'line-through' : 'none',
+                  color: item.annotations.color !== 'default' ? item.annotations.color : 'inherit',
+                };
+
+                return (
+                  <span key={index} style={style}>
+                    {item.text.content}
+                  </span>
+                );
+              }
+
+              // Adicione aqui outras condições para outros tipos de elementos, se necessário
+
+              return null; // Retorna null se o tipo não for suportado
+            })}
+
           </div>
         </div>
       </div>
