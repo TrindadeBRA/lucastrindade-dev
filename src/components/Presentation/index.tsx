@@ -1,7 +1,6 @@
 import React from 'react';
 // import { format } from 'date-fns';
 // import { myAge } from './data';
-
 const Presentation = (profileData: any) => {
   return (
     <div className="bg-gray-900 py-14 sm:py-20" id="apresentacao">
