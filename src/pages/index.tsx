@@ -14,7 +14,7 @@ export default function Home(profileData: any) {
     <>
       <Header></Header>
       <HeroSection profileData={profileData}></HeroSection>
-      <Presentation></Presentation>
+      <Presentation profileData={profileData}></Presentation>
       <Skills></Skills>
       <Certificates></Certificates>
       <Experiences></Experiences>
