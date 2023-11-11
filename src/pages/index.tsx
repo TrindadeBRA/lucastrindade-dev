@@ -7,17 +7,19 @@ import Presentation from "@/components/Presentation";
 import Skills from "@/components/Skills";
 import { GetStaticProps } from "next";
 import { getSectionProfile } from "./api/sectionprofile";
+import { getSectionSkills } from "./api/sectionskills";
 
 
-export default function Home(profileData: any) {
+export default function Home({profileData, skillsData}:any) {
+  // console.log(skillsData)
   return (
     <>
       <Header></Header>
-      <HeroSection profileData={profileData}></HeroSection>
-      <Presentation profileData={profileData}></Presentation>
-      <Skills></Skills>
-      <Certificates></Certificates>
-      <Experiences></Experiences>
+      <HeroSection {...profileData} />
+      <Presentation {...profileData} />
+      <Skills {...skillsData} />
+      <Certificates />
+      <Experiences />
       <Footer></Footer>
     </>
   )
@@ -25,9 +27,11 @@ export default function Home(profileData: any) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const profileData = await getSectionProfile();
+  const skillsData = await getSectionSkills();
   return {
     props: {
       profileData,
+      skillsData
     },
   };
 };

@@ -1,36 +1,7 @@
 import React from 'react';
 import { Check } from 'react-feather';
 
-const Skills = () => {
-  const skills = [
-    'WordPress',
-    'Vue.js',
-    'React.js',
-    'Laravel',
-    'HTML',
-    'CSS / SASS',
-    'Bootstrap',
-    'Tailwind',
-    'JavaScript',
-    'jQuery',
-    'REST API',
-    'Axios',
-    'PHP',
-    'PHPUnit',
-    'AJAX',
-    'CRUD',
-    'MySQL',
-    'SCRUM',
-    'POO',
-    'SOLID',
-    'Git e Versionamento',
-    'GitHub',
-    'GitLab',
-    'Bitbucket',
-    'SEO',
-    'Jira / Trello / Runrun.it',
-    'yarn / npm / composer',
-  ];
+export default function Skills(skillsData: any){
 
   return (
     <div className="bg-gray-800 py-14 sm:py-20" id="skills">
@@ -42,11 +13,11 @@ const Skills = () => {
             {/* <p className="mt-6 text-base leading-7 text-gray-300">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste dolor cupiditate blanditiis ratione.</p> */}
           </div>
           <dl className="col-span-2 grid grid-cols-1 gap-x-8 gap-y-3 text-base leading-7 text-gray-300 sm:grid-cols-3">
-            {skills.map((skill, index) => (
+            {Object.values(skillsData).map((skill:any, index) => (
               <div key={index} className="relative pl-9">
                 <dt className="font-semibold text-white">
                   <Check className="absolute left-0 top-1 h-5 w-5 text-indigo-500" />
-                  {skill}
+                  {skill.skill_name}
                 </dt>
               </div>
             ))}
@@ -56,5 +27,3 @@ const Skills = () => {
     </div>
   );
 };
-
-export default Skills;
