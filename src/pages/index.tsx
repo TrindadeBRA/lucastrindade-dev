@@ -33,5 +33,6 @@ export const getStaticProps: GetStaticProps = async () => {
       profileData,
       skillsData
     },
+    revalidate: 60 * 24,
   };
 };
