@@ -3,7 +3,11 @@ import { Client } from '@notionhq/client';
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
-export async function getSectionSkills() {
+export interface Skill {
+  skill_name: string;
+}
+
+export async function getSectionSkills(): Promise<Skill[]> {
   const response = await notion.databases.query({
     database_id: "f956ac4be74a42f8a9171149c1c9bc5a",
   });

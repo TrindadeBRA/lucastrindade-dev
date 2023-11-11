@@ -1,10 +1,9 @@
-"use client"
-
+import { Certificate } from '@/pages/api/sectioncertificates';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { certificates } from './certificates';
 
-const Certificates = () => {
+export default function Certificates(certificateData: Certificate[]) {
+
   const [showModal, setShowModal] = useState(false);
   const [showImageUrl, setShowImageUrl] = useState('');
 
@@ -28,23 +27,23 @@ const Certificates = () => {
           <p className="mt-2 text-lg leading-8 text-gray-300 hidden">Learn how to grow your business with our expert advice.</p>
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10 lg:mx-0 lg:max-w-none lg:grid-cols-4">
-          {certificates.map((post:any) => (
-            <article key={post.id} className="flex flex-col items-start justify-between cursor-pointer bg-gray-800 hover:bg-gray-700 py-5 px-5 rounded-3xl shadow-md shadow-gray-600" onClick={() => openModal(post.imageUrl)}>
+          {Object.values(certificateData).map((certificate:Certificate) => (
+            <article key={certificate.certificate_id} className="flex flex-col items-start justify-between cursor-pointer bg-gray-800 hover:bg-gray-700 py-5 px-5 rounded-3xl shadow-md shadow-gray-600" onClick={() => openModal(certificate.certificate_file)}>
               <div className="relative w-full cursor-pointer mb-5">
-                <Image width={1024} height={720} src={post.imageUrl} alt="" className="w-full rounded-2xl bg-gray-100 object-cover cursor-pointer" />
+                <Image width={1024} height={720} src={certificate.certificate_file} alt="" className="w-full rounded-2xl bg-gray-100 object-cover cursor-pointer" />
                 <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10" />
               </div>
               <div className="w-full">
                 <div className="group relative">
                   <h3 className="mt-2 text-base font-semibold leading-6 text-white group-hover:text-gray-300 text-center cursor-pointer line-clamp-2">
-                    {post.title}
+                    {certificate.certificate_name}
                   </h3>
                   <p className="mt-2 text-sm font-light italic leading-6 text-white group-hover:text-gray-300 text-center cursor-pointer">
-                    {post.institution}
+                    {certificate.certificate_instructors}
                   </p>
                 </div>
                 <div className="mt-2 flex items-center gap-x-4 text-xs justify-around pb-2">
-                  <time dateTime={post.datetime} className="text-gray-300">{post.date}</time>
+                  <time dateTime={certificate.certificate_date} className="text-gray-300">{certificate.certificate_date}</time>
                 </div>
               </div>
             </article>
@@ -67,5 +66,3 @@ const Certificates = () => {
     </div>
   );
 };
-
-export default Certificates;
