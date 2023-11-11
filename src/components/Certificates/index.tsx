@@ -7,7 +7,7 @@ export default function Certificates(certificateData: Certificate[]) {
   const [showModal, setShowModal] = useState(false);
   const [showImageUrl, setShowImageUrl] = useState('');
 
-  const openModal = (imageUrl:any) => {
+  const openModal = (imageUrl: any) => {
     setShowImageUrl(imageUrl);
     setShowModal(true);
     document.body.classList.add('overflow-hidden');
@@ -27,7 +27,7 @@ export default function Certificates(certificateData: Certificate[]) {
           <p className="mt-2 text-lg leading-8 text-gray-300 hidden">Learn how to grow your business with our expert advice.</p>
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10 lg:mx-0 lg:max-w-none lg:grid-cols-4">
-          {Object.values(certificateData).map((certificate:Certificate) => (
+          {Object.values(certificateData).map((certificate: Certificate) => (
             <article key={certificate.certificate_id} className="flex flex-col items-start justify-between cursor-pointer bg-gray-800 hover:bg-gray-700 py-5 px-5 rounded-3xl shadow-md shadow-gray-600" onClick={() => openModal(certificate.certificate_file)}>
               <div className="relative w-full cursor-pointer mb-5">
                 <Image width={1024} height={720} src={certificate.certificate_file} alt="" className="w-full rounded-2xl bg-gray-100 object-cover cursor-pointer" />
@@ -43,7 +43,13 @@ export default function Certificates(certificateData: Certificate[]) {
                   </p>
                 </div>
                 <div className="mt-2 flex items-center gap-x-4 text-xs justify-around pb-2">
-                  <time dateTime={certificate.certificate_date} className="text-gray-300">{certificate.certificate_date}</time>
+                  <time dateTime={certificate.certificate_date} className="text-gray-300">
+                    {new Date(certificate.certificate_date).toLocaleDateString('pt-BR', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </time>
                 </div>
               </div>
             </article>
@@ -54,7 +60,7 @@ export default function Certificates(certificateData: Certificate[]) {
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
           <div className="w-4/5 lg:w-3/5 2xl:w-2/6 relative">
-            <Image src={showImageUrl} alt="Imagem" className="max-w-full" width={1024} height={720}/>
+            <Image src={showImageUrl} alt="Imagem" className="max-w-full" width={1024} height={720} />
             <button onClick={closeModal} className="absolute -top-8 -right-8 m-4 p-2 rounded-full bg-white text-gray-800 shadow-md">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
