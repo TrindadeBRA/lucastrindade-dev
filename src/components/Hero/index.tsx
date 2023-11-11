@@ -15,7 +15,7 @@ function HeroSection(profileData: any) {
           />
         </div>
         <div className="mx-auto max-w-2xl flex flex-col md:flex-row items-center justify-center">
-          <Image className="aspect-[4/5] w-52 flex-none rounded-2xl object-cover md:mr-12 mb-6 md:mb-0" src={profileData[0].user_avatar} alt="" width={208} height={300} />
+          <Image className="aspect-[4/5] w-52 flex-none rounded-2xl object-cover md:mr-12 mb-6 md:mb-0" src={profileData[0].user_avatar} alt="" width={208} height={300} priority/>
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
             <h2 className="text-base text-center md:text-left font-semibold leading-8 text-indigo-400">{profileData[0].user_role}</h2>
             <p className="mt-2 text-3xl text-center md:text-left font-bold tracking-tight text-white sm:text-4xl">{profileData[0].user_name}</p>
