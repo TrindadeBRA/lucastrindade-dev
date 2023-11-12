@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Client } from '@notionhq/client';
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
-
 export interface Experience {
   experience_company_name: string;
   experience_id: string;
@@ -21,7 +20,7 @@ export async function getSectionExperiences(): Promise<Experience[]> {
     database_id: "88d34a6ac72a49f6a1ba4c14f73b63b4",
   });
 
-  return response.results.map((experience: any) => ({
+  const experiences: Experience[] = response.results.map((experience: any) => ({
     experience_id: experience.properties['experience_id'].unique_id.number,
     experience_company_name: experience.properties["experience_company_name"].title[0].plain_text,
     experience_company_avatar: experience.properties["experience_company_avatar"].files[0]?.file?.url,
@@ -33,7 +32,24 @@ export async function getSectionExperiences(): Promise<Experience[]> {
     experience_location: experience.properties["experience_location"].rich_text[0].text.content,
     experience_operating_model: experience.properties["experience_operating_model"].select.name,
   }));
+
+  const compareExperiences = (a: Experience, b: Experience): number => {
+    // Coloca as empresas com experience_date_end como null no topo
+    if (a.experience_date_end === null && b.experience_date_end !== null) {
+      return -1;
+    } else if (a.experience_date_end !== null && b.experience_date_end === null) {
+      return 1;
+    } else {
+      // Ordena por data de forma decrescente
+      const dateA = new Date(a.experience_date_end || a.experience_date_start).getTime();
+      const dateB = new Date(b.experience_date_end || b.experience_date_start).getTime();
+      return dateB - dateA;
+    }
+  };
+  experiences.sort(compareExperiences);
+  return experiences;
 }
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const profile = await getSectionExperiences();
