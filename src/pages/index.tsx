@@ -12,8 +12,8 @@ import { Certificate, getSectionCertificates } from "./api/sectionCertificates";
 import { Experience, getSectionExperiences } from "./api/sectionsExperiences";
 
 export default function Home({ profileData, skillsData, certificateData, experienceData }:
-  { profileData: Profile[], skillsData: Skill[], certificateData: Certificate[], experienceData: Experience[]}) {
-    console.log(experienceData)
+  { profileData: Profile, skillsData: Skill, certificateData: Certificate[], experienceData: Experience[]}) {
+    // console.log(experienceData)
   return (
     <>
       <Header></Header>

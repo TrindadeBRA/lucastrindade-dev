@@ -1,9 +1,8 @@
+import { Skill } from '@/pages/api/sectionSkills';
 import React from 'react';
 import { Check } from 'react-feather';
 
-//TODO Tipar skillsData com o tipo que etsa na API
-
-export default function Skills(skillsData: any){
+export default function Skills(skillsData: Skill){
 
   return (
     <div className="bg-gray-800 py-14 sm:py-20" id="skills">

@@ -1,9 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
+import { Profile } from '@/pages/api/sectionProfile';
 
-// TODO Tipar profileData
-
-function HeroSection(profileData: any) {
+function HeroSection(profileData: Profile) {
   return (
     <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32 bg-cover" style={{ backgroundImage: 'url("/bg-profile.webp")' }} id="hero">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
@@ -18,16 +17,16 @@ function HeroSection(profileData: any) {
         </div>
         <div className="mx-auto max-w-2xl flex flex-col md:flex-row items-center justify-center">
           <Image className="aspect-[4/5] w-52 flex-none rounded-2xl object-cover md:mr-12 mb-6 md:mb-0"
-            src={profileData[0].user_avatar} 
-            alt={profileData[0].user_name}
+            src={profileData.user_avatar} 
+            alt={profileData.user_name}
             width={800}
             height={800}
             priority
           />
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
-            <h2 className="text-base text-center md:text-left font-semibold leading-8 text-indigo-400">{profileData[0].user_role}</h2>
-            <p className="mt-2 text-3xl text-center md:text-left font-bold tracking-tight text-white sm:text-4xl">{profileData[0].user_name}</p>
-            <p className="mt-6 text-base text-center md:text-left leading-6 text-gray-300">{profileData[0].user_bio}</p>
+            <h2 className="text-base text-center md:text-left font-semibold leading-8 text-indigo-400">{profileData.user_role}</h2>
+            <p className="mt-2 text-3xl text-center md:text-left font-bold tracking-tight text-white sm:text-4xl">{profileData.user_name}</p>
+            <p className="mt-6 text-base text-center md:text-left leading-6 text-gray-300">{profileData.user_bio}</p>
           </div>
         </div>
       </div>
