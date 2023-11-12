@@ -12,7 +12,7 @@ export interface Experience {
   experience_date_start: string;
   experience_date_end: string;
   experience_about: string;
-  experience_location: any;
+  experience_location: string;
 }
 
 export async function getSectionExperiences(): Promise<Experience[]> {
