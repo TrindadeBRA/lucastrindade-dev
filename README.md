@@ -1,20 +1,16 @@
-# Lucastrindade-dev Portfolio
 
-Este é o repositório do meu portfolio pessoal, desenvolvido usando Next.js e integrado com o Notion.
+# lucastrindade-dev
 
-## Demonstração
-
-Você pode visualizar a versão ao vivo do meu portfolio em [lucastrindade.dev](URL_DO_SEU_PORTFOLIO).
+Bem-vindo ao meu projeto de portfolio pessoal! Este projeto foi desenvolvido utilizando o framework Next.js e está integrado com o Notion para gerenciar o conteúdo da aplicação de uma forma geral.
 
 ## Tecnologias Utilizadas
 
-- [Next.js](https://nextjs.org/)
-- [Notion API](https://developers.notion.com/docs/getting-started)
-- Outras tecnologias que você utilizou
+- [Next.js](https://nextjs.org/): Um framework React para desenvolvimento web.
+- [Notion](https://www.notion.so/): Uma plataforma de produtividade tudo-em-um que integra ferramentas de notas, gerenciamento de projetos e colaboração em um único ambiente online.
+- [Tailwind](https://tailwindcss.com/): Um framework de estilo utilitário para desenvolvimento web que simplifica a criação de interfaces flexíveis e altamente estilizadas.
 
-## Como Rodar Localmente
+## Funcionalidades
 
-1. Clone este repositório:
+- Uma das características poderosas deste projeto é a capacidade do Next.js de cacheamento de informações diretamente do Notion. Utilizando a integração entre Next.js / Notion / Vercel, conseguimos transformar esse portfolio em uma aplicação estática, resultando em tempos de carregamento extremamente rápidos e uma experiência de usuário aprimorada.
 
-   ```bash
-   git clone https://github.com/seu-usuario/lucastrindade-dev.git
+- Gerencie o conteúdo do seu portfólio de qualquer lugar, diretamente no Notion. Basta realizar alterações nas tabelas correspondentes, e depois aguardar o tempo de revalidação do Next.js para ver as atualizações refletidas automaticamente no seu site. Se preferir, você também pode forçar uma compilação através do painel de controle da Vercel para garantir uma atualização imediata. Essa flexibilidade permite uma gestão eficiente e ágil do conteúdo, proporcionando uma experiência de atualização suave e conveniente.
