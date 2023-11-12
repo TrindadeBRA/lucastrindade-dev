@@ -9,9 +9,11 @@ import { GetStaticProps } from "next";
 import { Profile, getSectionProfile } from "./api/sectionProfile";
 import { Skill, getSectionSkills } from "./api/sectionSkills";
 import { Certificate, getSectionCertificates } from "./api/sectionCertificates";
+import { Experience, getSectionExperiences } from "./api/sectionsExperiences";
 
-export default function Home({ profileData, skillsData, certificateData }:
-  { profileData: Profile[], skillsData: Skill[], certificateData: Certificate[] }) {
+export default function Home({ profileData, skillsData, certificateData, experienceData }:
+  { profileData: Profile[], skillsData: Skill[], certificateData: Certificate[], experienceData: Experience[]}) {
+    // console.log(experienceData)
   return (
     <>
       <Header></Header>
@@ -29,11 +31,13 @@ export const getStaticProps: GetStaticProps = async () => {
   const profileData = await getSectionProfile();
   const skillsData = await getSectionSkills();
   const certificateData = await getSectionCertificates();
+  const experienceData = await getSectionExperiences();
   return {
     props: {
       profileData,
       skillsData,
-      certificateData
+      certificateData,
+      experienceData
     },
     revalidate: 60 * 24,
   };

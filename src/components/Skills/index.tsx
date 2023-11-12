@@ -1,6 +1,8 @@
 import React from 'react';
 import { Check } from 'react-feather';
 
+//TODO Tipar skillsData com o tipo que etsa na API
+
 export default function Skills(skillsData: any){
 
   return (

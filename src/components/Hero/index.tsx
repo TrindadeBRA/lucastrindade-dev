@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 
+// TODO Tipar profileData
+
 function HeroSection(profileData: any) {
   return (
     <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32 bg-cover" style={{ backgroundImage: 'url("/bg-profile.webp")' }} id="hero">

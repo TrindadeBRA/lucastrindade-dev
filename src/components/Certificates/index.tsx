@@ -1,4 +1,4 @@
-import { Certificate } from '@/pages/api/sectioncertificates';
+import { Certificate } from '@/pages/api/sectionCertificates';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
