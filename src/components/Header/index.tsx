@@ -19,6 +19,25 @@ export default function Example() {
   return (
     <>
       <Head>
+        {/* Global Site Tag (gtag.js) - Google Analytics */}
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=UA-X1L28QHRD3`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'UA-X1L28QHRD3', {
+                  page_path: window.location.pathname,
+                });
+              `,
+          }}
+        />
+      </Head>
+      <Head>
         <title>Lucas Trindade - Desenvolvedor Fullstack</title>
         <meta property="og:url" content="https://lucastrindade.dev/" />
         <meta property="og:type" content="website" />
