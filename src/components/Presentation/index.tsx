@@ -12,7 +12,7 @@ const Presentation = (profileData: Profile) => {
           <p>
             {
               profileData.user_presentation[0].plain_text.split('\n').map((paragraph:string, index:number) => (
-                <span key={index}>
+                <span key={index} className='text-white'>
                   {paragraph}
                   <br />
                 </span>
