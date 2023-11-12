@@ -6,9 +6,9 @@ import HeroSection from "@/components/Hero";
 import Presentation from "@/components/Presentation";
 import Skills from "@/components/Skills";
 import { GetStaticProps } from "next";
-import { Profile, getSectionProfile } from "./api/sectionprofile";
-import { Skill, getSectionSkills } from "./api/sectionskills";
-import { Certificate, getSectionCertificates } from "./api/sectioncertificates";
+import { Profile, getSectionProfile } from "./api/sectionProfile";
+import { Skill, getSectionSkills } from "./api/sectionSkills";
+import { Certificate, getSectionCertificates } from "./api/sectionCertificates";
 
 export default function Home({ profileData, skillsData, certificateData }:
   { profileData: Profile[], skillsData: Skill[], certificateData: Certificate[] }) {
