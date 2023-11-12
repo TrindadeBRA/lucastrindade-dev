@@ -105,8 +105,7 @@ const Experiences = (experienceData: Experience[]) => {
                                         </div>
                                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                             <dt className="text-sm font-medium leading-6 text-white">Modelo de Atuação:</dt>
-                                            {/* TODO Puxar a tag do tipo de contrato */}
-                                            <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">{showExperience?.experience_location}</dd>
+                                            <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">{showExperience?.experience_operating_model}</dd>
                                         </div>
                                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                             <dt className="text-sm font-medium leading-6 text-white">Inicio:</dt>

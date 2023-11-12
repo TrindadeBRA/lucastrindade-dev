@@ -13,6 +13,7 @@ export interface Experience {
   experience_date_end: string;
   experience_about: string;
   experience_location: string;
+  experience_operating_model: string;
 }
 
 export async function getSectionExperiences(): Promise<Experience[]> {
@@ -30,6 +31,7 @@ export async function getSectionExperiences(): Promise<Experience[]> {
     experience_date_end: experience.properties["experience_date"].date?.end,
     experience_about: experience.properties["experience_about"].rich_text[0].text.content,
     experience_location: experience.properties["experience_location"].rich_text[0].text.content,
+    experience_operating_model: experience.properties["experience_operating_model"].select.name,
   }));
 }
 
