@@ -28,9 +28,9 @@ export default function Certificates(certificateData: Certificate[]) {
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10 lg:mx-0 lg:max-w-none lg:grid-cols-4">
           {Object.values(certificateData).map((certificate: Certificate) => (
-            <article key={certificate.certificate_id} className="flex flex-col items-start justify-between cursor-pointer bg-gray-800 hover:bg-gray-700 py-5 px-5 rounded-3xl shadow-md shadow-gray-600" onClick={() => openModal(certificate.certificate_file)}>
+            <article key={certificate.certificate_id} className="flex flex-col items-start justify-between cursor-pointer bg-gray-800 hover:bg-gray-700 py-5 px-5 rounded-3xl shadow-md shadow-gray-600" onClick={() => openModal(certificate.certificate_file_url)}>
               <div className="relative w-full cursor-pointer mb-5">
-                <Image width={1024} height={720} src={certificate.certificate_file} alt="" className="w-full rounded-2xl bg-gray-100 object-cover cursor-pointer" />
+                <Image width={1024} height={720} src={certificate.certificate_file_url} alt="" className="w-full rounded-2xl bg-gray-100 object-cover cursor-pointer" />
                 <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10" />
               </div>
               <div className="w-full">
