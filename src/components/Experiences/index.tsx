@@ -63,7 +63,7 @@ const Experiences = (experienceData: Experience[]) => {
                                 )}
                             </div>
                             <div className="relative mt-4 flex items-center gap-x-4">
-                                <Image width={40} height={40} src={experience.experience_company_avatar} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+                                <Image width={40} height={40} src={experience.experience_company_avatar_url} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
                                 <div className="text-sm leading-6">
                                     <p className="font-semibold text-white">
                                         <span className="absolute inset-0" />
@@ -81,7 +81,7 @@ const Experiences = (experienceData: Experience[]) => {
                         <div className="w-full sm:w-4/5 2xl:w-2/6 relative p-8 rounded-2xl border border-gray-600 opacity-100 bg-gray-900 max-h-full overflow-scroll">
                             <div>
                                 <div className="flex gap-x-4 items-center">
-                                    <Image width={50} height={50} src={showExperience.experience_company_avatar} alt="" className="h-12 w-12 rounded-full bg-black" />
+                                    <Image width={50} height={50} src={showExperience.experience_company_avatar_url} alt="" className="h-12 w-12 rounded-full bg-black" />
                                     <div className="px-4 sm:px-0 ">
                                         <h3 className="text-base font-semibold leading-4 text-white">{showExperience?.experience_company_name}</h3>
                                         <p className="mt-1 max-w-2xl text-sm leading-4 text-gray-400">{showExperience?.experience_location}</p>
