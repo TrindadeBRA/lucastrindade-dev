@@ -17,7 +17,7 @@ function HeroSection(profileData: Profile) {
         </div>
         <div className="mx-auto max-w-2xl flex flex-col md:flex-row items-center justify-center">
           <Image className="aspect-[4/5] w-52 flex-none rounded-2xl object-cover md:mr-12 mb-6 md:mb-0"
-            src={profileData.user_avatar} 
+            src={profileData.user_avatar_url} 
             alt={profileData.user_name}
             width={800}
             height={800}

@@ -8,6 +8,7 @@ export interface Profile {
   user_role: string;
   user_bio: string;
   user_avatar: string;
+  user_avatar_url: string;
   user_presentation: any;
 }
 
@@ -21,6 +22,7 @@ export async function getSectionProfile(): Promise<Profile> {
     user_role: user.properties['user_role'].rich_text[0].text.content,
     user_bio: user.properties['user_bio'].rich_text[0].text.content,
     user_avatar: user.properties['user_avatar'].files[0]?.file?.url,
+    user_avatar_url: user.properties['user_avatar_url'].url,
     user_presentation: user.properties['user_presentation'].rich_text,
   }));
 
