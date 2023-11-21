@@ -38,6 +38,6 @@ export const getStaticProps: GetStaticProps = async () => {
       certificateData,
       experienceData
     },
-    revalidate: 60 * 30, //30min
+    revalidate: 60 * 60 * 24, //24h
   };
 };
