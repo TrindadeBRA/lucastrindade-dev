@@ -44,7 +44,7 @@ export default function Certificates(certificateData: Certificate[]) {
                 </div>
                 <div className="mt-2 flex items-center gap-x-4 text-xs justify-around pb-2">
                   <time dateTime={certificate.certificate_date} className="text-gray-300">
-                    {new Date(certificate.certificate_date).toLocaleDateString('pt-BR', {
+                    {new Date(`${certificate.certificate_date}T00:00:00`).toLocaleDateString('pt-BR', {
                       day: 'numeric',
                       month: 'long',
                       year: 'numeric',

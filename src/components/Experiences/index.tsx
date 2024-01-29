@@ -8,13 +8,13 @@ const Experiences = (experienceData: Experience[]) => {
     const [showModal, setShowModal] = useState(false);
     const [showExperience, setShowExperience] = useState<any>();
 
-    function formatarData(date:string) {
+    function formatarData(date: string) {
         const dataObjeto = new Date(date);
-    
+
         const dia = String(dataObjeto.getDate()).padStart(2, '0');
         const mes = String(dataObjeto.getMonth() + 1).padStart(2, '0');
         const ano = dataObjeto.getFullYear();
-    
+
         return `${mes}/${ano}`;
     }
 
@@ -110,7 +110,7 @@ const Experiences = (experienceData: Experience[]) => {
                                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                             <dt className="text-sm font-medium leading-6 text-white">Inicio:</dt>
                                             <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                                { new Date(showExperience?.experience_date_start).toLocaleDateString('pt-BR', {
+                                                {new Date(`${showExperience?.experience_date_start}T00:00:00`).toLocaleDateString('pt-BR', {
                                                     day: 'numeric',
                                                     month: 'long',
                                                     year: 'numeric',
@@ -120,13 +120,13 @@ const Experiences = (experienceData: Experience[]) => {
                                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                             <dt className="text-sm font-medium leading-6 text-white">Saida:</dt>
                                             <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                                                { showExperience.experience_date_end !== null ?
-                                                new Date(showExperience?.experience_date_end).toLocaleDateString('pt-BR', {
-                                                    day: 'numeric',
-                                                    month: 'long',
-                                                    year: 'numeric',
-                                                })
-                                                : "-"
+                                                {showExperience.experience_date_end !== null ?
+                                                    new Date(`${showExperience?.experience_date_end}T00:00:00`).toLocaleDateString('pt-BR', {
+                                                        day: 'numeric',
+                                                        month: 'long',
+                                                        year: 'numeric',
+                                                    })
+                                                    : "-"
                                                 }
                                             </dd>
                                         </div>
