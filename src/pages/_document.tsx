@@ -1,3 +1,4 @@
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { Analytics } from '@vercel/analytics/react'
 import { Html, Head, Main, NextScript } from 'next/document'
 
@@ -8,8 +9,9 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
-        <Analytics />
       </body>
+      <GoogleAnalytics gaId="G-XSV4CR9LYC"/>
+      <Analytics />
     </Html>
   )
 }
