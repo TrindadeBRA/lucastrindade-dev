@@ -1,5 +1,5 @@
-import { GoogleAnalytics } from '@next/third-parties/google'
-import { Analytics } from '@vercel/analytics/react'
+// import { GoogleAnalytics } from '@next/third-parties/google'
+// import { Analytics } from '@vercel/analytics/react'
 import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
@@ -10,8 +10,8 @@ export default function Document() {
         <Main />
         <NextScript />
       </body>
-      <GoogleAnalytics gaId="G-XSV4CR9LYC"/>
-      <Analytics />
+      {/* <GoogleAnalytics gaId="G-XSV4CR9LYC"/>
+      <Analytics /> */}
     </Html>
   )
 }
