@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Profile } from '@/pages/api/sectionProfile';
 
 function HeroSection(profileData: Profile) {
+  // console.log("profileData", profileData)
   return (
     <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32 bg-cover" style={{ backgroundImage: 'url("/bg-profile.webp")' }} id="hero">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
@@ -17,7 +18,7 @@ function HeroSection(profileData: Profile) {
         </div>
         <div className="mx-auto max-w-2xl flex flex-col md:flex-row items-center justify-center">
           <Image className="aspect-[4/5] w-52 flex-none rounded-2xl object-cover md:mr-12 mb-6 md:mb-0"
-            src={profileData.user_avatar_url} 
+            src={profileData.user_avatar} 
             alt={profileData.user_name}
             width={800}
             height={800}
