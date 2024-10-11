@@ -79,6 +79,7 @@ export default function Example() {
                       key={item.name}
                       href={item.href}
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800"
+                      onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.name}
                     </a>
@@ -88,6 +89,7 @@ export default function Example() {
                   <a
                     href="https://api.whatsapp.com/send?phone=5511952498126"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
                   >
                     Contato
                   </a>
