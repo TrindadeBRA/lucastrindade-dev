@@ -2,7 +2,6 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Experience } from "@/pages/api/sectionsExperiences";
 
-
 const Experiences = (experienceData: Experience[]) => {
 
     const [showModal, setShowModal] = useState(false);
@@ -30,7 +29,6 @@ const Experiences = (experienceData: Experience[]) => {
     };
 
     // console.log("experienceData", experienceData)
-
 
     return (
         <div className="bg-gradient-to-t from-gray-950 to-gray-900 py-14 sm:py-20" id="experiencias">
