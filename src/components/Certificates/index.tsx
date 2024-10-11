@@ -18,15 +18,12 @@ export default function Certificates(certificateData: Certificate[]) {
     document.body.classList.remove('overflow-hidden');
   };
 
-  // console.log("certificateData", certificateData)
-
   return (
     <div className="bg-gray-900 py-14 sm:py-20" id="certificados">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-base font-semibold leading-7 text-indigo-600">Estudos</h2>
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Certificados</h2>
-          <p className="mt-2 text-lg leading-8 text-gray-300 hidden">Learn how to grow your business with our expert advice.</p>
         </div>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10 lg:mx-0 lg:max-w-none lg:grid-cols-4">
           {Object.values(certificateData).map((certificate: Certificate) => (
@@ -60,8 +57,14 @@ export default function Certificates(certificateData: Certificate[]) {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
-          <div className="w-4/5 lg:w-3/5 2xl:w-2/6 relative">
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50"
+          onClick={closeModal} // Adiciona evento de clique para fechar o modal ao clicar no fundo
+        >
+          <div
+            className="w-4/5 lg:w-3/5 2xl:w-2/6 relative"
+            onClick={(e) => e.stopPropagation()} // Impede que o clique dentro do modal feche o modal
+          >
             <Image src={showImageUrl} alt="Imagem" className="max-w-full" width={1024} height={720} />
             <button onClick={closeModal} className="absolute -top-8 -right-8 m-4 p-2 rounded-full bg-white text-gray-800 shadow-md">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
