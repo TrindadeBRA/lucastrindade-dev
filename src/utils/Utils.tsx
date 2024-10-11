@@ -10,6 +10,9 @@ export function extractFileName(url: string): string {
     return fileNameWithExtension.replace(/[^a-zA-Z0-9._-]/g, '_');
 }
 
+export function sanitizeFileName(fileName: string): string {
+    return fileName.replace(/[^a-zA-Z0-9._-]/g, '_'); // Permite apenas letras, números, '.', '_', e '-'
+}
 
 export async function downloadImage(imageUrl: string, filename: string, folderPath: string): Promise<string> {
     const res = await fetch(imageUrl);
@@ -31,7 +34,7 @@ export async function downloadImage(imageUrl: string, filename: string, folderPa
 
     // Define o caminho do arquivo
     const filePath = path.resolve(imagesFolder, filename);
-    
+
     // Escreve o arquivo no sistema
     fs.writeFileSync(filePath, new Uint8Array(buffer));
 
