@@ -29,7 +29,8 @@ export async function getSectionProfile(): Promise<Profile> {
     if (avatarUrl) {
       const sanitizedFileName = extractFileName(avatarUrl);
       const filename = `${userName.replace(/\s+/g, '_').toLowerCase()}_${sanitizedFileName}`;
-      localAvatarPath = await downloadImage(avatarUrl, filename, './public/images/avatars');
+      await downloadImage(avatarUrl, filename, './public/images/avatars');
+      localAvatarPath = `/images/avatars/${filename}`;
     }
 
     return {
