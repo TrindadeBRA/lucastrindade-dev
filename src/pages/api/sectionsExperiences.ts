@@ -52,11 +52,19 @@ export async function getSectionExperiences(): Promise<Experience[]> {
     };
   }));
 
-  experienceResponse.sort((a, b) => {
-    const dateA = new Date(a.experience_date_end || a.experience_date_start).getTime();
-    const dateB = new Date(b.experience_date_end || b.experience_date_start).getTime();
-    return dateB - dateA;
-  });
+  const compareExperiences = (a: Experience, b: Experience): number => {
+    if (a.experience_date_end === null && b.experience_date_end !== null) {
+      return -1;
+    } else if (a.experience_date_end !== null && b.experience_date_end === null) {
+      return 1;
+    } else {
+      const dateA = new Date(a.experience_date_end || a.experience_date_start).getTime();
+      const dateB = new Date(b.experience_date_end || b.experience_date_start).getTime();
+      return dateB - dateA;
+    }
+  };
+
+  experienceResponse.sort(compareExperiences);
 
   return experienceResponse;
 }

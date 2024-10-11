@@ -3,17 +3,14 @@ import React, { useState } from 'react';
 import { Experience } from "@/pages/api/sectionsExperiences";
 
 const Experiences = (experienceData: Experience[]) => {
-
     const [showModal, setShowModal] = useState(false);
     const [showExperience, setShowExperience] = useState<any>();
 
     function formatarData(date: string) {
         const dataObjeto = new Date(date);
-
         const dia = String(dataObjeto.getDate()).padStart(2, '0');
         const mes = String(dataObjeto.getMonth() + 1).padStart(2, '0');
         const ano = dataObjeto.getFullYear();
-
         return `${mes}/${ano}`;
     }
 
@@ -27,8 +24,6 @@ const Experiences = (experienceData: Experience[]) => {
         setShowModal(false);
         document.body.classList.remove('overflow-hidden');
     };
-
-    // console.log("experienceData", experienceData)
 
     return (
         <div className="bg-gradient-to-t from-gray-950 to-gray-900 py-14 sm:py-20" id="experiencias">
@@ -78,8 +73,8 @@ const Experiences = (experienceData: Experience[]) => {
                 </div>
 
                 {showModal && (
-                    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75">
-                        <div className="w-full sm:w-4/5 2xl:w-2/6 relative p-8 rounded-2xl border border-gray-600 opacity-100 bg-gray-900 max-h-full overflow-scroll">
+                    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75" onClick={closeModal}>
+                        <div className="w-full sm:w-4/5 2xl:w-2/6 relative p-8 rounded-2xl border border-gray-600 bg-gray-900 max-h-full overflow-scroll" onClick={(e) => e.stopPropagation()}>
                             <div>
                                 <div className="flex gap-x-4 items-center">
                                     <Image width={50} height={50} src={showExperience.experience_company_avatar} alt="" className="h-12 w-12 rounded-full bg-black" />
@@ -137,7 +132,7 @@ const Experiences = (experienceData: Experience[]) => {
                                             <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">{showExperience?.experience_about}</dd>
                                         </div>
                                     </dl>
-                                    {/* Botão Desktop */}
+
                                     <button onClick={closeModal} className="absolute top-0 right-0 m-4 p-2 rounded-full bg-white text-gray-800 shadow-md hidden sm:block">
                                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -146,7 +141,7 @@ const Experiences = (experienceData: Experience[]) => {
                                 </div>
                             </div>
                         </div>
-                        {/* Botao Mobile */}
+
                         <button onClick={closeModal} className="absolute top-0 right-0 m-4 p-2 rounded-full bg-white text-gray-800 shadow-md sm:hidden">
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
