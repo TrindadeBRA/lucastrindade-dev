@@ -6,6 +6,9 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Head from 'next/head'
 
+import { FaLinkedin, FaWhatsapp, FaGithub } from 'react-icons/fa';
+import Link from 'next/link'
+
 const navigation = [
   { name: 'Apresentação', href: '#apresentacao' },
   { name: 'Skills', href: '#skills' },
@@ -50,9 +53,18 @@ export default function Example() {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="https://api.whatsapp.com/send?phone=5511952498126" className="text-sm font-semibold leading-6 text-white">
-              Contato <span aria-hidden="true">&rarr;</span>
-            </a>
+            <div className='flex gap-4'>
+              <Link href={"https://www.linkedin.com/in/trindadebra/"}>
+                <FaLinkedin className="text-white" size={20} />
+              </Link>
+              <Link href={"https://github.com/TrindadeBRA/"}>
+                <FaGithub className="text-white" size={20} />
+              </Link>
+              <Link href={"https://api.whatsapp.com/send?phone=5511952498126"}>
+                <FaWhatsapp className="text-white" size={20} />
+              </Link>
+            </div>
+
           </div>
         </nav>
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -86,13 +98,17 @@ export default function Example() {
                   ))}
                 </div>
                 <div className="py-6">
-                  <a
-                    href="https://api.whatsapp.com/send?phone=5511952498126"
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Contato
-                  </a>
+                  <div className='flex gap-4'>
+                    <Link href={"https://www.linkedin.com/in/trindadebra/"}>
+                      <FaLinkedin className="text-white" size={24} />
+                    </Link>
+                    <Link href={"https://github.com/TrindadeBRA/"}>
+                      <FaGithub className="text-white" size={24} />
+                    </Link>
+                    <Link href={"https://api.whatsapp.com/send?phone=5511952498126"}>
+                      <FaWhatsapp className="text-white" size={24} />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
