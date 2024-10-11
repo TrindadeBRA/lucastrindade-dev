@@ -10,6 +10,8 @@ const Footer = () => {
     ],
   };
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="bg-gray-950">
       <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
@@ -20,7 +22,7 @@ const Footer = () => {
             </div>
           ))}
         </nav>
-        <p className="mt-10 text-center text-xs leading-5 text-gray-300">&copy; 2023 Lucas Trindade, Todos direitos reservados.</p>
+        <p className="mt-10 text-center text-xs leading-5 text-gray-300">&copy; {currentYear} Lucas Trindade, Todos direitos reservados.</p>
       </div>
     </footer>
   );
