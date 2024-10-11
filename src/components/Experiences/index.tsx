@@ -30,7 +30,7 @@ const Experiences = (experienceData: Experience[]) => {
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div>
                     <h2 className="text-base font-semibold leading-7 text-indigo-600">Minha jornada</h2>
-                    <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Experiencias Profissionais</p>
+                    <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Experiências Profissionais</p>
                 </div>
                 <div className="mx-auto mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10 dark:border-gray-700 pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3 justify-items-center">
                     {Object.values(experienceData).map((experience: Experience) => (
