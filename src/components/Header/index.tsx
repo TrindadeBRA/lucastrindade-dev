@@ -47,7 +47,7 @@ export default function Example() {
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
-              <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-white">
+              <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-white hover:text-gray-400">
                 {item.name}
               </a>
             ))}
@@ -55,13 +55,13 @@ export default function Example() {
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <div className='flex gap-4'>
               <Link href={"https://www.linkedin.com/in/trindadebra/"} target='_blank'>
-                <FaLinkedin className="text-white" size={20} />
+                <FaLinkedin className="text-white hover:text-gray-400" size={20} />
               </Link>
               <Link href={"https://github.com/TrindadeBRA/"} target='_blank'>
-                <FaGithub className="text-white" size={20} />
+                <FaGithub className="text-white hover:text-gray-400" size={20} />
               </Link>
               <Link href={"https://api.whatsapp.com/send?phone=5511952498126"} target='_blank'>
-                <FaWhatsapp className="text-white" size={20} />
+                <FaWhatsapp className="text-white hover:text-gray-400" size={20} />
               </Link>
             </div>
 
@@ -100,13 +100,13 @@ export default function Example() {
                 <div className="py-6">
                   <div className='flex gap-4'>
                     <Link href={"https://www.linkedin.com/in/trindadebra/"} target='_blank'>
-                      <FaLinkedin className="text-white" size={24} />
+                      <FaLinkedin className="text-white hover:text-gray-400" size={24} />
                     </Link>
                     <Link href={"https://github.com/TrindadeBRA/"} target='_blank'>
-                      <FaGithub className="text-white" size={24} />
+                      <FaGithub className="text-white hover:text-gray-400" size={24} />
                     </Link>
                     <Link href={"https://api.whatsapp.com/send?phone=5511952498126"} target='_blank'>
-                      <FaWhatsapp className="text-white" size={24} />
+                      <FaWhatsapp className="text-white hover:text-gray-400" size={24} />
                     </Link>
                   </div>
                 </div>
