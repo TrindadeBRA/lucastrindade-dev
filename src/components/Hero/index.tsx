@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { Profile } from '@/pages/api/sectionProfile';
+import { FaLinkedin, FaWhatsapp, FaGithub } from 'react-icons/fa';
+import Link from 'next/link';
 
 function HeroSection(profileData: Profile) {
   // console.log("profileData", profileData)
@@ -18,13 +20,24 @@ function HeroSection(profileData: Profile) {
         </div>
         <div className="mx-auto max-w-2xl flex flex-col md:flex-row items-center justify-center">
           <Image className="aspect-[4/5] w-52 flex-none rounded-2xl object-cover md:mr-12 mb-6 md:mb-0"
-            src={profileData.user_avatar} 
+            src={profileData.user_avatar}
             alt={profileData.user_name}
             width={800}
             height={800}
             priority
           />
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
+            <div className='flex justify-center md:justify-start gap-4'>
+              <Link href={"https://www.linkedin.com/in/trindadebra/"} target='_blank'>
+                <FaLinkedin className="text-white hover:text-gray-400 mb-1" size={18} />
+              </Link>
+              <Link href={"https://github.com/TrindadeBRA/"} target='_blank'>
+                <FaGithub className="text-white hover:text-gray-400 mb-1" size={18} />
+              </Link>
+              <Link href={"https://api.whatsapp.com/send?phone=5511952498126"} target='_blank'>
+                <FaWhatsapp className="text-white hover:text-gray-400 mb-1" size={18} />
+              </Link>
+            </div>
             <h2 className="text-base text-center md:text-left font-semibold leading-8 text-indigo-400">{profileData.user_role}</h2>
             <p className="mt-2 text-3xl text-center md:text-left font-bold tracking-tight text-white sm:text-4xl">{profileData.user_name}</p>
             <p className="mt-6 text-base text-center md:text-left leading-6 text-gray-300">{profileData.user_bio}</p>
