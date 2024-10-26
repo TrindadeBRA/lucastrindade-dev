@@ -27,17 +27,25 @@ export default function Home({ profileData, skillsData, certificateData, experie
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const profileData = await getSectionProfile();
-  const skillsData = await getSectionSkills();
-  const certificateData = await getSectionCertificates();
-  const experienceData = await getSectionExperiences();
-  return {
-    props: {
-      profileData,
-      skillsData,
-      certificateData,
-      experienceData
-    },
-    revalidate: 60 * 60 * 24,
-  };
+  try {
+    const profileData = await getSectionProfile();
+    const skillsData = await getSectionSkills();
+    const certificateData = await getSectionCertificates();
+    const experienceData = await getSectionExperiences();
+    return {
+      props: {
+        profileData,
+        skillsData,
+        certificateData,
+        experienceData
+      },
+      revalidate: 60 * 5,
+    };
+  } catch (error) {
+    console.error('Erro ao buscar dados:', error);
+    return {
+      props: {},
+      revalidate: 60 * 5,
+    };
+  }
 };
