@@ -19,7 +19,7 @@ export async function getSectionCertificates(): Promise<Certificate[]> {
   });
 
   const certificateResponse = await Promise.all(response.results.map(async (certificate: any) => {
-    const certificateName = certificate.properties['certificate_name'].title[0].text.content;
+    const certificateName = certificate.properties['certificate_name'].title[0]?.text.content;
     const certificateInstructors = certificate.properties['certificate_instructors'].rich_text[0]?.text.content || '';
     const certificateFileUrl = certificate.properties['certificate_file'].files[0]?.file?.url;
 

@@ -20,9 +20,9 @@ export async function getSectionProfile(): Promise<Profile> {
   });
 
   const mappedResult = await Promise.all(response.results.map(async (user: any) => {
-    const userName = user.properties['user_name'].title[0].text.content;
-    const userRole = user.properties['user_role'].rich_text[0].text.content;
-    const userBio = user.properties['user_bio'].rich_text[0].text.content;
+    const userName = user.properties['user_name'].title[0]?.text.content;
+    const userRole = user.properties['user_role'].rich_text[0]?.text.content;
+    const userBio = user.properties['user_bio'].rich_text[0]?.text.content;
     const avatarUrl = user.properties['user_avatar'].files[0]?.file?.url;
 
     let localAvatarPath = '';

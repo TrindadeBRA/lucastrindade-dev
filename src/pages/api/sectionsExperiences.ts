@@ -24,7 +24,7 @@ export async function getSectionExperiences(): Promise<Experience[]> {
   });
 
   const experienceResponse = await Promise.all(response.results.map(async (experience: any) => {
-    const experienceCompanyName = experience.properties["experience_company_name"].title[0].plain_text;
+    const experienceCompanyName = experience.properties["experience_company_name"].title[0]?.plain_text;
     const experienceCompanyAvatarUrl = experience.properties["experience_company_avatar"].files[0]?.file?.url;
 
     let localAvatarPath = '';
@@ -43,11 +43,11 @@ export async function getSectionExperiences(): Promise<Experience[]> {
       experience_company_avatar: localAvatarPath,
       experience_company_avatar_url: experienceCompanyAvatarUrl,
       experience_company_website: experience.properties["experience_company_website"].url,
-      experience_position: experience.properties["experience_position"].rich_text[0].text.content,
+      experience_position: experience.properties["experience_position"].rich_text[0]?.text.content,
       experience_date_start: experience.properties["experience_date"].date?.start,
       experience_date_end: experience.properties["experience_date"].date?.end,
-      experience_about: experience.properties["experience_about"].rich_text[0].text.content,
-      experience_location: experience.properties["experience_location"].rich_text[0].text.content,
+      experience_about: experience.properties["experience_about"].rich_text[0]?.text.content,
+      experience_location: experience.properties["experience_location"].rich_text[0]?.text.content,
       experience_operating_model: experience.properties["experience_operating_model"].select.name,
     };
   }));
