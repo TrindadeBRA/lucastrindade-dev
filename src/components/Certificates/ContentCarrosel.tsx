@@ -52,7 +52,7 @@ export default function ContentCarrosel({ certificateData, openModal, setShowAll
 
                 {Object.values(certificateData).map((certificate: Certificate) => (
                     <SwiperSlide key={certificate.certificate_id} onClick={() => openModal(certificate.certificate_file)} className='my-12 '>
-                        <Image width={1024} height={720} src={certificate.certificate_file_url} alt={''} priority={true} className='' />
+                        <Image width={1024} height={720} src={certificate.certificate_file} alt={''} priority={true} className='' />
                     </SwiperSlide>
                 ))}
             </Swiper>
