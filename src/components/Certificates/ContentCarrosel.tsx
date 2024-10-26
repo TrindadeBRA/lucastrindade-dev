@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
-import { EffectCoverflow, Navigation, Pagination } from 'swiper/modules';
+import { EffectCoverflow, Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 type ContentGridProps = {
     certificateData: Certificate[],
@@ -43,9 +43,11 @@ export default function ContentCarrosel({ certificateData, openModal, setShowAll
                     dynamicMainBullets: 5
                 }}
                 initialSlide={1}
-                modules={[EffectCoverflow, Pagination, Navigation]}
+                modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
                 className="mySwiper"
-                autoplay={true}
+                autoplay={{
+                    delay: 1500,
+                }}
             >
 
                 {Object.values(certificateData).map((certificate: Certificate) => (
