@@ -13,7 +13,7 @@ export async function getSectionSkills(): Promise<Skill[]> {
   });
 
   return response.results.map((skill: any) => ({
-    skill_name: skill.properties['skill_name'].title[0].text.content,
+    skill_name: skill.properties['skill_name'].title[0]?.text.content,
   }));
 }
 

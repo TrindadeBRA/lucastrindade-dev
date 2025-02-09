@@ -6,9 +6,11 @@ const Footer = () => {
       { name: 'Apresentação', href: '#apresentacao' },
       { name: 'Skills', href: '#skills' },
       { name: 'Certificados', href: '#certificados' },
-      { name: 'Experiencias Profissionais', href: '#experiencias' },
+      { name: 'Experiências Profissionais', href: '#experiencias' },
     ],
   };
+
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-gray-950">
@@ -20,10 +22,11 @@ const Footer = () => {
             </div>
           ))}
         </nav>
-        <p className="mt-10 text-center text-xs leading-5 text-gray-300">&copy; 2023 Lucas Trindade, Todos direitos reservados.</p>
+        <p className="mt-10 text-center text-xs leading-5 text-gray-300">&copy; {currentYear} Lucas Trindade, Todos direitos reservados.</p>
       </div>
     </footer>
   );
 };
+
 
 export default Footer;
