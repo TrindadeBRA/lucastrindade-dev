@@ -13,6 +13,7 @@ import { Experience, getSectionExperiences } from "./api/sectionsExperiences";
 
 export default function Home({ profileData, skillsData, certificateData, experienceData }:
   { profileData: Profile, skillsData: Skill, certificateData: Certificate[], experienceData: Experience[]}) {
+  console.log('Página renderizada em:', new Date().toISOString());
   return (
     <>
       <Header></Header>
@@ -39,13 +40,13 @@ export const getStaticProps: GetStaticProps = async () => {
         certificateData,
         experienceData
       },
-      revalidate: 60 * 5,
+      revalidate: 30 * 1,
     };
   } catch (error) {
     console.error('Erro ao buscar dados:', error);
     return {
       props: {},
-      revalidate: 60 * 5,
+      revalidate: 30 * 1,
     };
   }
 };

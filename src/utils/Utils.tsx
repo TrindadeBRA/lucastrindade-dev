@@ -35,3 +35,7 @@ export async function downloadImage(imageUrl: string, filename: string, folderPa
 
     return path.relative(process.cwd(), filePath);
 }
+
+export async function getNotionImageUrl(imageUrl: string): Promise<string> {
+    return imageUrl;
+}

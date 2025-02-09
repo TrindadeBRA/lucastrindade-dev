@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Client } from '@notionhq/client';
 
-import { downloadImage, extractFileName } from '@/utils/Utils';
-
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
 export interface Profile {
@@ -10,7 +8,6 @@ export interface Profile {
   user_role: string;
   user_bio: string;
   user_avatar: string;
-  user_avatar_url: string;
   user_presentation: any;
 }
 
@@ -25,20 +22,11 @@ export async function getSectionProfile(): Promise<Profile> {
     const userBio = user.properties['user_bio'].rich_text[0]?.text.content;
     const avatarUrl = user.properties['user_avatar'].files[0]?.file?.url;
 
-    let localAvatarPath = '';
-    if (avatarUrl) {
-      const sanitizedFileName = extractFileName(avatarUrl);
-      const filename = `${userName.replace(/\s+/g, '_').toLowerCase()}_${sanitizedFileName}`;
-      await downloadImage(avatarUrl, filename, './public/images/avatars');
-      localAvatarPath = `/images/avatars/${filename}`;
-    }
-
     return {
       user_name: userName,
       user_role: userRole,
       user_bio: userBio,
-      user_avatar: localAvatarPath,
-      user_avatar_url: avatarUrl,
+      user_avatar: avatarUrl,
       user_presentation: user.properties['user_presentation'].rich_text,
     };
   }));
