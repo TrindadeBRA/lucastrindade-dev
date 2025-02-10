@@ -23,6 +23,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'conteudo.thetrinityweb.com.br',
       },
+      {
+        protocol: 'https',
+        hostname: 'nms-php.thetrinityweb.com.br',
+      },
     ],
   },
 }

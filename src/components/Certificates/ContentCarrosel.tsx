@@ -9,12 +9,11 @@ import { EffectCoverflow, Navigation, Pagination, Autoplay } from 'swiper/module
 
 type ContentGridProps = {
     certificateData: Certificate[],
-    openModal: (certificate_file: string) => void,
+    openModal: (certificate_file_sync: string) => void,
     setShowAllCertificates: (showAllCertificates: boolean) => void,
     showAllCertificates: boolean,
 }
 export default function ContentCarrosel({ certificateData, openModal, setShowAllCertificates, showAllCertificates }: ContentGridProps) {
-
     return (
         <div className='mt-16'>
             <Swiper
@@ -51,8 +50,8 @@ export default function ContentCarrosel({ certificateData, openModal, setShowAll
             >
 
                 {Object.values(certificateData).map((certificate: Certificate) => (
-                    <SwiperSlide key={certificate.certificate_id} onClick={() => openModal(certificate.certificate_file)} className='my-12 '>
-                        <Image width={1024} height={720} src={certificate.certificate_file} alt={''} priority={true} className='' />
+                    <SwiperSlide key={certificate.certificate_id} onClick={() => openModal(certificate.certificate_file_sync)} className='my-12 '>
+                        <Image width={1024} height={720} src={certificate.certificate_file_sync} alt={''} priority={true} className='' />
                     </SwiperSlide>
                 ))}
             </Swiper>
