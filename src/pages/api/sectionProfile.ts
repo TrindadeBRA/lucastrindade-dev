@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Client } from '@notionhq/client';
+import { syncNotionMedia } from './utils/NotionMediaSync';
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
@@ -8,6 +9,7 @@ export interface Profile {
   user_role: string;
   user_bio: string;
   user_avatar: string;
+  user_avatar_sync: string;
   user_presentation: any;
 }
 
@@ -22,11 +24,21 @@ export async function getSectionProfile(): Promise<Profile> {
     const userBio = user.properties['user_bio'].rich_text[0]?.text.content;
     const avatarUrl = user.properties['user_avatar'].files[0]?.file?.url;
 
+    let avatarSyncResponse;
+    if (avatarUrl) {
+      try {
+        avatarSyncResponse = await syncNotionMedia(avatarUrl, 'profile');
+      } catch (error) {
+        console.error('Erro ao sincronizar avatar:', error);
+      }
+    }
+
     return {
       user_name: userName,
       user_role: userRole,
       user_bio: userBio,
       user_avatar: avatarUrl,
+      user_avatar_sync: avatarSyncResponse?.url,
       user_presentation: user.properties['user_presentation'].rich_text,
     };
   }));
