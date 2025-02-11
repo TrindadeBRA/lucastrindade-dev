@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Client } from '@notionhq/client';
-import { syncNotionMedia } from './utils/NotionMediaSync';
+import { cacheImage } from './utils/CacheImage';
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
@@ -8,7 +8,7 @@ export interface Certificate {
   certificate_name: string;
   certificate_instructors: string;
   certificate_file: string;
-  certificate_file_sync: string;
+  certificate_file_sync: string | undefined;
   certificate_date: string;
   certificate_category: string;
   certificate_id: string;
@@ -24,10 +24,10 @@ export async function getSectionCertificates(): Promise<Certificate[]> {
     const certificateInstructors = certificate.properties['certificate_instructors'].rich_text[0]?.text.content || '';
     const certificateFileUrl = certificate.properties['certificate_file'].files[0]?.file?.url;
 
-    let certificateFileSyncResponse;
+    let certificateFileSyncResponse = '';
     if (certificateFileUrl) {
       try {
-        certificateFileSyncResponse = await syncNotionMedia(certificateFileUrl, 'certificates');
+        certificateFileSyncResponse = await cacheImage(certificateFileUrl, 'certificates');
       } catch (error) {
         console.error('Erro ao sincronizar certificado:', error);
       }
@@ -37,7 +37,7 @@ export async function getSectionCertificates(): Promise<Certificate[]> {
       certificate_name: certificateName,
       certificate_instructors: certificateInstructors,
       certificate_file: certificateFileUrl,
-      certificate_file_sync: certificateFileSyncResponse?.url,
+      certificate_file_sync: certificateFileSyncResponse,
       certificate_date: certificate.properties['certificate_date'].date.start,
       certificate_category: certificate.properties['certificate_category'].select.name,
       certificate_id: certificate.properties['certificate_id'].unique_id.number,

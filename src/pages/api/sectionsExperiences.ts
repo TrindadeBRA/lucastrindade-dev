@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Client } from '@notionhq/client';
 import { syncNotionMedia } from './utils/NotionMediaSync';
+import { cacheImage } from './utils/CacheImage';
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
@@ -8,7 +9,7 @@ export interface Experience {
   experience_company_name: string;
   experience_id: string;
   experience_company_avatar: string;
-  experience_company_avatar_sync: string;
+  experience_company_avatar_sync: string | undefined;
   experience_company_website: string;
   experience_position: string;
   experience_date_start: string;
@@ -30,7 +31,7 @@ export async function getSectionExperiences(): Promise<Experience[]> {
     let experienceCompanyAvatarSyncResponse;
     if (experienceCompanyAvatarUrl) {
       try {
-        experienceCompanyAvatarSyncResponse = await syncNotionMedia(experienceCompanyAvatarUrl, 'experiences');
+        experienceCompanyAvatarSyncResponse = await cacheImage(experienceCompanyAvatarUrl, 'experiences');
       } catch (error) {
         console.error('Erro ao sincronizar certificado:', error);
       }
@@ -40,7 +41,7 @@ export async function getSectionExperiences(): Promise<Experience[]> {
       experience_id: experience.properties['experience_id'].unique_id.number,
       experience_company_name: experienceCompanyName,
       experience_company_avatar: experienceCompanyAvatarUrl,
-      experience_company_avatar_sync: experienceCompanyAvatarSyncResponse?.url,
+      experience_company_avatar_sync: experienceCompanyAvatarSyncResponse,
       experience_company_website: experience.properties["experience_company_website"].url,
       experience_position: experience.properties["experience_position"].rich_text[0]?.text.content,
       experience_date_start: experience.properties["experience_date"].date?.start,
