@@ -84,9 +84,10 @@ export default function PersonalProjects(personalProjectsData: PersonalProject[]
                         <Image
                           alt={feature.name}
                           src={feature.imageSrc}
-                          className="aspect-2/1 w-full rounded-lg bg-gray-800 object-cover sm:aspect-5/2"
-                          width={1000}
-                          height={1000}
+                          className="w-full rounded-lg bg-gray-800 object-cover"
+                          width={633}
+                          height={230}
+                          priority
                         />
                       </div>
                     </div>
