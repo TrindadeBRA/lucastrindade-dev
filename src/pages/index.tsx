@@ -40,15 +40,15 @@ export const getStaticProps: GetStaticProps = async () => {
         certificateData,
         experienceData
       },
-      // revalidate every 30 minutes
-      revalidate: 60 * 30,
+      // revalidate every 5 minutes
+      revalidate: 60 * 5,
     };
   } catch (error) {
     console.error('Erro ao buscar dados:', error);
     return {
       props: {},
-      // revalidate every 30 minutes
-      revalidate: 60 * 30,
+      // revalidate every 5 minutes
+      revalidate: 60 * 5,
     };
   }
 };
