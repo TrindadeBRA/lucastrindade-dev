@@ -9,7 +9,7 @@ export interface Profile {
   user_role: string;
   user_bio: string;
   user_avatar: string;
-  user_avatar_sync: string | undefined;
+  user_avatar_sync: string;
   user_presentation: any;
 }
 
@@ -38,7 +38,7 @@ export async function getSectionProfile(): Promise<Profile> {
       user_role: userRole,
       user_bio: userBio,
       user_avatar: avatarUrl,
-      user_avatar_sync: avatarSyncResponse,
+      user_avatar_sync: avatarSyncResponse ?? avatarUrl,
       user_presentation: user.properties['user_presentation'].rich_text,
     };
   }));

@@ -8,7 +8,7 @@ export interface Certificate {
   certificate_name: string;
   certificate_instructors: string;
   certificate_file: string;
-  certificate_file_sync: string | undefined;
+  certificate_file_sync: string;
   certificate_date: string;
   certificate_category: string;
   certificate_id: string;
@@ -37,7 +37,7 @@ export async function getSectionCertificates(): Promise<Certificate[]> {
       certificate_name: certificateName,
       certificate_instructors: certificateInstructors,
       certificate_file: certificateFileUrl,
-      certificate_file_sync: certificateFileSyncResponse,
+      certificate_file_sync: certificateFileSyncResponse ?? certificateFileUrl,
       certificate_date: certificate.properties['certificate_date'].date.start,
       certificate_category: certificate.properties['certificate_category'].select.name,
       certificate_id: certificate.properties['certificate_id'].unique_id.number,
