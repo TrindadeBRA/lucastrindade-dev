@@ -30,6 +30,7 @@ export async function cacheImage(url: string, folder: string): Promise<string> {
       }
       const buffer = await response.arrayBuffer();
       await fsPromises.writeFile(filePath, Buffer.from(buffer)); // Usando fs.promises
+      console.log('Imagem salva no cache:', filePath);
     }
 
     return localUrl;
