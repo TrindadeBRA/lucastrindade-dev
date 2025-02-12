@@ -21,7 +21,8 @@
     "notion-client": "^6.16.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "swiper": "^11.1.14"
+    "swiper": "^11.1.14",
+    "tailwind-merge": "^3.0.1"
   },
   "devDependencies": {
     "@headlessui/react": "^1.7.17",
@@ -33,6 +34,7 @@
     "date-fns": "^2.30.0",
     "eslint": "^8",
     "eslint-config-next": "15.1.6",
+    "mini-css-extract-plugin": "^2.9.2",
     "postcss": "^8",
     "react-feather": "^2.0.10",
     "react-icons": "^4.11.0",

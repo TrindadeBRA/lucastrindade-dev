@@ -14,6 +14,7 @@ const navigation = [
   { name: 'Skills', href: '#skills' },
   { name: 'Certificados', href: '#certificados' },
   { name: 'Experiências Profissionais', href: '#experiencias' },
+  { name: 'Projetos Pessoais', href: '#projetos' },
 ]
 
 export default function Example() {
@@ -45,7 +46,7 @@ export default function Example() {
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <div className="hidden lg:flex lg:gap-x-12">
+          <div className="hidden lg:flex lg:gap-x-6">
             {navigation.map((item) => (
               <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-white hover:text-gray-400">
                 {item.name}

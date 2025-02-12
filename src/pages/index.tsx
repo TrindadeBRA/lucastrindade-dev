@@ -10,9 +10,12 @@ import { Profile, getSectionProfile } from "./api/sectionProfile";
 import { Skill, getSectionSkills } from "./api/sectionSkills";
 import { Certificate, getSectionCertificates } from "./api/sectionCertificates";
 import { Experience, getSectionExperiences } from "./api/sectionsExperiences";
+import PersonalProjects from "@/components/PersonalProjects";
+import { getSectionPersonalProjects, PersonalProject } from "./api/sectionsPersonalProjects";
 
-export default function Home({ profileData, skillsData, certificateData, experienceData }:
-  { profileData: Profile, skillsData: Skill, certificateData: Certificate[], experienceData: Experience[]}) {
+
+export default function Home({ profileData, skillsData, certificateData, experienceData, personalProjectsData }:
+  { profileData: Profile, skillsData: Skill, certificateData: Certificate[], experienceData: Experience[], personalProjectsData: PersonalProject[]}) {
   return (
     <>
       <Header></Header>
@@ -21,6 +24,7 @@ export default function Home({ profileData, skillsData, certificateData, experie
       <Skills {...skillsData} />
       <Certificates {...certificateData} />
       <Experiences {...experienceData}/>
+      <PersonalProjects {...personalProjectsData}/>
       <Footer></Footer>
     </>
   )
@@ -33,12 +37,14 @@ export const getStaticProps: GetStaticProps = async () => {
     const skillsData = await getSectionSkills();
     const certificateData = await getSectionCertificates();
     const experienceData = await getSectionExperiences();
+    const personalProjectsData = await getSectionPersonalProjects();
     return {
       props: {
         profileData,
         skillsData,
         certificateData,
-        experienceData
+        experienceData,
+        personalProjectsData
       },
       // revalidate every 30 minutes
       revalidate: 60 * 30,
