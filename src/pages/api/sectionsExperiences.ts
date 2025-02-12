@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Client } from '@notionhq/client';
 import { syncNotionMedia } from './utils/NotionMediaSync';
-import { cacheImage } from './utils/CacheImage';
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
@@ -31,7 +30,7 @@ export async function getSectionExperiences(): Promise<Experience[]> {
     let experienceCompanyAvatarSyncResponse;
     if (experienceCompanyAvatarUrl) {
       try {
-        experienceCompanyAvatarSyncResponse = await cacheImage(experienceCompanyAvatarUrl, 'experiences');
+        experienceCompanyAvatarSyncResponse = await syncNotionMedia(experienceCompanyAvatarUrl, 'experiences');
       } catch (error) {
         console.error('Erro ao sincronizar certificado:', error);
       }

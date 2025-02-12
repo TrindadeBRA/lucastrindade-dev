@@ -13,5 +13,5 @@ export async function syncNotionMedia(fileUrl: string, fileFolder: string) {
 
     const data = await response.json();
 
-    return data;
+    return data?.url;
 }
