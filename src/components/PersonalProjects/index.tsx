@@ -2,8 +2,6 @@ import { Fragment } from 'react'
 import { Tab } from '@headlessui/react'
 import Image from 'next/image'
 import { twMerge } from 'tailwind-merge'
-import Link from 'next/link'
-import { FaGithub } from 'react-icons/fa'
 import { PersonalProject } from '@/pages/api/sectionsPersonalProjects'
 
 
@@ -21,7 +19,6 @@ export default function PersonalProjects(personalProjectsData: PersonalProject[]
     ]
   }));
 
-
   return (
     <div className="bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950" id="projetos">
       <section aria-labelledby="features-heading" className="mx-auto max-w-7xl py-20 sm:px-2 lg:px-8">
@@ -29,7 +26,7 @@ export default function PersonalProjects(personalProjectsData: PersonalProject[]
           <div className="max-w-3xl">
             <p className="text-base font-semibold leading-7 text-indigo-600">Projetos Pessoais</p>
             <h2 id="features-heading" className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Especificações Técnicas
+              Meus Projetos Online
             </h2>
             <p className="mt-4 text-gray-400">
               Explore meus projetos pessoais desenvolvidos com tecnologias modernas.
