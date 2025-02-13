@@ -21,7 +21,7 @@ export default function PersonalProjects(personalProjectsData: PersonalProject[]
 
   return (
     <div className="bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950" id="projetos">
-      <section aria-labelledby="features-heading" className="mx-auto max-w-7xl py-20 sm:px-2 lg:px-8">
+      <section aria-labelledby="features-heading" className="mx-auto max-w-7xl py-20 lg:px-8">
         <div className="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
           <div className="max-w-3xl">
             <p className="text-base font-semibold leading-7 text-indigo-600">Projetos Pessoais</p>

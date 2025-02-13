@@ -11,6 +11,7 @@ export interface PersonalProject {
   project_url: string;
   project_image: string;
   project_image_sync: string;
+  project_order: number;
 }
 
 export async function getSectionPersonalProjects(): Promise<PersonalProject[]> {
@@ -37,10 +38,16 @@ export async function getSectionPersonalProjects(): Promise<PersonalProject[]> {
       project_url: project.properties['personal_project_url']?.url,
       project_image: projectImageUrl,
       project_image_sync: projectImageSyncResponse,
+      project_order: project.properties["personal_project_order"]?.number || 999999,
     };
   }));
 
-  // console.log(personalProjects);
+  const compareProjects = (a: PersonalProject, b: PersonalProject): number => {
+    return (a.project_order || 999999) - (b.project_order || 999999);
+  };
+
+  personalProjects.sort(compareProjects);
+
   return personalProjects;
 }
 
