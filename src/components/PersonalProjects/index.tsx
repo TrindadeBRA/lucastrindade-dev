@@ -24,11 +24,11 @@ export default function PersonalProjects(personalProjectsData: PersonalProject[]
       <section aria-labelledby="features-heading" className="mx-auto max-w-7xl py-20 lg:px-8">
         <div className="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
           <div className="max-w-3xl">
-            <p className="text-base font-semibold leading-7 text-indigo-600">Projetos Pessoais</p>
-            <h2 id="features-heading" className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <p className="text-base font-semibold leading-7 text-indigo-600" data-aos="fade-right">Projetos Pessoais</p>
+            <h2 id="features-heading" className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl" data-aos="fade-right">
               Meus Projetos Online
             </h2>
-            <p className="mt-4 text-gray-400">
+            <p className="mt-4 text-gray-400" data-aos="fade-right">
               Explore meus projetos pessoais desenvolvidos com tecnologias modernas.
               Cada projeto demonstra diferentes aspectos do desenvolvimento fullstack,
               desde interfaces responsivas até integrações com APIs e sistemas de deploy automatizado.
@@ -36,7 +36,7 @@ export default function PersonalProjects(personalProjectsData: PersonalProject[]
           </div>
 
           <Tab.Group as="div">
-            <div className="-mx-4 flex overflow-x-auto sm:mx-0">
+            <div className="-mx-4 flex overflow-x-auto sm:mx-0" data-aos="fade-in">
               <div className="flex-auto border-b border-gray-700 px-4 sm:px-0">
                 <Tab.List className="-mb-px flex space-x-10">
                   {tabs.map((tab) => (
@@ -52,7 +52,8 @@ export default function PersonalProjects(personalProjectsData: PersonalProject[]
                         <span className={twMerge(
                           'transition-colors duration-200',
                           selected ? 'text-indigo-400' : 'text-gray-400'
-                        )}>
+                        )}
+                        data-aos="fade-in">
                           {tab.name}
                         </span>
                       )}
@@ -66,7 +67,7 @@ export default function PersonalProjects(personalProjectsData: PersonalProject[]
               {tabs.map((tab) => (
                 <Tab.Panel key={tab.name} className="space-y-16 pt-10 lg:pt-16">
                   {tab.features.map((feature) => (
-                    <div key={feature.name} className="flex flex-col-reverse lg:grid lg:grid-cols-12 lg:gap-x-8">
+                    <div key={feature.name} className="flex flex-col-reverse lg:grid lg:grid-cols-12 lg:gap-x-8" data-aos="fade-in">
                       <div className="mt-6 lg:col-span-5 lg:mt-0">
                         <h3 className="text-lg font-medium text-white">{feature.name}</h3>
                         <p className="mt-2 text-sm text-gray-400">{feature.description}</p>

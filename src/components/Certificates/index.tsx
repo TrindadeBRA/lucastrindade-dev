@@ -26,8 +26,8 @@ export default function Certificates(certificateData: Certificate[]) {
 
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-base font-semibold leading-7 text-indigo-600">Estudos</h2>
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Certificados</h2>
+          <h2 className="text-base font-semibold leading-7 text-indigo-600" data-aos="fade-right">Estudos</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl" data-aos="fade-right">Certificados</h2>
         </div>
 
         <ContentCarrosel

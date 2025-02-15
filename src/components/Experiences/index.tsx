@@ -29,12 +29,12 @@ const Experiences = (experienceData: Experience[]) => {
         <div className="bg-gradient-to-t from-gray-950 to-gray-900 py-14 sm:py-20" id="experiencias">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div>
-                    <h2 className="text-base font-semibold leading-7 text-indigo-600">Minha jornada</h2>
-                    <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">Experiências Profissionais</p>
+                    <h2 className="text-base font-semibold leading-7 text-indigo-600" data-aos="fade-right">Minha jornada</h2>
+                    <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl" data-aos="fade-right">Experiências Profissionais</p>
                 </div>
                 <div className="mx-auto mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10 dark:border-gray-700 pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3 justify-items-center">
                     {Object.values(experienceData).map((experience: Experience) => (
-                        <article key={experience.experience_id} className="flex flex-col items-start justify-between bg-gray-900 p-6 rounded-2xl border border-gray-600 cursor-pointer w-full hover:bg-gray-800" onClick={() => openModal(experience)}>
+                        <article key={experience.experience_id} className="flex flex-col items-start justify-between bg-gray-900 p-6 rounded-2xl border border-gray-600 cursor-pointer w-full hover:bg-gray-800" onClick={() => openModal(experience)} data-aos="fade-in">
                             <div className="flex items-center gap-x-4 text-xs w-full">
                                 {experience.experience_date_end === null ? (
                                     <div className="flex gap-3 items-center w-full justify-between">

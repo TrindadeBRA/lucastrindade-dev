@@ -12,12 +12,14 @@ import { Certificate, getSectionCertificates } from "./api/sectionCertificates";
 import { Experience, getSectionExperiences } from "./api/sectionsExperiences";
 import PersonalProjects from "@/components/PersonalProjects";
 import { getSectionPersonalProjects, PersonalProject } from "./api/sectionsPersonalProjects";
+import AOS_Init from "@/components/AOS_Init";
 
 
 export default function Home({ profileData, skillsData, certificateData, experienceData, personalProjectsData }:
   { profileData: Profile, skillsData: Skill, certificateData: Certificate[], experienceData: Experience[], personalProjectsData: PersonalProject[]}) {
   return (
     <>
+      <AOS_Init />
       <Header></Header>
       <HeroSection {...profileData} />
       <Presentation {...profileData} />
