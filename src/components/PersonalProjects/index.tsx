@@ -21,8 +21,8 @@ export default function PersonalProjects(personalProjectsData: PersonalProject[]
 
   return (
     <div className="bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950" id="projetos">
-      <section aria-labelledby="features-heading" className="mx-auto max-w-7xl py-20 lg:px-8">
-        <div className="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
+      <section aria-labelledby="features-heading" className="mx-auto max-w-7xl py-20 px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl lg:max-w-none">
           <div className="max-w-3xl">
             <p className="text-base font-semibold leading-7 text-indigo-600" data-aos="fade-right">Projetos Pessoais</p>
             <h2 id="features-heading" className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl" data-aos="fade-right">
@@ -36,8 +36,8 @@ export default function PersonalProjects(personalProjectsData: PersonalProject[]
           </div>
 
           <Tab.Group as="div">
-            <div className="-mx-4 flex overflow-x-auto sm:mx-0" data-aos="fade-in">
-              <div className="flex-auto border-b border-gray-700 px-4 sm:px-0">
+            <div className="flex overflow-x-auto sm:mx-0" data-aos="fade-in">
+              <div className="flex-auto border-b border-gray-700">
                 <Tab.List className="-mb-px flex space-x-10">
                   {tabs.map((tab) => (
                     <Tab
