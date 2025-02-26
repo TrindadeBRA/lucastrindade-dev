@@ -3,6 +3,10 @@
 
 Bem-vindo ao meu projeto de portfolio pessoal! Este projeto foi desenvolvido utilizando o framework Next.js e está integrado com o Notion para gerenciar o conteúdo da aplicação de uma forma geral.
 
+<div align="center">
+  <img src="public/images/screenshots/Captura de tela.png" alt="lucastrindade-dev" width="800">
+</div>
+
 ## Tecnologias Utilizadas
 
 - [Next.js](https://nextjs.org/): Um framework React para desenvolvimento web.
