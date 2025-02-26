@@ -20,9 +20,6 @@ export default function Resume({ profileData, skillsData, certificateData, exper
     window.print();
   };
 
-
-  console.log(certificateData);
-
   return (
     <>
       <div id="resume-content" className="bg-white text-black flex flex-col pt-4 pb-12 gap-y-8">
