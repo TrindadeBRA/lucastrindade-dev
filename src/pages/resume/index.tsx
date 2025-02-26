@@ -6,6 +6,7 @@ import { Experience, getSectionExperiences } from "@/pages/api/sectionsExperienc
 import { getSectionPersonalProjects, PersonalProject } from "@/pages/api/sectionsPersonalProjects";
 import Link from "next/link";
 import { FaDownload, FaEnvelope, FaGithub, FaGlobe, FaLinkedin, FaWhatsapp } from "react-icons/fa";
+import Head from 'next/head';
 
 export default function Resume({ profileData, skillsData, certificateData, experienceData, personalProjectsData }:
   { profileData: Profile, skillsData: Skill, certificateData: Certificate[], experienceData: Experience[], personalProjectsData: PersonalProject[] }) {
@@ -22,6 +23,10 @@ export default function Resume({ profileData, skillsData, certificateData, exper
 
   return (
     <>
+      <Head>
+        <title>Currículo - Lucas Trindade</title>
+      </Head>
+
       <div id="resume-content" className="bg-white text-black flex flex-col pt-4 pb-12 gap-y-8 px-4">
         {/* Header */}
         <div id="header" className="flex flex-col md:flex-row justify-between items-center container mx-auto">
