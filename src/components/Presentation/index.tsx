@@ -11,7 +11,7 @@ const Presentation = (profileData: Profile) => {
           <h1 className="mt-2 mb-10 text-3xl font-bold tracking-tight text-white sm:text-4xl" data-aos="fade-right">Apresentação</h1>
           <p>
             {
-              profileData.user_presentation[0].plain_text.split('\n').map((paragraph:string, index:number) => (
+              profileData?.user_presentation?.[0]?.plain_text?.split('\n').map((paragraph:string, index:number) => (
                 <span key={index} className='text-white' data-aos="fade-right">
                   {paragraph}
                   <br />

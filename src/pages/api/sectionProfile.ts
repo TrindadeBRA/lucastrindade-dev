@@ -6,6 +6,7 @@ const notion = new Client({ auth: process.env.NOTION_TOKEN });
 
 export interface Profile {
   user_name: string;
+  user_title: string;
   user_role: string;
   user_bio: string;
   user_avatar: string;
@@ -22,6 +23,7 @@ export async function getSectionProfile(): Promise<Profile> {
     const userName = user.properties['user_name'].title[0]?.text.content;
     const userRole = user.properties['user_role'].rich_text[0]?.text.content;
     const userBio = user.properties['user_bio'].rich_text[0]?.text.content;
+    const userTitle = user.properties['user_title'].rich_text[0]?.text.content;
     const avatarUrl = user.properties['user_avatar'].files[0]?.file?.url;
 
     let avatarSyncResponse;
@@ -40,6 +42,7 @@ export async function getSectionProfile(): Promise<Profile> {
       user_avatar: avatarUrl,
       user_avatar_sync: avatarSyncResponse,
       user_presentation: user.properties['user_presentation'].rich_text,
+      user_title: userTitle,
     };
   }));
 
