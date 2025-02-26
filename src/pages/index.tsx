@@ -13,6 +13,7 @@ import { Experience, getSectionExperiences } from "./api/sectionsExperiences";
 import PersonalProjects from "@/components/PersonalProjects";
 import { getSectionPersonalProjects, PersonalProject } from "./api/sectionsPersonalProjects";
 import AOS_Init from "@/components/AOS_Init";
+import InfoBanner from "@/components/InfoBanner";
 
 
 export default function Home({ profileData, skillsData, certificateData, experienceData, personalProjectsData }:
@@ -20,6 +21,7 @@ export default function Home({ profileData, skillsData, certificateData, experie
   return (
     <>
       <AOS_Init />
+      <InfoBanner />
       <Header></Header>
       <HeroSection {...profileData} />
       <Presentation {...profileData} />
