@@ -1,5 +1,5 @@
 
-# lucastrindade-dev
+# LucasTrindade-dev
 
 Bem-vindo ao meu projeto de portfolio pessoal! Este projeto foi desenvolvido utilizando o framework Next.js e está integrado com o Notion para gerenciar o conteúdo da aplicação de uma forma geral.
 
