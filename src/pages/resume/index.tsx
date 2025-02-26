@@ -170,7 +170,7 @@ export default function Resume({ profileData, skillsData, certificateData, exper
 
       <button
         onClick={handleDownload}
-        className="no-print fixed bottom-8 right-8 group flex items-center gap-3 bg-black text-white px-6 py-4 rounded-full shadow-lg hover:bg-gray-800 transition-all duration-300 hover:shadow-xl"
+        className="no-print fixed bottom-8 right-8 group flex items-center gap-3 bg-black text-white px-6 py-4 rounded-full hover:bg-gray-800 transition-all duration-300 hover:shadow-xl shadow-2xl animate-bounce"
       >
         <FaDownload size={20} className="group-hover:scale-110 transition-transform duration-300" />
         <span className="font-medium">Baixar em PDF</span>
