@@ -182,7 +182,6 @@ export default function Resume({ profileData, skillsData, certificateData, exper
               @page {
                 margin: 0;
                 size: A4;
-                border-top: 5px solid black;
               }
 
               .no-print {
