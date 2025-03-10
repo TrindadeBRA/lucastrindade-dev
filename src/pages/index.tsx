@@ -2,7 +2,7 @@ import Certificates from "@/components/Certificates";
 import Experiences from "@/components/Experiences";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import HeroSection from "@/components/Hero";
+import HeroSectionAnimated from "@/components/HeroSectionAnimated";
 import Presentation from "@/components/Presentation";
 import Skills from "@/components/Skills";
 import { GetStaticProps } from "next";
@@ -33,7 +33,7 @@ export default function Home({ profileData, skillsData, certificateData, experie
       <AOS_Init />
       <InfoBanner />
       <Header></Header>
-      <HeroSection {...profileData} />
+      <HeroSectionAnimated {...profileData} />
       <Presentation {...profileData} />
       <Skills {...skillsData} />
       <Certificates {...certificateData} />
