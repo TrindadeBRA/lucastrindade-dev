@@ -32,7 +32,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
         </div>
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 z-10">
-          {/* <div className="absolute -bottom-8 -left-96 -z-10 transform-gpu blur-3xl sm:-bottom-64 sm:-left-40 lg:-bottom-32 lg:left-8 xl:-left-10" aria-hidden="true">
+          <div className="absolute -bottom-8 -left-96 -z-10 transform-gpu blur-3xl sm:-bottom-64 sm:-left-40 lg:-bottom-32 lg:left-8 xl:-left-10" aria-hidden="true">
             <div
               className="aspect-[1266/975] w-[79.125rem] bg-gradient-to-tr from-[#ff4694] to-[#776fff] opacity-20"
               style={{
@@ -40,7 +40,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
                   'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
               }}
             />
-          </div> */}
+          </div>
           <div className="mx-auto max-w-2xl flex flex-col md:flex-row items-center justify-center">
             <Image className="aspect-[4/5] w-52 flex-none rounded-2xl object-cover md:mr-12 mb-6 md:mb-0"
               src={profileData.user_avatar_sync}
