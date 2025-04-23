@@ -48,7 +48,16 @@ export async function getSectionCertificates(): Promise<Certificate[]> {
     if (a.certificate_category === b.certificate_category) {
       return new Date(b.certificate_date).getTime() - new Date(a.certificate_date).getTime();
     } else {
-      return a.certificate_category === 'Tecnólogo' ? -1 : 1;
+      // Prioridade 1: Tecnólogo
+      if (a.certificate_category === 'Tecnólogo') return -1;
+      if (b.certificate_category === 'Tecnólogo') return 1;
+      
+      // Prioridade 2: Extensão
+      if (a.certificate_category === 'Extensão') return -1;
+      if (b.certificate_category === 'Extensão') return 1;
+      
+      // Para outras categorias (Horas e Eventos), ordenar por data
+      return new Date(b.certificate_date).getTime() - new Date(a.certificate_date).getTime();
     }
   });
 
