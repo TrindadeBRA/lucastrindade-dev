@@ -61,7 +61,7 @@ export default function ContentCarrosel({ certificateData, openModal, setShowAll
                 type='button'
                 className='bg-gray-900 px-4 py-3 rounded-2xl border border-gray-600 mx-auto block my-4 text-white font-bold text-sm transition-all duration-300 ease-in hover:bg-gray-800 hover:shadow-lg'
             >
-                {!showAllCertificates ? `Mostrar todos (${certificateData.length})` : "Recolher"}
+                {!showAllCertificates ? `Mostrar todos (${Object.keys(certificateData).length})` : "Recolher"}
             </button>
         </div>
 
