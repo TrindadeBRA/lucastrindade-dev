@@ -52,10 +52,7 @@ export async function getSectionCertificates(): Promise<Certificate[]> {
       if (a.certificate_category === 'Tecnólogo') return -1;
       if (b.certificate_category === 'Tecnólogo') return 1;
       
-      // Prioridade 2: Extensão
-      if (a.certificate_category === 'Extensão') return -1;
-      if (b.certificate_category === 'Extensão') return 1;
-      
+    
       // Para outras categorias (Horas e Eventos), ordenar por data
       return new Date(b.certificate_date).getTime() - new Date(a.certificate_date).getTime();
     }
