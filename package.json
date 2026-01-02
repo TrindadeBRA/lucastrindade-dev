@@ -20,7 +20,7 @@
     "aos": "^3.0.0-beta.6",
     "dotenv": "^16.3.1",
     "font-awesome": "^4.7.0",
-    "next": "^15.1.9",
+    "next": "15.1.11",
     "notion-client": "^6.16.0",
     "postprocessing": "^6.37.1",
     "react": "19.0.0",
