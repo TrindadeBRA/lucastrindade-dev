@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import { Tab } from '@headlessui/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 import { PersonalProject } from '@/pages/api/sectionsPersonalProjects'
 
@@ -82,14 +83,21 @@ export default function PersonalProjects(personalProjectsData: PersonalProject[]
                         </div>
                       </div>
                       <div className="lg:col-span-7">
-                        <Image
-                          alt={feature.name}
-                          src={feature.imageSrc}
-                          className="w-full rounded-lg bg-gray-800 object-cover"
-                          width={633}
-                          height={230}
-                          priority
-                        />
+                        <Link
+                          href={feature.blogPostUrl}
+                          target='_blank'
+                          rel="noopener noreferrer"
+                          className="block"
+                        >
+                          <Image
+                            alt={feature.name}
+                            src={feature.imageSrc}
+                            className="w-full rounded-lg bg-gray-800 object-cover cursor-pointer"
+                            width={633}
+                            height={230}
+                            priority
+                          />
+                        </Link>
                       </div>
                     </div>
                   ))}
