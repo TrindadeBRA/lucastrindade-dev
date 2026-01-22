@@ -24,9 +24,9 @@ export default function Home({ profileData, skillsData, certificateData, experie
     <>
       <Head>
         <title>Lucas Trindade - Desenvolvedor Full Stack</title>
-        <meta name="description" content="Desenvolvedor Full Stack com experiência em JavaScript, WordPress, Next.js, React e Node.js. Localizado em Santo André, SP, Brasil, sou apaixonado por criar soluções digitais inovadoras e funcionais. Desde 2017, tenho trabalhado em projetos que vão desde plataformas de cursos até websites personalizados, sempre buscando entregar código limpo e eficiente. Estou em constante evolução, acompanhando as tendências do desenvolvimento web e aplicando as melhores práticas em cada projeto. Entre em contato para discutir tecnologia ou explorar novas ideias!" />
+        <meta name="description" content="Desenvolvedor Full Stack com experiência em JavaScript, WordPress, Next.js, React e Node.js. Localizado em Mogi-Mirim, SP, Brasil, sou apaixonado por criar soluções digitais inovadoras e funcionais. Desde 2017, tenho trabalhado em projetos que vão desde plataformas de cursos até websites personalizados, sempre buscando entregar código limpo e eficiente. Estou em constante evolução, acompanhando as tendências do desenvolvimento web e aplicando as melhores práticas em cada projeto. Entre em contato para discutir tecnologia ou explorar novas ideias!" />
         <meta property="og:image" content="/images/ogimage.png" />
-        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:type" content="image/png" /> 
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="675" />
       </Head>

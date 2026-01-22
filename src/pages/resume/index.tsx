@@ -52,7 +52,7 @@ export default function Resume({ profileData, skillsData, certificateData, exper
             </div>
           </div>
           <div className="w-full md:w-2/5 text-sm text-left mt-4 md:mt-0 md:text-right flex flex-col">
-            <p>Santo André, SP, Brasil</p>
+            <p>Mogi-Mirim, SP, Brasil</p>
             <Link href="https://api.whatsapp.com/send?phone=5511952498126" className="text-black hover:text-gray-600">+55 (11) 95249-8126</Link>
             <Link href="mailto:trindadebra@gmail.com" className="text-black hover:text-gray-600">trindadebra@gmail.com</Link>
           </div>
