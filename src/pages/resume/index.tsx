@@ -105,7 +105,7 @@ export default function Resume({ profileData, skillsData, certificateData, exper
             <Link href="/#certificados" target="_blank" className="text-xl font-bold mb-4">Formação Acadêmica</Link>
             <div className="flex flex-col">
               {certificateData
-                .filter(cert => cert.certificate_category === "Tecnólogo")
+                .filter(cert => cert.certificate_category === "Tecnólogo" || cert.certificate_category === "Pós-Graduação")
                 .map((certificate: Certificate) => (
                   <div key={certificate.certificate_id} className="flex flex-col mb-2">
                     <div className="flex items-center gap-2">
@@ -132,7 +132,7 @@ export default function Resume({ profileData, skillsData, certificateData, exper
             <Link href="/#certificados" target="_blank" className="text-xl font-bold mb-4">Cursos e Certificações</Link>
             <div className="columns-2 gap-6">
               {certificateData
-                .filter(cert => cert.certificate_category !== "Tecnólogo")
+                .filter(cert => cert.certificate_category !== "Tecnólogo" && cert.certificate_category !== "Pós-Graduação")
                 .map((certificate: Certificate) => (
                   <div key={certificate.certificate_id} className="break-inside-avoid-column mb-1 text-sm border-b border-gray-200 pb-1">
                     <span className="font-medium">{certificate.certificate_name}</span>
