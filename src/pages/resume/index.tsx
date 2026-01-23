@@ -109,6 +109,8 @@ export default function Resume({ profileData, skillsData, certificateData, exper
                 .map((certificate: Certificate) => (
                   <div key={certificate.certificate_id} className="flex flex-col mb-2">
                     <div className="flex items-center gap-2">
+                      <span className="text-base font-bold">{certificate.certificate_category}</span>
+                      <span>-</span>
                       <h3 className="text-base font-bold">{certificate.certificate_name}</h3>
                       {certificate.certificate_instructors && (
                         <>
