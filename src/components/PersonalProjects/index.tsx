@@ -43,13 +43,13 @@ export default function PersonalProjects(personalProjectsData: PersonalProject[]
                   {tabs.map((tab) => (
                     <Tab
                       key={tab.name}
-                      className={({ selected }) =>
+                      className={({ selected }: { selected: boolean }) =>
                         selected
                           ? 'border-b-2 py-6 text-sm font-medium whitespace-nowrap focus:outline-none border-indigo-500 text-indigo-400'
                           : 'border-b-2 py-6 text-sm font-medium whitespace-nowrap focus:outline-none border-transparent text-gray-400 hover:border-gray-600 hover:text-gray-300'
                       }
                     >
-                      {({ selected }) => (
+                      {({ selected }: { selected: boolean }) => (
                         <span className={twMerge(
                           'transition-colors duration-200',
                           selected ? 'text-indigo-400' : 'text-gray-400'
