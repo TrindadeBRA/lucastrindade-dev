@@ -2,7 +2,6 @@
   "name": "lucastrindade-dev",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "yarn@4.17.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -50,6 +49,7 @@
   },
   "overrides": {
     "@types/react": "19.0.8",
-    "@types/react-dom": "19.0.3"
+    "@types/react-dom": "19.0.3",
+    "sanitize-html": "2.17.4"
   }
 }
