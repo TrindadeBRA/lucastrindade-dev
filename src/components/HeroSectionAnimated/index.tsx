@@ -68,34 +68,33 @@ export default function HeroSectionAnimated(profileData: Profile) {
         ease: "sine.inOut",
       });
 
-      gsap.to(".hero-content", {
-        y: isMobile ? 24 : 56,
-        opacity: 0.15,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-
-      // Scroll: no mobile só Y leve (sem rotate 3D — mais fluido no touch)
-      gsap.to(".hero-portrait-scroll", {
-        y: isMobile ? 28 : 72,
-        ...(isMobile
-          ? {}
-          : { rotateX: 10, rotateY: -6, scale: 0.94 }),
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: isMobile ? 0.8 : 1.1,
-        },
-      });
-
       if (!isMobile) {
+        gsap.to(".hero-content", {
+          y: 56,
+          opacity: 0.15,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+
+        gsap.to(".hero-portrait-scroll", {
+          y: 72,
+          rotateX: 10,
+          rotateY: -6,
+          scale: 0.94,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.1,
+          },
+        });
+
         gsap.to(".hero-portrait-media-scroll", {
           yPercent: 22,
           scale: 1.18,
@@ -136,11 +135,11 @@ export default function HeroSectionAnimated(profileData: Profile) {
 
       <div className="site-container relative z-10 grid items-center gap-8 py-6 pb-10 sm:gap-12 sm:py-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-12 lg:pb-24">
         <div className="hero-content relative max-w-2xl">
-          <p className="hero-meta mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-chalk-muted sm:mb-5">
+          <p className="hero-meta mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-chalk-muted sm:mb-5 sm:text-xs sm:tracking-[0.28em]">
             {role}
           </p>
 
-          <h1 className="font-display text-[clamp(2.35rem,9vw,6rem)] font-semibold leading-[0.9] tracking-tighter2 text-chalk">
+          <h1 className="font-display text-[clamp(2rem,8.5vw,6rem)] font-semibold leading-[0.9] tracking-tighter2 text-chalk sm:text-[clamp(2.35rem,9vw,6rem)]">
             {words.map((word, index) => (
               <span key={`${word}-${index}`} className="hero-word mr-[0.22em] last:mr-0">
                 <span>{word}</span>
@@ -149,65 +148,36 @@ export default function HeroSectionAnimated(profileData: Profile) {
           </h1>
 
           {bio ? (
-            <p className="hero-line mt-4 max-w-lg text-sm leading-relaxed text-chalk-muted sm:mt-6 sm:text-base lg:text-lg">
+            <p className="hero-line mt-3 max-w-lg text-sm leading-relaxed text-chalk-muted line-clamp-3 sm:mt-6 sm:line-clamp-none sm:text-base lg:text-lg">
               {bio}
             </p>
           ) : null}
 
-          <div className="mt-6 flex flex-col gap-4 sm:mt-8 lg:flex-row lg:flex-wrap lg:items-center lg:gap-3">
-            <div className="flex w-full gap-2.5 sm:w-auto sm:gap-3">
-              <a
-                ref={primaryCtaRef}
-                href="https://api.whatsapp.com/send?phone=5511952498126"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hero-cta btn-primary inline-flex flex-1 items-center justify-center gap-2 px-4 py-2.5 text-xs hover:bg-white hover:text-ink sm:flex-none sm:px-5 sm:text-sm"
-              >
-                <FaWhatsapp size={15} />
-                Fale comigo
-              </a>
-              <Link
-                ref={ghostCtaRef}
-                href="/resume"
-                target="_blank"
-                className="hero-cta btn-ghost inline-flex flex-1 items-center justify-center px-4 py-2.5 text-xs hover:border-white/40 hover:text-white sm:flex-none sm:px-5 sm:text-sm"
-              >
-                Ver currículo
-              </Link>
-            </div>
-            <div className="hero-cta flex items-center gap-1 border-t border-white/10 pt-3 lg:ml-1 lg:border-0 lg:pt-0 lg:pl-1">
-              <Link
-                href="https://www.linkedin.com/in/trindadebra/"
-                target="_blank"
-                aria-label="LinkedIn"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-chalk-muted transition hover:bg-white/5 hover:text-white"
-              >
-                <FaLinkedin size={18} />
-              </Link>
-              <Link
-                href="https://github.com/TrindadeBRA/"
-                target="_blank"
-                aria-label="GitHub"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-chalk-muted transition hover:bg-white/5 hover:text-white"
-              >
-                <FaGithub size={18} />
-              </Link>
-              <Link
-                href="https://api.whatsapp.com/send?phone=5511952498126"
-                target="_blank"
-                aria-label="WhatsApp"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-chalk-muted transition hover:bg-white/5 hover:text-white"
-              >
-                <FaWhatsapp size={18} />
-              </Link>
-            </div>
+          <div className="mt-4 flex w-full gap-2.5 sm:mt-8 sm:w-auto sm:gap-3">
+            <a
+              ref={primaryCtaRef}
+              href="https://api.whatsapp.com/send?phone=5511952498126"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-cta btn-primary inline-flex flex-1 items-center justify-center gap-2 px-4 py-2 text-xs hover:bg-white hover:text-ink sm:flex-none sm:px-5 sm:py-2.5 sm:text-sm"
+            >
+              <FaWhatsapp size={15} />
+              Fale comigo
+            </a>
+            <Link
+              ref={ghostCtaRef}
+              href="/resume"
+              target="_blank"
+              className="hero-cta btn-ghost inline-flex flex-1 items-center justify-center px-4 py-2 text-xs hover:border-white/40 hover:text-white sm:flex-none sm:px-5 sm:py-2.5 sm:text-sm"
+            >
+              Ver currículo
+            </Link>
           </div>
         </div>
 
         <div
           ref={portraitStageRef}
-          className="hero-portrait-stage relative mx-auto w-full max-w-[20rem] sm:max-w-[23rem] lg:w-full lg:max-w-none"
-          style={{ perspective: 900 }}
+          className="hero-portrait-stage relative mx-auto w-[300px] max-w-full sm:w-full sm:max-w-[20rem] md:max-w-[23rem] lg:max-w-none lg:[perspective:900px]"
         >
           <div
             className="hero-portrait-scroll will-change-transform"
@@ -215,7 +185,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
           >
             <div
               data-tilt-card
-              className="hero-portrait relative mx-auto aspect-[4/5] w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted will-change-transform sm:rounded-[2rem] md:overflow-visible lg:max-h-[min(68svh,34rem)] lg:w-full"
+              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted will-change-transform sm:aspect-[4/5] sm:rounded-[2rem] md:overflow-visible lg:max-h-[min(68svh,34rem)] lg:w-full"
               style={{ transformStyle: "preserve-3d" }}
             >
               <div
@@ -230,8 +200,8 @@ export default function HeroSectionAnimated(profileData: Profile) {
                         alt={name}
                         fill
                         priority
-                        className="object-cover object-[center_18%] md:object-center"
-                        sizes="(max-width: 768px) 90vw, 40vw"
+                        className="object-cover object-[center_22%] md:object-center"
+                        sizes="(max-width: 768px) 60vw, 40vw"
                       />
                     ) : (
                       <div className="flex h-full items-center justify-center bg-ink-muted text-chalk-dim">
@@ -246,14 +216,13 @@ export default function HeroSectionAnimated(profileData: Profile) {
                 className="pointer-events-none absolute inset-0 z-[1] rounded-[1.5rem] opacity-0 mix-blend-soft-light sm:rounded-[2rem] md:[transform:translateZ(12px)]"
               />
               <div className="pointer-events-none absolute inset-0 z-[2] rounded-[1.5rem] bg-gradient-to-t from-ink via-ink/45 to-transparent opacity-90 sm:rounded-[2rem] md:[transform:translateZ(24px)] md:opacity-95" />
-              {/* Layer da frente: profundidade só no desktop */}
               <div
                 data-tilt-layer
-                className="absolute inset-x-0 bottom-0 z-[3] px-5 pb-5 pt-16 sm:px-6 sm:pb-6 md:[transform:translateZ(64px)]"
+                className="absolute inset-x-0 bottom-0 z-[3] px-4 pb-5 pt-12 sm:px-6 sm:pb-6 sm:pt-16 md:[transform:translateZ(64px)]"
                 style={{ transformStyle: "preserve-3d" }}
               >
                 <div className="max-w-[19rem]">
-                  <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-chalk-muted sm:text-sm">
+                  <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-chalk sm:text-sm">
                     <a
                       href="https://www.google.com/maps/place/Mogi+Mirim,+SP"
                       target="_blank"
@@ -266,46 +235,68 @@ export default function HeroSectionAnimated(profileData: Profile) {
                       <span>SP, Brasil</span>
                     </a>
                   </p>
-                  <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[11px] leading-snug text-chalk-dim">
-                    <span>Fundador</span>
-                    <span aria-hidden="true">·</span>
+                  <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[11px] leading-snug text-chalk">
+                    <span className="font-medium text-chalk">Fundador</span>
+                    <span className="text-chalk-dim" aria-hidden="true">
+                      ·
+                    </span>
                     <a
                       href="https://thetrinityweb.com.br"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-chalk-muted underline decoration-white/20 underline-offset-2 transition hover:text-white hover:decoration-white/50"
+                      className="transition hover:text-white"
                     >
                       TrinityWeb
                     </a>
-                    <span aria-hidden="true">·</span>
+                    <span className="text-chalk-dim" aria-hidden="true">
+                      ·
+                    </span>
                     <a
                       href="https://kronuz.app"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-chalk-muted underline decoration-white/20 underline-offset-2 transition hover:text-white hover:decoration-white/50"
+                      className="transition hover:text-white"
                     >
                       Kronuz
                     </a>
-                    <span aria-hidden="true">·</span>
+                    <span className="text-chalk-dim" aria-hidden="true">
+                      ·
+                    </span>
                     <a
                       href="https://protagonizei.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-chalk-muted underline decoration-white/20 underline-offset-2 transition hover:text-white hover:decoration-white/50"
+                      className="transition hover:text-white"
                     >
                       Protagonizei
                     </a>
                   </p>
-                  <ul className="mt-2 flex flex-wrap gap-1.5">
-                    {["Next.js", "React", "Node"].map((tag) => (
-                      <li
-                        key={tag}
-                        className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-chalk"
-                      >
-                        {tag}
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="mt-2.5 flex items-center gap-3">
+                    <Link
+                      href="https://www.linkedin.com/in/trindadebra/"
+                      target="_blank"
+                      aria-label="LinkedIn"
+                      className="text-chalk-muted transition hover:text-white"
+                    >
+                      <FaLinkedin size={15} />
+                    </Link>
+                    <Link
+                      href="https://github.com/TrindadeBRA/"
+                      target="_blank"
+                      aria-label="GitHub"
+                      className="text-chalk-muted transition hover:text-white"
+                    >
+                      <FaGithub size={15} />
+                    </Link>
+                    <Link
+                      href="https://api.whatsapp.com/send?phone=5511952498126"
+                      target="_blank"
+                      aria-label="WhatsApp"
+                      className="text-chalk-muted transition hover:text-white"
+                    >
+                      <FaWhatsapp size={15} />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -315,7 +306,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
 
       <a
         href="#sobre"
-        className="hero-scroll absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 lg:flex"
+        className="hero-scroll absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 max-lg:!hidden lg:flex"
         aria-hidden="true"
         tabIndex={-1}
       >

@@ -60,39 +60,10 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
       const mediaEl = getMedia();
 
       if (!canHover) {
-        if (!idle) {
-          if (mediaEl) gsap.set(mediaEl, { clearProps: "transform" });
-          if (layer) gsap.set(layer, { clearProps: "transform" });
-          gsap.set(card, { clearProps: "transform" });
-          return;
-        }
-
-        gsap.set(card, {
-          force3D: true,
-          transformOrigin: "center center",
-          transformStyle: "preserve-3d",
-        });
-        if (mediaEl) gsap.set(mediaEl, { force3D: true });
-
-        const mobileIdle = gsap.timeline({
-          repeat: -1,
-          paused: true,
-          defaults: { ease: "sine.inOut" },
-        });
-
-        mobileIdle
-          .to(card, { y: -4, rotationZ: 0.3, duration: 2.5 })
-          .to(card, { y: 3, rotationZ: -0.22, duration: 2.7 })
-          .to(card, { y: -2, rotationZ: 0.15, duration: 2.3 });
-
-        const startIdle = gsap.delayedCall(1.05, () => {
-          mobileIdle.play(0);
-        });
-
-        return () => {
-          startIdle.kill();
-          mobileIdle.kill();
-        };
+        if (mediaEl) gsap.set(mediaEl, { clearProps: "transform" });
+        if (layer) gsap.set(layer, { clearProps: "transform" });
+        gsap.set(card, { clearProps: "transform" });
+        return;
       }
 
       if (mediaEl) {

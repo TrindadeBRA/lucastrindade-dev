@@ -11,19 +11,45 @@ const size = {
 };
 
 export default async function handler(req: NextRequest) {
-  const { searchParams, origin } = new URL(req.url);
+  const { searchParams } = new URL(req.url);
   const title = searchParams.get("title") || "Lucas Trindade";
   const role = searchParams.get("role") || "Full Stack Tech Lead";
   const subtitle =
     searchParams.get("subtitle") || "Next.js · React · Node.js · Liderança técnica";
+  const cta = searchParams.get("cta") || "Fale comigo";
 
-  const previewSrc = `${origin}/images/home-preview.png`;
+  const [fontBold, fontRegular] = await Promise.all([
+    fetch("https://cdn.jsdelivr.net/fontsource/fonts/syne@5.2.5/latin-700-normal.woff")
+      .then((res) => (res.ok ? res.arrayBuffer() : null))
+      .catch(() => null),
+    fetch("https://cdn.jsdelivr.net/fontsource/fonts/syne@5.2.5/latin-500-normal.woff")
+      .then((res) => (res.ok ? res.arrayBuffer() : null))
+      .catch(() => null),
+  ]);
 
-  const fontData = await fetch(
-    "https://cdn.jsdelivr.net/fontsource/fonts/syne@5.2.5/latin-700-normal.woff",
-  )
-    .then((res) => (res.ok ? res.arrayBuffer() : null))
-    .catch(() => null);
+  const fonts = [
+    fontBold
+      ? {
+          name: "Syne",
+          data: fontBold,
+          style: "normal" as const,
+          weight: 700 as const,
+        }
+      : null,
+    fontRegular
+      ? {
+          name: "Syne",
+          data: fontRegular,
+          style: "normal" as const,
+          weight: 500 as const,
+        }
+      : null,
+  ].filter(Boolean) as {
+    name: string;
+    data: ArrayBuffer;
+    style: "normal";
+    weight: 500 | 700;
+  }[];
 
   return new ImageResponse(
     (
@@ -32,135 +58,141 @@ export default async function handler(req: NextRequest) {
           width: "100%",
           height: "100%",
           display: "flex",
-          padding: "52px 56px",
-          background: "#0a0a0a",
+          backgroundColor: "#0a0a0a",
           color: "#f5f5f5",
-          fontFamily: fontData ? "Syne" : "sans-serif",
+          fontFamily: fonts.length ? "Syne" : "sans-serif",
           position: "relative",
           overflow: "hidden",
         }}
       >
+        {/* Radial suave — fade termina no próprio ink (#0a0a0a), sem “corte” */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(ellipse 80% 60% at 78% 28%, rgba(255,255,255,0.10), transparent 55%), linear-gradient(180deg, #0a0a0a 0%, #141414 100%)",
+              "radial-gradient(ellipse 58% 52% at 16% 18%, rgba(255,255,255,0.06) 0%, #0a0a0a 68%), radial-gradient(ellipse 48% 55% at 88% 22%, rgba(255,255,255,0.05) 0%, #0a0a0a 72%)",
           }}
         />
 
         <div
           style={{
             display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
             width: "100%",
             height: "100%",
-            gap: "48px",
-            alignItems: "center",
+            padding: "52px 64px 48px",
             zIndex: 1,
           }}
         >
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              width: "430px",
-              height: "100%",
-              flexShrink: 0,
+              alignItems: "center",
+              gap: 12,
+              fontSize: 18,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "#8a8a8a",
+              fontWeight: 500,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <div
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "9999px",
-                  background: "#f5f5f5",
-                }}
-              />
-              <div
-                style={{
-                  fontSize: 22,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  color: "#9a9a9a",
-                  fontWeight: 600,
-                }}
-              >
-                lucastrindade.dev
-              </div>
-            </div>
+            <div
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: 9999,
+                backgroundColor: "#f5f5f5",
+              }}
+            />
+            lucastrindade.dev
+          </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              <div
-                style={{
-                  fontSize: 64,
-                  lineHeight: 1.05,
-                  fontWeight: 700,
-                  letterSpacing: "-0.04em",
-                }}
-              >
-                {title}
-              </div>
-              <div style={{ fontSize: 28, fontWeight: 600 }}>{role}</div>
-              <div style={{ fontSize: 22, color: "#9a9a9a", lineHeight: 1.35 }}>
-                {subtitle}
-              </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 18, maxWidth: 820 }}>
+            <div
+              style={{
+                display: "flex",
+                fontSize: 88,
+                lineHeight: 1,
+                fontWeight: 700,
+                letterSpacing: "-0.05em",
+                color: "#f5f5f5",
+              }}
+            >
+              {title}
             </div>
 
             <div
               style={{
                 display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                fontSize: 20,
-                color: "#f5f5f5",
+                fontSize: 34,
+                fontWeight: 700,
+                letterSpacing: "-0.03em",
+                color: "#f0f0f0",
               }}
             >
-              <div
-                style={{
-                  width: "8px",
-                  height: "8px",
-                  borderRadius: "9999px",
-                  background: "#22c55e",
-                }}
-              />
-              Disponível · SP, Brasil
+              {role}
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                fontSize: 24,
+                lineHeight: 1.35,
+                color: "#9a9a9a",
+                fontWeight: 500,
+              }}
+            >
+              {subtitle}
             </div>
           </div>
 
           <div
             style={{
               display: "flex",
-              flex: 1,
-              height: "100%",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "space-between",
+              width: "100%",
             }}
           >
             <div
               style={{
                 display: "flex",
-                width: "640px",
-                height: "336px",
-                borderRadius: "16px",
-                overflow: "hidden",
-                border: "1px solid rgba(255,255,255,0.12)",
-                boxShadow: "0 24px 60px rgba(0,0,0,0.45)",
-                background: "#111",
+                alignItems: "center",
+                gap: 10,
+                fontSize: 18,
+                color: "#8a8a8a",
+                fontWeight: 500,
               }}
             >
-              <img
-                src={previewSrc}
-                alt=""
-                width={1200}
-                height={630}
+              <div
                 style={{
-                  width: "640px",
-                  height: "336px",
-                  objectFit: "contain",
+                  width: 8,
+                  height: 8,
+                  borderRadius: 9999,
+                  backgroundColor: "#22c55e",
                 }}
               />
+              Disponível · SP, Brasil
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "11px 20px",
+                borderRadius: 9999,
+                border: "1px solid rgba(255,255,255,0.14)",
+                color: "#c8c8c8",
+                fontSize: 18,
+                fontWeight: 500,
+                backgroundColor: "rgba(10,10,10,0.25)",
+              }}
+            >
+              {cta}
+              <span style={{ display: "flex", fontSize: 18, opacity: 0.7 }}>→</span>
             </div>
           </div>
         </div>
@@ -168,16 +200,7 @@ export default async function handler(req: NextRequest) {
     ),
     {
       ...size,
-      fonts: fontData
-        ? [
-            {
-              name: "Syne",
-              data: fontData,
-              style: "normal",
-              weight: 700,
-            },
-          ]
-        : undefined,
-    },
+      fonts: fonts.length ? fonts : undefined,
+    }
   );
 }
