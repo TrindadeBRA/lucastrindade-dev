@@ -10,6 +10,7 @@ import { useCheatSound } from "./hooks/useCheatSound";
 import CheatHotspot from "./parts/CheatHotspot";
 import CheatToast from "./parts/CheatToast";
 import CheatTrainer from "./parts/CheatTrainer";
+import DollarCursor from "./parts/DollarCursor";
 import DollarTakeover from "./parts/DollarTakeover";
 import MoneyRain from "./parts/MoneyRain";
 import type { CheatCodeDefinition, CheatCodesPluginProps, CheatNotification } from "./types";
@@ -23,6 +24,7 @@ export default function CheatCodesPlugin({
 }: CheatCodesPluginProps) {
   const [notification, setNotification] = useState<CheatNotification | null>(null);
   const [moneyRainBurstKey, setMoneyRainBurstKey] = useState<string | null>(null);
+  const [moneyModeActive, setMoneyModeActive] = useState(false);
   const [trainerOpen, setTrainerOpen] = useState(false);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { play } = useCheatSound(soundSrc);
@@ -50,6 +52,7 @@ export default function CheatCodesPlugin({
 
       if (cheat.effect === "money-rain") {
         setMoneyRainBurstKey(sessionId);
+        setMoneyModeActive(true);
       }
 
       hideTimerRef.current = setTimeout(() => {
@@ -67,6 +70,7 @@ export default function CheatCodesPlugin({
       <CheatToast notification={notification} />
       <MoneyRain burstKey={moneyRainBurstKey} />
       <DollarTakeover burstKey={moneyRainBurstKey} />
+      <DollarCursor active={moneyModeActive} />
       {enabled ? (
         <>
           <CheatHotspot onUnlock={() => setTrainerOpen(true)} />
