@@ -1,10 +1,9 @@
-import { useEffect } from "react";
-import { DOLLAR_BILL_SRC, DOLLAR_TAKEOVER_MS } from "../constants";
+import { useEffect, useRef } from "react";
+import { DOLLAR_BILL_SRC } from "../constants";
 import { applyDollarTakeover } from "../utils/dollarTakeover";
 
 type DollarTakeoverProps = {
   burstKey: string | null;
-  durationMs?: number;
   imageSrc?: string;
 };
 
@@ -30,21 +29,25 @@ function ensureSpinStyles() {
 
 export default function DollarTakeover({
   burstKey,
-  durationMs = DOLLAR_TAKEOVER_MS,
   imageSrc = DOLLAR_BILL_SRC,
 }: DollarTakeoverProps) {
+  const activeRef = useRef(false);
+  const disposeRef = useRef<(() => void) | null>(null);
+
   useEffect(() => {
     if (!burstKey) return;
 
     ensureSpinStyles();
-    const restore = applyDollarTakeover(imageSrc);
-    const timer = window.setTimeout(restore, durationMs);
 
-    return () => {
-      window.clearTimeout(timer);
-      restore();
-    };
-  }, [burstKey, durationMs, imageSrc]);
+    if (!activeRef.current) {
+      activeRef.current = true;
+      disposeRef.current = applyDollarTakeover(imageSrc);
+      return;
+    }
+
+    disposeRef.current?.();
+    disposeRef.current = applyDollarTakeover(imageSrc);
+  }, [burstKey, imageSrc]);
 
   return null;
 }

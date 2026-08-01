@@ -8,7 +8,7 @@ export { default as CheatTrainer } from "./parts/CheatTrainer";
 export { default as DollarTakeover } from "./parts/DollarTakeover";
 export { default as MoneyRain } from "./parts/MoneyRain";
 export { findCheatMatch, normalizeCheatInput } from "./utils/matchCheat";
-export { applyDollarTakeover } from "./utils/dollarTakeover";
+export { applyDollarTakeover, restoreAllDollarTakeovers } from "./utils/dollarTakeover";
 export type {
   CheatCodeDefinition,
   CheatCodeId,
