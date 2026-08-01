@@ -35,7 +35,13 @@ export default function CheatTrainer({
   if (!open) return null;
 
   return (
-    <div className={styles.overlay} role="dialog" aria-modal="true" aria-label="Cheat trainer">
+    <div
+      className={styles.overlay}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Cheat trainer"
+      data-cheat-ignore="true"
+    >
       <button type="button" className={styles.backdrop} aria-label="Fechar" onClick={onClose} />
       <div className={styles.panel}>
         <header className={styles.header}>

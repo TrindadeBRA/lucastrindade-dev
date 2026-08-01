@@ -4,6 +4,7 @@ export const DEFAULT_DURATION_MS = 5000;
 export const BUFFER_IDLE_RESET_MS = 1500;
 export const MONEY_RAIN_COUNT = 120;
 export const MONEY_RAIN_MAX_BILLS = 600;
+export const DOLLAR_TAKEOVER_MS = 4500;
 export const DOLLAR_BILL_SRC = "/images/cheats/dollar-bill.svg";
 export const SECRET_TAP_COUNT = 5;
 export const SECRET_TAP_WINDOW_MS = 2500;

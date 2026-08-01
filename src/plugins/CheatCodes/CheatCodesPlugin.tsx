@@ -10,6 +10,7 @@ import { useCheatSound } from "./hooks/useCheatSound";
 import CheatHotspot from "./parts/CheatHotspot";
 import CheatToast from "./parts/CheatToast";
 import CheatTrainer from "./parts/CheatTrainer";
+import DollarTakeover from "./parts/DollarTakeover";
 import MoneyRain from "./parts/MoneyRain";
 import type { CheatCodeDefinition, CheatCodesPluginProps, CheatNotification } from "./types";
 
@@ -65,6 +66,7 @@ export default function CheatCodesPlugin({
     <>
       <CheatToast notification={notification} />
       <MoneyRain burstKey={moneyRainBurstKey} />
+      <DollarTakeover burstKey={moneyRainBurstKey} />
       {enabled ? (
         <>
           <CheatHotspot onUnlock={() => setTrainerOpen(true)} />

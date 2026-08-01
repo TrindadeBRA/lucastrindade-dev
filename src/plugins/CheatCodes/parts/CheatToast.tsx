@@ -7,7 +7,7 @@ type CheatToastProps = {
 
 export default function CheatToast({ notification }: CheatToastProps) {
   return (
-    <div className={styles.root} role="status" aria-live="polite">
+    <div className={styles.root} role="status" aria-live="polite" data-cheat-ignore="true">
       {notification ? (
         <div key={notification.id} className={styles.toast}>
           <span className={styles.text}>{notification.message}</span>

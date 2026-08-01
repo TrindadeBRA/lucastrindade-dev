@@ -68,7 +68,7 @@ export default function MoneyRain({
   if (bills.length === 0) return null;
 
   return (
-    <div className={styles.root} aria-hidden="true">
+    <div className={styles.root} aria-hidden="true" data-cheat-ignore="true">
       {bills.map((bill) => {
         const style: BillStyle = {
           left: `${bill.left}%`,

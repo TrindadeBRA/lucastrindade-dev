@@ -5,8 +5,10 @@ export { useCheatListener } from "./hooks/useCheatListener";
 export { useCheatSound } from "./hooks/useCheatSound";
 export { default as CheatToast } from "./parts/CheatToast";
 export { default as CheatTrainer } from "./parts/CheatTrainer";
+export { default as DollarTakeover } from "./parts/DollarTakeover";
 export { default as MoneyRain } from "./parts/MoneyRain";
 export { findCheatMatch, normalizeCheatInput } from "./utils/matchCheat";
+export { applyDollarTakeover } from "./utils/dollarTakeover";
 export type {
   CheatCodeDefinition,
   CheatCodeId,

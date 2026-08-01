@@ -24,6 +24,7 @@ export default function CheatHotspot({ onUnlock }: CheatHotspotProps) {
       type="button"
       className={styles.hotspot}
       aria-label="Cheat zone"
+      data-cheat-ignore="true"
       onClick={handleTap}
     />
   );
