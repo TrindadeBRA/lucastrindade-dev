@@ -166,7 +166,7 @@ export default function CertificateCard({ certificate, onOpen }: CertificateCard
         {/* Overlay inicial — data / contexto */}
         <div
           ref={idleOverlayRef}
-          className="pointer-events-none absolute inset-0 z-[5] flex items-end bg-gradient-to-t from-ink via-ink/55 to-transparent p-4"
+          className="pointer-events-none absolute inset-0 z-[5] flex items-end bg-gradient-to-t from-ink via-ink/85 to-ink/25 p-4"
         >
           <div className="cert-idle-content">
             <p className="text-[10px] uppercase tracking-[0.18em] text-chalk-dim">Conclusão</p>
@@ -182,7 +182,7 @@ export default function CertificateCard({ certificate, onOpen }: CertificateCard
         {/* Overlay hover — incentivo a abrir o viewer */}
         <div
           ref={ctaOverlayRef}
-          className="pointer-events-none absolute inset-0 z-[6] flex items-center justify-center bg-ink/55 p-4 backdrop-blur-[2px]"
+          className="pointer-events-none absolute inset-0 z-[6] flex items-center justify-center bg-ink/80 p-4 backdrop-blur-[2px]"
         >
           <div className="cert-cta-content flex flex-col items-center text-center">
             <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-white/10 text-chalk">

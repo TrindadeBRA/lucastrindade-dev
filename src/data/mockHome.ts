@@ -28,7 +28,7 @@ export const mockProfile: Profile = {
   user_presentation: [
     {
       plain_text:
-        "Sou desenvolvedor full stack com experiência em JavaScript, React, Next.js, Node.js e WordPress.\n\nEste conteúdo é um mock local — usado quando a API do Notion não retorna dados, para validar layout e animações.",
+        "Sou um desenvolvedor full-stack apaixonado por criar soluções digitais que unem funcionalidade e inovação. Com domínio em JavaScript, WordPress, Node.js e Next.js, desenvolvo projetos web que vão desde aplicações práticas até experimentos criativos!\n\nMinha trajetória profissional começou em 2017, trabalhando com tecnologia e colaborando em projetos que demandam criatividade, estratégia e habilidades técnicas sólidas. Gosto de transformar ideias em soluções reais, entregando código limpo e eficiente que resolve problemas e atende às necessidades dos usuários.\n\nBusco sempre evoluir, acompanhando as tendências do desenvolvimento web e aplicando o que há de melhor em cada projeto. Quer discutir tecnologia ou explorar uma ideia? Estou aberto a conversar!",
     },
   ],
 };

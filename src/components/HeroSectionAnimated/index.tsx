@@ -36,26 +36,29 @@ export default function HeroSectionAnimated(profileData: Profile) {
       if (!sectionRef.current || prefersReducedMotion()) return;
 
       const isMobile = window.innerWidth < 768;
-      const portraitRadius = isMobile ? "1.5rem" : "2rem";
+
+      gsap.set([".hero-portrait-scroll", ".hero-portrait-flip"], {
+        transformPerspective: 1400,
+        transformOrigin: "center center",
+        force3D: true,
+      });
 
       gsap.fromTo(
-        ".hero-portrait",
+        ".hero-portrait-flip",
         {
-          clipPath: `inset(${isMobile ? "4%" : "12%"} ${isMobile ? "4%" : "12%"} ${isMobile ? "4%" : "12%"} ${isMobile ? "4%" : "12%"} round ${portraitRadius})`,
+          rotateY: -360,
           opacity: 0,
-          y: isMobile ? 16 : 16,
-          scale: isMobile ? 0.98 : 0.96,
+          y: isMobile ? 20 : 28,
+          scale: isMobile ? 0.92 : 0.88,
         },
         {
-          clipPath: `inset(0% 0% 0% 0% round ${portraitRadius})`,
+          rotateY: 0,
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: isMobile ? 0.9 : 0.85,
+          duration: isMobile ? 1.15 : 1.35,
+          delay: 0.08,
           ease: "power3.out",
-          onComplete: () => {
-            gsap.set(".hero-portrait", { clearProps: "clipPath" });
-          },
         }
       );
 
@@ -66,26 +69,6 @@ export default function HeroSectionAnimated(profileData: Profile) {
         duration: 1.1,
         ease: "sine.inOut",
       });
-
-      gsap.set(".hero-portrait-scroll", {
-        transformPerspective: 1400,
-        transformOrigin: "center center",
-        force3D: true,
-      });
-
-      if (!isMobile) {
-        gsap.to(".hero-content", {
-          y: 56,
-          opacity: 0.15,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1,
-          },
-        });
-      }
 
       gsap.to(".hero-portrait-scroll", {
         rotateY: 360,
@@ -100,17 +83,31 @@ export default function HeroSectionAnimated(profileData: Profile) {
         },
       });
 
-      gsap.to(".hero-portrait-media-scroll", {
-        yPercent: isMobile ? 12 : 22,
-        scale: isMobile ? 1.1 : 1.18,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1.1,
-        },
-      });
+      if (!isMobile) {
+        gsap.to(".hero-content", {
+          y: 56,
+          opacity: 0.15,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+
+        gsap.to(".hero-portrait-media-scroll", {
+          yPercent: 22,
+          scale: 1.18,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.1,
+          },
+        });
+      }
 
       gsap.to(".hero-glow", {
         opacity: 0.05,
@@ -139,6 +136,33 @@ export default function HeroSectionAnimated(profileData: Profile) {
 
       <div className="site-container relative z-10 grid items-center gap-8 py-6 pb-10 sm:gap-12 sm:py-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-12 lg:pb-24">
         <div className="hero-content relative max-w-2xl">
+          <div className="mb-3 flex items-center gap-3 sm:mb-4">
+            <Link
+              href="https://www.linkedin.com/in/trindadebra/"
+              target="_blank"
+              aria-label="LinkedIn"
+              className="text-chalk-muted transition hover:text-white"
+            >
+              <FaLinkedin size={16} />
+            </Link>
+            <Link
+              href="https://github.com/TrindadeBRA/"
+              target="_blank"
+              aria-label="GitHub"
+              className="text-chalk-muted transition hover:text-white"
+            >
+              <FaGithub size={16} />
+            </Link>
+            <Link
+              href="https://api.whatsapp.com/send?phone=5511952498126"
+              target="_blank"
+              aria-label="WhatsApp"
+              className="text-chalk-muted transition hover:text-white"
+            >
+              <FaWhatsapp size={16} />
+            </Link>
+          </div>
+
           <p className="hero-meta mb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-chalk-muted sm:mb-5 sm:text-xs sm:tracking-[0.28em]">
             {role}
           </p>
@@ -184,6 +208,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
           className="hero-portrait-stage relative mx-auto w-[300px] max-w-full [perspective:1400px] sm:w-full sm:max-w-[20rem] md:max-w-[23rem] lg:max-w-none"
         >
           <div className="hero-portrait-scroll will-change-transform [transform-style:preserve-3d]">
+            <div className="hero-portrait-flip will-change-transform [transform-style:preserve-3d]">
             <div
               data-tilt-card
               className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted will-change-transform [backface-visibility:visible] sm:aspect-[4/5] sm:rounded-[2rem] lg:max-h-[min(68svh,34rem)] lg:w-full"
@@ -262,34 +287,9 @@ export default function HeroSectionAnimated(profileData: Profile) {
                       Protagonizei
                     </a>
                   </p>
-                  <div className="mt-2.5 flex items-center gap-3">
-                    <Link
-                      href="https://www.linkedin.com/in/trindadebra/"
-                      target="_blank"
-                      aria-label="LinkedIn"
-                      className="text-chalk-muted transition hover:text-white"
-                    >
-                      <FaLinkedin size={15} />
-                    </Link>
-                    <Link
-                      href="https://github.com/TrindadeBRA/"
-                      target="_blank"
-                      aria-label="GitHub"
-                      className="text-chalk-muted transition hover:text-white"
-                    >
-                      <FaGithub size={15} />
-                    </Link>
-                    <Link
-                      href="https://api.whatsapp.com/send?phone=5511952498126"
-                      target="_blank"
-                      aria-label="WhatsApp"
-                      className="text-chalk-muted transition hover:text-white"
-                    >
-                      <FaWhatsapp size={15} />
-                    </Link>
-                  </div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>
