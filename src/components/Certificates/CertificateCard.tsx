@@ -5,7 +5,6 @@ import { useRef } from "react";
 import { FaExpand } from "react-icons/fa";
 import { Certificate } from "@/pages/api/sectionCertificates";
 import { getBadgeConfig } from "./getBadgeConfig";
-import { formatCertificateDate, formatDaysAgo } from "./formatCertificateDate";
 import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
 
 type CertificateCardProps = {
@@ -15,46 +14,39 @@ type CertificateCardProps = {
 
 export default function CertificateCard({ certificate, onOpen }: CertificateCardProps) {
   const cardRef = useRef<HTMLButtonElement>(null);
-  const idleOverlayRef = useRef<HTMLDivElement>(null);
   const ctaOverlayRef = useRef<HTMLDivElement>(null);
   const badge = getBadgeConfig(certificate.certificate_category);
-  const dateLabel = formatCertificateDate(certificate.certificate_date);
-  const daysAgoLabel = formatDaysAgo(certificate.certificate_date);
 
   useGSAP(
     () => {
       registerGsap();
       const card = cardRef.current;
-      const idle = idleOverlayRef.current;
       const cta = ctaOverlayRef.current;
-      if (!card || !idle || !cta) return;
+      if (!card || !cta) return;
 
       const media = card.querySelector<HTMLElement>(".cert-media");
-      const idleContent = idle.querySelector<HTMLElement>(".cert-idle-content");
       const ctaContent = cta.querySelector<HTMLElement>(".cert-cta-content");
 
-      // Estado inicial: overlay de info visível
-      gsap.set(idle, { opacity: 1 });
       gsap.set(cta, { opacity: 0 });
       gsap.set(ctaContent, { y: 14, scale: 0.96, opacity: 0 });
+      if (media) gsap.set(media, { filter: "grayscale(1)" });
 
       const enter = () => {
         if (prefersReducedMotion()) {
-          gsap.set(idle, { opacity: 0 });
           gsap.set(cta, { opacity: 1 });
           gsap.set(ctaContent, { y: 0, scale: 1, opacity: 1 });
+          if (media) gsap.set(media, { filter: "grayscale(0)", scale: 1 });
           return;
         }
 
         gsap
           .timeline({ defaults: { ease: "power3.out" } })
-          .to(idleContent, { y: 8, opacity: 0, duration: 0.22 }, 0)
-          .to(idle, { opacity: 0, duration: 0.3 }, 0)
-          .to(cta, { opacity: 1, duration: 0.35 }, 0.08)
-          .to(ctaContent, { y: 0, scale: 1, opacity: 1, duration: 0.4 }, 0.1);
+          .to(cta, { opacity: 1, duration: 0.35 }, 0)
+          .to(ctaContent, { y: 0, scale: 1, opacity: 1, duration: 0.4 }, 0.05);
 
         if (media) {
           gsap.to(media, {
+            filter: "grayscale(0)",
             scale: 1.06,
             duration: 0.55,
             ease: "power2.out",
@@ -65,31 +57,23 @@ export default function CertificateCard({ certificate, onOpen }: CertificateCard
 
       const leave = () => {
         if (prefersReducedMotion()) {
-          gsap.set(idle, { opacity: 1 });
           gsap.set(cta, { opacity: 0 });
           gsap.set(ctaContent, { y: 14, scale: 0.96, opacity: 0 });
-          gsap.set(idleContent, { y: 0, opacity: 1 });
-          if (media) gsap.set(media, { x: 0, y: 0, scale: 1 });
+          if (media) gsap.set(media, { x: 0, y: 0, scale: 1, filter: "grayscale(1)" });
           return;
         }
 
         gsap
           .timeline({ defaults: { ease: "power3.inOut" } })
           .to(ctaContent, { y: 10, x: 0, scale: 0.96, opacity: 0, duration: 0.22 }, 0)
-          .to(cta, { opacity: 0, duration: 0.28 }, 0.05)
-          .to(idle, { opacity: 1, duration: 0.35 }, 0.1)
-          .fromTo(
-            idleContent,
-            { y: 10, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" },
-            0.12
-          );
+          .to(cta, { opacity: 0, duration: 0.28 }, 0.05);
 
         if (media) {
           gsap.to(media, {
             x: 0,
             y: 0,
             scale: 1,
+            filter: "grayscale(1)",
             duration: 0.5,
             ease: "power3.out",
             overwrite: "auto",
@@ -108,6 +92,7 @@ export default function CertificateCard({ certificate, onOpen }: CertificateCard
           x: x * 8,
           y: y * 6,
           scale: 1.07,
+          filter: "grayscale(0)",
           duration: 0.35,
           ease: "power2.out",
           overwrite: "auto",
@@ -152,34 +137,13 @@ export default function CertificateCard({ certificate, onOpen }: CertificateCard
             src={certificate.certificate_file_sync}
             alt={certificate.certificate_name}
             fill
-            className="cert-media object-cover md:will-change-transform"
+            className="cert-media object-cover grayscale md:will-change-[filter,transform]"
             sizes="(max-width: 768px) 100vw, 33vw"
           />
         ) : null}
 
-        <span
-          className={`absolute left-3 top-3 z-20 ${badge.bgColor}`}
-        >
-          {badge.text}
-        </span>
+        <span className={`absolute left-3 top-3 z-20 ${badge.bgColor}`}>{badge.text}</span>
 
-        {/* Overlay inicial — data / contexto */}
-        <div
-          ref={idleOverlayRef}
-          className="pointer-events-none absolute inset-0 z-[5] flex items-end bg-gradient-to-t from-ink via-ink/85 to-ink/25 p-4"
-        >
-          <div className="cert-idle-content">
-            <p className="text-[10px] uppercase tracking-[0.18em] text-chalk-dim">Conclusão</p>
-            <p className="mt-1 font-display text-sm font-semibold text-chalk">
-              {dateLabel || "Data indisponível"}
-            </p>
-            {daysAgoLabel ? (
-              <p className="mt-0.5 text-[11px] text-chalk-dim/90">{daysAgoLabel}</p>
-            ) : null}
-          </div>
-        </div>
-
-        {/* Overlay hover — incentivo a abrir o viewer */}
         <div
           ref={ctaOverlayRef}
           className="pointer-events-none absolute inset-0 z-[6] flex items-center justify-center bg-ink/80 p-4 backdrop-blur-[2px]"
@@ -195,7 +159,6 @@ export default function CertificateCard({ certificate, onOpen }: CertificateCard
           </div>
         </div>
 
-        {/* Mobile: hint sutil sem hover */}
         <div className="pointer-events-none absolute bottom-3 right-3 z-[7] rounded-full border border-white/15 bg-ink/70 px-2.5 py-1 text-[10px] text-chalk-muted backdrop-blur md:hidden">
           Toque para abrir
         </div>

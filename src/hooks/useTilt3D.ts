@@ -29,63 +29,60 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
       const media = stage.querySelector<HTMLElement>(mediaSelector);
       const isMobile = window.innerWidth < 768;
 
-      gsap.set(stage, { perspective: isMobile ? 900 : 1200 });
       gsap.set(card, {
         transformOrigin: "center center",
-        force3D: !isMobile,
+        force3D: true,
       });
       if (media) {
-        gsap.set(media, { force3D: !isMobile, scale: isMobile ? 1.04 : 1.08 });
+        gsap.set(media, { force3D: true, scale: isMobile ? 1.03 : 1.06 });
       }
 
       let idleTween: gsap.core.Timeline | null = null;
+      let scrolling = false;
 
       const stopIdle = () => {
         idleTween?.kill();
         idleTween = null;
-        gsap.set(card, { rotationX: 0, rotationY: 0, z: 0, scale: 1 });
+        gsap.set(card, { rotationX: 0, rotationY: 0, scale: 1 });
         if (media) gsap.set(media, { x: 0, y: 0 });
       };
 
       const startIdle = () => {
-        if (idleTween) return;
+        if (idleTween || scrolling) return;
+
         idleTween = gsap.timeline({
           repeat: -1,
           defaults: { ease: "sine.inOut" },
         });
 
-        const tilt = isMobile ? 4.5 : 9;
-        const lift = isMobile ? 8 : 20;
+        const tilt = isMobile ? 3.5 : 7;
 
         idleTween
           .to(card, {
             rotationY: tilt,
-            rotationX: -tilt * 0.55,
-            z: lift,
-            scale: 1.015,
-            duration: 2.6,
+            rotationX: -tilt * 0.45,
+            scale: 1.012,
+            duration: 2.8,
           })
           .to(card, {
-            rotationY: -tilt * 0.9,
-            rotationX: tilt * 0.45,
-            z: lift * 0.5,
-            scale: 1.008,
-            duration: 2.9,
+            rotationY: -tilt * 0.85,
+            rotationX: tilt * 0.35,
+            scale: 1.006,
+            duration: 3,
           })
           .to(card, {
-            rotationY: tilt * 0.45,
-            rotationX: -tilt * 0.28,
-            z: lift * 0.8,
-            scale: 1.02,
-            duration: 2.4,
+            rotationY: tilt * 0.4,
+            rotationX: -tilt * 0.22,
+            scale: 1.01,
+            duration: 2.5,
           });
 
         if (media) {
-          const mx = isMobile ? 5 : 10;
-          const my = isMobile ? 4 : 8;
-          idleTween.to(media, { x: mx, y: -my, duration: 2.6 }, 0);
-          idleTween.to(media, { x: -mx * 1.2, y: my, duration: 2.9 }, 2.6);
-          idleTween.to(media, { x: mx * 0.6, y: -my * 0.5, duration: 2.4 }, 5.5);
+          const mx = isMobile ? 4 : 8;
+          const my = isMobile ? 3 : 6;
+          idleTween.to(media, { x: mx, y: -my, duration: 2.8 }, 0);
+          idleTween.to(media, { x: -mx, y: my, duration: 3 }, 2.8);
+          idleTween.to(media, { x: mx * 0.5, y: -my * 0.4, duration: 2.5 }, 5.8);
         }
       };
 
@@ -94,7 +91,7 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
 
       startIdle();
 
-      const st = ScrollTrigger.create({
+      const visibilitySt = ScrollTrigger.create({
         trigger,
         start: "top bottom",
         end: "bottom top",
@@ -104,8 +101,22 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         onLeaveBack: stopIdle,
       });
 
+      const scrollSt = ScrollTrigger.create({
+        trigger,
+        start: "top top",
+        end: "bottom top",
+        onUpdate: (self) => {
+          const isScrolling = self.progress > 0.01 && self.progress < 0.99;
+          if (isScrolling === scrolling) return;
+          scrolling = isScrolling;
+          if (scrolling) stopIdle();
+          else startIdle();
+        },
+      });
+
       return () => {
-        st.kill();
+        visibilitySt.kill();
+        scrollSt.kill();
         stopIdle();
       };
     },
