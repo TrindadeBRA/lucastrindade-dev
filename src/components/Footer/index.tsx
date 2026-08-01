@@ -171,12 +171,8 @@ const Footer = () => {
           </div>
         </div>
 
-        <div
-          className="mt-16 flex flex-col justify-between gap-3 border-t border-white/10 pt-8 text-xs text-chalk-dim sm:flex-row"
-          data-reveal="item"
-        >
+        <div className="mt-16 border-t border-white/10 pt-8 text-xs text-chalk-dim" data-reveal="item">
           <p>© {year} Lucas Trindade. Todos os direitos reservados.</p>
-          <p>Full Stack · Mogi-Mirim, SP</p>
         </div>
       </div>
     </footer>

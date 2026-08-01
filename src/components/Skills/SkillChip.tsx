@@ -4,7 +4,7 @@ import { useId, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Check } from "react-feather";
 import { Skill } from "@/pages/api/sectionSkills";
-import { resolveSkillMeta, skillInitials } from "@/utils/skillMeta";
+import { resolveSkillMeta } from "@/utils/skillMeta";
 
 type SkillChipProps = {
   skill: Skill;
@@ -17,7 +17,6 @@ export default function SkillChip({ skill, tone = "solid" }: SkillChipProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const tooltipId = useId();
   const meta = resolveSkillMeta(skill);
-  const initials = skillInitials(skill.skill_name);
 
   const show = () => {
     const rect = buttonRef.current?.getBoundingClientRect();
@@ -42,16 +41,13 @@ export default function SkillChip({ skill, tone = "solid" }: SkillChipProps) {
         onFocus={show}
         onBlur={hide}
         className={[
-          "group inline-flex items-center gap-2.5 rounded-full border px-3.5 py-2 text-left transition",
+          "group inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-left transition",
           "hover:-translate-y-0.5 hover:border-white/35 hover:bg-ink-muted",
           tone === "solid"
             ? "border-white/12 bg-ink text-chalk"
             : "border-white/18 bg-ink/80 text-chalk-muted",
         ].join(" ")}
       >
-        <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 bg-white/5 font-display text-[10px] font-semibold tracking-wide text-chalk">
-          {initials}
-        </span>
         <span className="whitespace-nowrap text-sm font-medium">{skill.skill_name}</span>
         <Check className="h-3.5 w-3.5 text-chalk-dim opacity-70 transition group-hover:text-chalk group-hover:opacity-100" />
       </button>

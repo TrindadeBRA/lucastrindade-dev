@@ -9,11 +9,12 @@ import PersonalProjects from "@/components/PersonalProjects";
 import GsapInit from "@/components/GsapInit";
 import Head from "next/head";
 import { GetStaticProps } from "next";
-import { Profile, getSectionProfile } from "./api/sectionProfile";
-import { Skill, getSectionSkills } from "./api/sectionSkills";
-import { Certificate, getSectionCertificates } from "./api/sectionCertificates";
-import { Experience, getSectionExperiences } from "./api/sectionsExperiences";
-import { getSectionPersonalProjects, PersonalProject } from "./api/sectionsPersonalProjects";
+import { Profile } from "./api/sectionProfile";
+import { Skill } from "./api/sectionSkills";
+import { Certificate } from "./api/sectionCertificates";
+import { Experience } from "./api/sectionsExperiences";
+import { PersonalProject } from "./api/sectionsPersonalProjects";
+import { fetchHomeData } from "@/lib/fetchHomeData";
 
 export default function Home({
   profileData,
@@ -57,38 +58,11 @@ export default function Home({
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  try {
-    console.log("Revalidating cache at:", new Date().toISOString());
-    const [profileData, skillsData, certificateData, experienceData, personalProjectsData] =
-      await Promise.all([
-        getSectionProfile(),
-        getSectionSkills(),
-        getSectionCertificates(),
-        getSectionExperiences(),
-        getSectionPersonalProjects(),
-      ]);
+  console.log("Revalidating cache at:", new Date().toISOString());
+  const homeData = await fetchHomeData();
 
-    return {
-      props: {
-        profileData,
-        skillsData,
-        certificateData,
-        experienceData,
-        personalProjectsData,
-      },
-      revalidate: 60 * 30,
-    };
-  } catch (error) {
-    console.error("Erro ao buscar dados:", error);
-    return {
-      props: {
-        profileData: null,
-        skillsData: [],
-        certificateData: [],
-        experienceData: [],
-        personalProjectsData: [],
-      },
-      revalidate: 60,
-    };
-  }
+  return {
+    props: homeData,
+    revalidate: 60 * 30,
+  };
 };

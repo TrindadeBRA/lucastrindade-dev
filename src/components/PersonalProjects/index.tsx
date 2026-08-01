@@ -18,10 +18,38 @@ export default function PersonalProjects(
   useGSAP(
     () => {
       registerGsap();
-      if (!sectionRef.current || prefersReducedMotion()) return;
-      if (window.innerWidth < 768) return;
+      if (!sectionRef.current) return;
 
-      gsap.utils.toArray<HTMLElement>(".project-media img", sectionRef.current).forEach((img) => {
+      const rows = gsap.utils.toArray<HTMLElement>(".project-row", sectionRef.current);
+
+      rows.forEach((row) => {
+        const img = row.querySelector<HTMLElement>(".project-media img");
+        if (!img) return;
+
+        if (prefersReducedMotion()) {
+          gsap.set(img, { filter: "grayscale(0%)" });
+          return;
+        }
+
+        // Item atual em tela → tira o P&B
+        gsap.fromTo(
+          img,
+          { filter: "grayscale(100%)" },
+          {
+            filter: "grayscale(0%)",
+            duration: 0.55,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: row,
+              start: "top 70%",
+              end: "bottom 35%",
+              toggleActions: "play reverse play reverse",
+            },
+          }
+        );
+
+        if (window.innerWidth < 768) return;
+
         gsap.fromTo(
           img,
           { scale: 1.12, yPercent: -4 },
@@ -30,7 +58,7 @@ export default function PersonalProjects(
             yPercent: 4,
             ease: "none",
             scrollTrigger: {
-              trigger: img.closest(".project-row") || img,
+              trigger: row,
               start: "top bottom",
               end: "bottom top",
               scrub: 1,
@@ -78,7 +106,7 @@ export default function PersonalProjects(
                   {project.project_title || project.project_name}
                 </h3>
                 <p className="mt-2 text-sm text-chalk-muted">{project.project_name}</p>
-                <p className="mt-5 max-w-md text-sm leading-relaxed text-chalk-muted sm:text-base">
+                <p className="mt-5 max-w-md line-clamp-3 text-sm leading-relaxed text-chalk-muted sm:text-base">
                   {project.project_description}
                 </p>
                 {project.project_url ? (
@@ -99,20 +127,20 @@ export default function PersonalProjects(
                   <Link
                     href={project.project_url || "#"}
                     target={project.project_url ? "_blank" : undefined}
-                    className="project-media clip-frame relative block aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 bg-ink-muted"
+                    className="project-media clip-frame relative block aspect-[21/9] overflow-hidden rounded-2xl border border-white/10 bg-ink-muted"
                     data-reveal="clip"
                   >
                     <Image
                       src={project.project_image_sync || project.project_image}
                       alt={project.project_title || project.project_name}
                       fill
-                      className="object-cover grayscale transition duration-500 group-hover:grayscale-0"
+                      className="object-cover object-top will-change-[filter,transform]"
                       sizes="(max-width: 1024px) 100vw, 55vw"
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-ink/40 via-transparent to-white/10 opacity-0 transition duration-500 group-hover:opacity-100" />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-ink/30 via-transparent to-white/5" />
                   </Link>
                 ) : (
-                  <div className="flex aspect-video items-center justify-center rounded-2xl border border-white/10 bg-ink-muted text-chalk-dim">
+                  <div className="flex aspect-[21/9] items-center justify-center rounded-2xl border border-white/10 bg-ink-muted text-chalk-dim">
                     Sem imagem
                   </div>
                 )}

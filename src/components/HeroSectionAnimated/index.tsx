@@ -7,10 +7,20 @@ import { Profile } from "@/pages/api/sectionProfile";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
 import { useMagnetic } from "@/hooks/useMagnetic";
+import { useTilt3D } from "@/hooks/useTilt3D";
 import HeroGithubBg from "@/components/HeroGithubBg";
+
+/** Liga o grid de contribuições do GitHub como bg do hero. */
+const ENABLE_GITHUB_BG = false;
 
 export default function HeroSectionAnimated(profileData: Profile) {
   const sectionRef = useRef<HTMLElement>(null);
+  const portraitStageRef = useTilt3D<HTMLDivElement>({
+    maxTilt: 16,
+    idle: true,
+    listenSelector: "#hero",
+    mediaSelector: ".hero-portrait-media",
+  });
   const primaryCtaRef = useMagnetic<HTMLAnchorElement>(0.4);
   const ghostCtaRef = useMagnetic<HTMLAnchorElement>(0.3);
 
@@ -76,15 +86,30 @@ export default function HeroSectionAnimated(profileData: Profile) {
         },
       });
 
-      gsap.to(".hero-portrait-media", {
-        yPercent: isMobile ? 8 : 16,
-        scale: 1.08,
+      // Scroll em wrapper separado — não disputa o tilt do mouse no card
+      gsap.to(".hero-portrait-scroll", {
+        y: isMobile ? 36 : 72,
+        rotateX: isMobile ? 4 : 10,
+        rotateY: isMobile ? -2 : -6,
+        scale: 0.94,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
           end: "bottom top",
-          scrub: 1,
+          scrub: 1.1,
+        },
+      });
+
+      gsap.to(".hero-portrait-media", {
+        yPercent: isMobile ? 12 : 22,
+        scale: 1.18,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.1,
         },
       });
 
@@ -111,7 +136,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
     >
       <div className="hero-glow pointer-events-none absolute -right-24 top-10 z-[1] h-[28rem] w-[28rem] rounded-full bg-white/10 blur-[100px]" />
       <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_20%_20%,rgba(255,255,255,0.06),transparent_45%)]" />
-      <HeroGithubBg />
+      {ENABLE_GITHUB_BG ? <HeroGithubBg /> : null}
 
       <div className="site-container relative z-10 grid flex-1 items-center gap-10 py-10 pb-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-12 lg:pb-24">
         <div className="hero-content relative max-w-2xl">
@@ -170,24 +195,48 @@ export default function HeroSectionAnimated(profileData: Profile) {
           </div>
         </div>
 
-        <div className="hero-portrait relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-ink-muted lg:max-h-[min(68svh,34rem)] lg:max-w-none lg:w-full">
-          {avatar ? (
-            <Image
-              src={avatar}
-              alt={name}
-              fill
-              priority
-              className="hero-portrait-media object-cover"
-              sizes="(max-width: 768px) 90vw, 40vw"
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center bg-ink-muted text-chalk-dim">Foto</div>
-          )}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent opacity-80" />
-          <div className="absolute bottom-5 left-5 right-5">
-            <p className="font-display text-sm text-chalk/90">
-              {profileData?.user_title || "Full Stack Developer"}
-            </p>
+        <div
+          ref={portraitStageRef}
+          className="hero-portrait-stage relative mx-auto w-full max-w-sm lg:max-w-none"
+          style={{ perspective: 1400 }}
+        >
+          <div
+            className="hero-portrait-scroll will-change-transform"
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            <div
+              data-tilt-card
+              className="hero-portrait relative mx-auto aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-white/10 bg-ink-muted will-change-transform lg:max-h-[min(68svh,34rem)] lg:w-full"
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              {avatar ? (
+                <Image
+                  src={avatar}
+                  alt={name}
+                  fill
+                  priority
+                  className="hero-portrait-media object-cover will-change-transform"
+                  sizes="(max-width: 768px) 90vw, 40vw"
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center bg-ink-muted text-chalk-dim">
+                  Foto
+                </div>
+              )}
+              <div
+                data-tilt-shine
+                className="pointer-events-none absolute inset-0 z-[1] opacity-0 mix-blend-soft-light"
+              />
+              <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-ink via-transparent to-transparent opacity-80" />
+              <div
+                className="absolute bottom-5 left-5 right-5 z-[3]"
+                style={{ transform: "translateZ(36px)" }}
+              >
+                <p className="font-display text-sm text-chalk/90">
+                  {profileData?.user_title || "Full Stack Developer"}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

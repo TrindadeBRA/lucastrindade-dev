@@ -1,9 +1,10 @@
 import { GetStaticProps } from "next";
-import { Profile, getSectionProfile } from "@/pages/api/sectionProfile";
-import { Skill, getSectionSkills } from "@/pages/api/sectionSkills";
-import { Certificate, getSectionCertificates } from "@/pages/api/sectionCertificates";
-import { Experience, getSectionExperiences } from "@/pages/api/sectionsExperiences";
-import { getSectionPersonalProjects, PersonalProject } from "@/pages/api/sectionsPersonalProjects";
+import { Profile } from "@/pages/api/sectionProfile";
+import { Skill } from "@/pages/api/sectionSkills";
+import { Certificate } from "@/pages/api/sectionCertificates";
+import { Experience } from "@/pages/api/sectionsExperiences";
+import { PersonalProject } from "@/pages/api/sectionsPersonalProjects";
+import { fetchHomeData } from "@/lib/fetchHomeData";
 import Link from "next/link";
 import { FaDownload, FaEnvelope, FaGithub, FaGlobe, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import Head from 'next/head';
@@ -239,30 +240,11 @@ export default function Resume({ profileData, skillsData, certificateData, exper
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  try {
-    console.log('Revalidating cache at:', new Date().toISOString());
-    const profileData = await getSectionProfile();
-    const skillsData = await getSectionSkills();
-    const certificateData = await getSectionCertificates();
-    const experienceData = await getSectionExperiences();
-    const personalProjectsData = await getSectionPersonalProjects();
-    return {
-      props: {
-        profileData,
-        skillsData,
-        certificateData,
-        experienceData,
-        personalProjectsData
-      },
-      // revalidate every 30 minutes
-      revalidate: 60 * 30,
-    };
-  } catch (error) {
-    console.error('Erro ao buscar dados:', error);
-    return {
-      props: {},
-      // revalidate every 30 minutes
-      revalidate: 60 * 30,
-    };
-  }
+  console.log("Revalidating cache at:", new Date().toISOString());
+  const homeData = await fetchHomeData();
+
+  return {
+    props: homeData,
+    revalidate: 60 * 30,
+  };
 };
