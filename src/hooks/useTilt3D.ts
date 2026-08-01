@@ -81,17 +81,11 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         });
 
         mobileIdle
-          .to(card, { y: -8, rotationZ: 0.7, scale: 1.02, duration: 2.5 })
-          .to(card, { y: 5, rotationZ: -0.55, scale: 1.005, duration: 2.7 })
-          .to(card, { y: -4, rotationZ: 0.35, scale: 1.015, duration: 2.3 });
+          .to(card, { y: -4, rotationZ: 0.3, duration: 2.5 })
+          .to(card, { y: 3, rotationZ: -0.22, duration: 2.7 })
+          .to(card, { y: -2, rotationZ: 0.15, duration: 2.3 });
 
-        if (mediaEl) {
-          mobileIdle.to(mediaEl, { scale: 1.05, y: -5, duration: 2.5 }, 0);
-          mobileIdle.to(mediaEl, { scale: 1.02, y: 4, duration: 2.7 }, 2.5);
-          mobileIdle.to(mediaEl, { scale: 1.04, y: -2, duration: 2.3 }, 5.2);
-        }
-
-        const startIdle = gsap.delayedCall(1.15, () => {
+        const startIdle = gsap.delayedCall(1.05, () => {
           mobileIdle.play(0);
         });
 

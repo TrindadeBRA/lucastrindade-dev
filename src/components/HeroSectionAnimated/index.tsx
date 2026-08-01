@@ -42,18 +42,21 @@ export default function HeroSectionAnimated(profileData: Profile) {
       gsap.fromTo(
         ".hero-portrait",
         {
-          clipPath: `inset(12% 12% 12% 12% round ${portraitRadius})`,
+          clipPath: `inset(${isMobile ? "4%" : "12%"} ${isMobile ? "4%" : "12%"} ${isMobile ? "4%" : "12%"} ${isMobile ? "4%" : "12%"} round ${portraitRadius})`,
           opacity: 0,
-          y: isMobile ? 32 : 16,
-          scale: isMobile ? 0.92 : 0.96,
+          y: isMobile ? 16 : 16,
+          scale: isMobile ? 0.98 : 0.96,
         },
         {
           clipPath: `inset(0% 0% 0% 0% round ${portraitRadius})`,
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: isMobile ? 1.05 : 0.85,
+          duration: isMobile ? 0.9 : 0.85,
           ease: "power3.out",
+          onComplete: () => {
+            gsap.set(".hero-portrait", { clearProps: "clipPath" });
+          },
         }
       );
 
@@ -92,17 +95,19 @@ export default function HeroSectionAnimated(profileData: Profile) {
         },
       });
 
-      gsap.to(".hero-portrait-media-scroll", {
-        yPercent: isMobile ? 12 : 22,
-        scale: isMobile ? 1.1 : 1.18,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: isMobile ? 0.8 : 1.1,
-        },
-      });
+      if (!isMobile) {
+        gsap.to(".hero-portrait-media-scroll", {
+          yPercent: 22,
+          scale: 1.18,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.1,
+          },
+        });
+      }
 
       gsap.to(".hero-glow", {
         opacity: 0.05,
@@ -123,13 +128,13 @@ export default function HeroSectionAnimated(profileData: Profile) {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative flex h-[calc(100svh-4.75rem)] min-h-[calc(100svh-4.75rem)] flex-col overflow-hidden bg-ink lg:h-auto lg:min-h-[calc(100svh-4.75rem)]"
+      className="relative flex flex-col overflow-x-clip bg-ink lg:min-h-[calc(100svh-4.75rem)]"
     >
       <div className="hero-glow pointer-events-none absolute -right-24 top-10 z-[1] h-[28rem] w-[28rem] rounded-full bg-white/10 blur-[100px]" />
       <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_20%_20%,rgba(255,255,255,0.06),transparent_45%)]" />
       {ENABLE_GITHUB_BG ? <HeroGithubBg /> : null}
 
-      <div className="site-container relative z-10 grid flex-1 content-center items-center gap-10 py-6 pb-10 sm:gap-12 sm:py-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-12 lg:pb-24">
+      <div className="site-container relative z-10 grid items-center gap-8 py-6 pb-10 sm:gap-12 sm:py-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-12 lg:pb-24">
         <div className="hero-content relative max-w-2xl">
           <p className="hero-meta mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-chalk-muted sm:mb-5">
             {role}
@@ -201,7 +206,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
 
         <div
           ref={portraitStageRef}
-          className="hero-portrait-stage relative mx-auto w-[min(100%,21rem)] sm:w-[min(100%,23rem)] lg:w-full lg:max-w-none"
+          className="hero-portrait-stage relative mx-auto w-full max-w-[20rem] sm:max-w-[23rem] lg:w-full lg:max-w-none"
           style={{ perspective: 900 }}
         >
           <div
@@ -210,12 +215,11 @@ export default function HeroSectionAnimated(profileData: Profile) {
           >
             <div
               data-tilt-card
-              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted will-change-transform sm:rounded-[2rem] md:overflow-visible lg:aspect-[4/5] lg:max-h-[min(68svh,34rem)] lg:w-full"
+              className="hero-portrait relative mx-auto aspect-[4/5] w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted will-change-transform sm:rounded-[2rem] md:overflow-visible lg:max-h-[min(68svh,34rem)] lg:w-full"
               style={{ transformStyle: "preserve-3d" }}
             >
-              {/* Layer atrás: no mobile fica plana/clipada; no desktop ganha profundidade Z */}
               <div
-                className="absolute inset-0 overflow-hidden rounded-[2rem] md:[transform:translateZ(-48px)_scale(1.12)]"
+                className="absolute inset-0 overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] md:[transform:translateZ(-48px)_scale(1.12)]"
                 style={{ transformStyle: "preserve-3d" }}
               >
                 <div className="hero-portrait-media absolute inset-0 will-change-transform">
@@ -226,7 +230,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
                         alt={name}
                         fill
                         priority
-                        className="object-cover"
+                        className="object-cover object-[center_18%] md:object-center"
                         sizes="(max-width: 768px) 90vw, 40vw"
                       />
                     ) : (
@@ -239,9 +243,9 @@ export default function HeroSectionAnimated(profileData: Profile) {
               </div>
               <div
                 data-tilt-shine
-                className="pointer-events-none absolute inset-0 z-[1] rounded-[2rem] opacity-0 mix-blend-soft-light md:[transform:translateZ(12px)]"
+                className="pointer-events-none absolute inset-0 z-[1] rounded-[1.5rem] opacity-0 mix-blend-soft-light sm:rounded-[2rem] md:[transform:translateZ(12px)]"
               />
-              <div className="pointer-events-none absolute inset-0 z-[2] rounded-[2rem] bg-gradient-to-t from-ink via-ink/50 to-transparent opacity-95 md:[transform:translateZ(24px)]" />
+              <div className="pointer-events-none absolute inset-0 z-[2] rounded-[1.5rem] bg-gradient-to-t from-ink via-ink/45 to-transparent opacity-90 sm:rounded-[2rem] md:[transform:translateZ(24px)] md:opacity-95" />
               {/* Layer da frente: profundidade só no desktop */}
               <div
                 data-tilt-layer
@@ -311,7 +315,9 @@ export default function HeroSectionAnimated(profileData: Profile) {
 
       <a
         href="#sobre"
-        className="hero-scroll absolute bottom-5 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
+        className="hero-scroll absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 lg:flex"
+        aria-hidden="true"
+        tabIndex={-1}
       >
         <span className="text-[10px] uppercase tracking-[0.3em] text-chalk-dim">Scroll</span>
         <span className="flex h-9 w-5 items-start justify-center rounded-full border border-white/20 p-1">
