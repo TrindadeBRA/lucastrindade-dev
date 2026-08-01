@@ -1,31 +1,35 @@
 "use client";
 
-import { Certificate } from "@/pages/api/sectionCertificates";
 import Image from "next/image";
 import { useState } from "react";
-import ContentCarrosel from "./ContentCarrosel";
-import ContentGrid from "./ContentGrid";
+import { Certificate } from "@/pages/api/sectionCertificates";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { gsap, prefersReducedMotion, registerGsap, ScrollTrigger } from "@/lib/gsap";
+import { asList } from "@/utils/asList";
+import { getBadgeConfig } from "./getBadgeConfig";
+import { gsap, prefersReducedMotion, registerGsap } from "@/lib/gsap";
 
-export default function Certificates(certificateData: Certificate[]) {
+export default function Certificates(
+  certificateData: Certificate[] | Record<string, Certificate>
+) {
   const sectionRef = useScrollReveal();
+  const certificates = asList(certificateData);
   const [showModal, setShowModal] = useState(false);
-  const [showAllCertificates, setShowAllCertificates] = useState(false);
-  const [showImageUrl, setShowImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [expanded, setExpanded] = useState(false);
 
-  const openModal = (imageUrl: string) => {
-    setShowImageUrl(imageUrl);
+  const visible = expanded ? certificates : certificates.slice(0, 6);
+
+  const openModal = (url: string) => {
+    setImageUrl(url);
     setShowModal(true);
     document.body.classList.add("overflow-hidden");
-
     requestAnimationFrame(() => {
       registerGsap();
       if (prefersReducedMotion()) return;
       gsap.fromTo(
         ".certificate-modal-image",
-        { scale: 0.92, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.35, ease: "power3.out" }
+        { scale: 0.94, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }
       );
     });
   };
@@ -35,86 +39,109 @@ export default function Certificates(certificateData: Certificate[]) {
       setShowModal(false);
       document.body.classList.remove("overflow-hidden");
     };
-
     registerGsap();
     if (prefersReducedMotion()) {
       finish();
       return;
     }
-
     gsap.to(".certificate-modal-image", {
-      scale: 0.95,
       opacity: 0,
-      duration: 0.2,
-      ease: "power2.in",
+      duration: 0.18,
       onComplete: finish,
     });
   };
 
-  const toggleAll = (value: boolean) => {
-    setShowAllCertificates(value);
-    requestAnimationFrame(() => {
-      registerGsap();
-      ScrollTrigger.refresh();
-    });
-  };
-
   return (
-    <div
+    <section
       ref={sectionRef}
-      className="bg-gradient-to-b from-gray-800 to-gray-900 py-14 sm:py-20"
-      id="certificados"
+      id="estudos"
+      className="border-t border-white/5 bg-ink-soft py-24 sm:py-32"
     >
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-base font-semibold leading-7 text-indigo-400" data-reveal="title">
+      <div className="site-container">
+        <div className="max-w-2xl">
+          <p className="section-label" data-reveal="title">
             Estudos
-          </h2>
-          <h2
-            className="text-3xl font-bold tracking-tight text-white sm:text-4xl"
-            data-reveal="title"
-          >
-            Certificados
+          </p>
+          <h2 className="section-title mt-4" data-reveal="title">
+            Certificados & formação
           </h2>
         </div>
 
-        <div data-reveal="from-right">
-          <ContentCarrosel
-            certificateData={certificateData}
-            openModal={openModal}
-            setShowAllCertificates={toggleAll}
-            showAllCertificates={showAllCertificates}
-          />
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {visible.map((certificate) => {
+            const badge = getBadgeConfig(certificate.certificate_category);
+            return (
+              <button
+                key={certificate.certificate_id}
+                type="button"
+                onClick={() => openModal(certificate.certificate_file_sync)}
+                className="group overflow-hidden rounded-2xl border border-white/10 bg-ink text-left transition hover:border-lime/40 hover:-translate-y-1"
+                data-reveal="card"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden bg-ink-muted" data-reveal="clip">
+                  {certificate.certificate_file_sync ? (
+                    <Image
+                      src={certificate.certificate_file_sync}
+                      alt={certificate.certificate_name}
+                      fill
+                      className="object-cover transition duration-700 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  ) : null}
+                  <span
+                    className={`absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold ${badge.bgColor}`}
+                  >
+                    {badge.text}
+                  </span>
+                </div>
+                <div className="p-5">
+                  <h3 className="line-clamp-2 font-display text-base font-semibold text-chalk">
+                    {certificate.certificate_name}
+                  </h3>
+                  <p className="mt-2 line-clamp-1 text-sm text-chalk-muted">
+                    {certificate.certificate_instructors}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
         </div>
-        {showAllCertificates && (
-          <ContentGrid certificateData={certificateData} openModal={openModal} />
-        )}
+
+        {certificates.length > 6 ? (
+          <div className="mt-10 flex justify-center" data-reveal="item">
+            <button
+              type="button"
+              onClick={() => setExpanded((v) => !v)}
+              className="btn-ghost"
+            >
+              {expanded ? "Mostrar menos" : `Ver todos (${certificates.length})`}
+            </button>
+          </div>
+        ) : null}
       </div>
 
       {showModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
           onClick={closeModal}
         >
-          <div className="relative w-4/5 lg:w-3/5 2xl:w-2/6" onClick={(e) => e.stopPropagation()}>
+          <div className="relative w-full max-w-3xl" onClick={(e) => e.stopPropagation()}>
             <Image
-              src={showImageUrl}
-              alt="Imagem"
-              className="certificate-modal-image max-w-full"
-              width={1024}
-              height={720}
+              src={imageUrl}
+              alt="Certificado"
+              width={1200}
+              height={850}
+              className="certificate-modal-image h-auto w-full rounded-xl"
             />
             <button
               onClick={closeModal}
-              className="absolute -right-8 -top-8 m-4 rounded-full bg-white p-2 text-gray-800 shadow-md"
+              className="absolute -top-3 right-0 rounded-full bg-chalk px-3 py-1 text-sm font-semibold text-ink"
             >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              Fechar
             </button>
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 }

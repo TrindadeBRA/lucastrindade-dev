@@ -5,16 +5,15 @@ import Header from "@/components/Header";
 import HeroSectionAnimated from "@/components/HeroSectionAnimated";
 import Presentation from "@/components/Presentation";
 import Skills from "@/components/Skills";
+import PersonalProjects from "@/components/PersonalProjects";
+import GsapInit from "@/components/GsapInit";
+import Head from "next/head";
 import { GetStaticProps } from "next";
 import { Profile, getSectionProfile } from "./api/sectionProfile";
 import { Skill, getSectionSkills } from "./api/sectionSkills";
 import { Certificate, getSectionCertificates } from "./api/sectionCertificates";
 import { Experience, getSectionExperiences } from "./api/sectionsExperiences";
-import PersonalProjects from "@/components/PersonalProjects";
 import { getSectionPersonalProjects, PersonalProject } from "./api/sectionsPersonalProjects";
-import GsapInit from "@/components/GsapInit";
-import InfoBanner from "@/components/InfoBanner";
-import Head from "next/head";
 
 export default function Home({
   profileData,
@@ -24,7 +23,7 @@ export default function Home({
   personalProjectsData,
 }: {
   profileData: Profile;
-  skillsData: Skill;
+  skillsData: Skill[];
   certificateData: Certificate[];
   experienceData: Experience[];
   personalProjectsData: PersonalProject[];
@@ -32,10 +31,10 @@ export default function Home({
   return (
     <>
       <Head>
-        <title>Lucas Trindade - Desenvolvedor Full Stack</title>
+        <title>Lucas Trindade — Desenvolvedor Full Stack</title>
         <meta
           name="description"
-          content="Desenvolvedor Full Stack com experiência em JavaScript, WordPress, Next.js, React e Node.js. Localizado em Mogi-Mirim, SP, Brasil, sou apaixonado por criar soluções digitais inovadoras e funcionais. Desde 2017, tenho trabalhado em projetos que vão desde plataformas de cursos até websites personalizados, sempre buscando entregar código limpo e eficiente. Estou em constante evolução, acompanhando as tendências do desenvolvimento web e aplicando as melhores práticas em cada projeto. Entre em contato para discutir tecnologia ou explorar novas ideias!"
+          content="Desenvolvedor Full Stack com experiência em JavaScript, WordPress, Next.js, React e Node.js. Localizado em Mogi-Mirim, SP. Crio soluções digitais modernas, performáticas e com foco em produto."
         />
         <meta property="og:image" content="/images/ogimage.png" />
         <meta property="og:image:type" content="image/png" />
@@ -43,15 +42,14 @@ export default function Home({
         <meta property="og:image:height" content="675" />
       </Head>
       <GsapInit />
-      <InfoBanner />
       <Header />
       <main>
-        <HeroSectionAnimated {...profileData} />
-        <Presentation {...profileData} />
-        <Skills {...skillsData} />
-        <Certificates {...certificateData} />
-        <Experiences {...experienceData} />
-        <PersonalProjects {...personalProjectsData} />
+        <HeroSectionAnimated {...(profileData || ({} as Profile))} />
+        <PersonalProjects {...(personalProjectsData || [])} />
+        <Presentation {...(profileData || ({} as Profile))} />
+        <Experiences {...(experienceData || [])} />
+        <Skills {...(skillsData || [])} />
+        <Certificates {...(certificateData || [])} />
       </main>
       <Footer />
     </>
@@ -61,11 +59,15 @@ export default function Home({
 export const getStaticProps: GetStaticProps = async () => {
   try {
     console.log("Revalidating cache at:", new Date().toISOString());
-    const profileData = await getSectionProfile();
-    const skillsData = await getSectionSkills();
-    const certificateData = await getSectionCertificates();
-    const experienceData = await getSectionExperiences();
-    const personalProjectsData = await getSectionPersonalProjects();
+    const [profileData, skillsData, certificateData, experienceData, personalProjectsData] =
+      await Promise.all([
+        getSectionProfile(),
+        getSectionSkills(),
+        getSectionCertificates(),
+        getSectionExperiences(),
+        getSectionPersonalProjects(),
+      ]);
+
     return {
       props: {
         profileData,
@@ -79,8 +81,14 @@ export const getStaticProps: GetStaticProps = async () => {
   } catch (error) {
     console.error("Erro ao buscar dados:", error);
     return {
-      props: {},
-      revalidate: 60 * 30,
+      props: {
+        profileData: null,
+        skillsData: [],
+        certificateData: [],
+        experienceData: [],
+        personalProjectsData: [],
+      },
+      revalidate: 60,
     };
   }
 };

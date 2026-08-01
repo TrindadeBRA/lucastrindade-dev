@@ -1,34 +1,34 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Experience } from "@/pages/api/sectionsExperiences";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { asList } from "@/utils/asList";
 import { gsap, prefersReducedMotion, registerGsap } from "@/lib/gsap";
 
-const Experiences = (experienceData: Experience[]) => {
-  const sectionRef = useScrollReveal();
-  const [showModal, setShowModal] = useState(false);
-  const [showExperience, setShowExperience] = useState<Experience | null>(null);
+function formatMonthYear(date: string) {
+  if (!date) return "";
+  const d = new Date(`${date}T00:00:00`);
+  return d.toLocaleDateString("pt-BR", { month: "short", year: "numeric" });
+}
 
-  function formatarData(date: string) {
-    const dataObjeto = new Date(date);
-    const mes = String(dataObjeto.getMonth() + 1).padStart(2, "0");
-    const ano = dataObjeto.getFullYear();
-    return `${mes}/${ano}`;
-  }
+const Experiences = (experienceData: Experience[] | Record<string, Experience>) => {
+  const sectionRef = useScrollReveal();
+  const experiences = asList(experienceData);
+  const [showModal, setShowModal] = useState(false);
+  const [active, setActive] = useState<Experience | null>(null);
 
   const openModal = (experience: Experience) => {
-    setShowExperience(experience);
+    setActive(experience);
     setShowModal(true);
     document.body.classList.add("overflow-hidden");
-
     requestAnimationFrame(() => {
       registerGsap();
       if (prefersReducedMotion()) return;
       gsap.fromTo(
         ".experience-modal-panel",
-        { y: 40, opacity: 0, scale: 0.96 },
+        { y: 36, opacity: 0, scale: 0.97 },
         { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }
       );
     });
@@ -37,213 +37,157 @@ const Experiences = (experienceData: Experience[]) => {
   const closeModal = () => {
     const finish = () => {
       setShowModal(false);
-      setShowExperience(null);
+      setActive(null);
       document.body.classList.remove("overflow-hidden");
     };
-
     registerGsap();
     if (prefersReducedMotion()) {
       finish();
       return;
     }
-
     gsap.to(".experience-modal-panel", {
-      y: 24,
+      y: 18,
       opacity: 0,
-      scale: 0.97,
-      duration: 0.25,
+      duration: 0.22,
       ease: "power2.in",
       onComplete: finish,
     });
   };
 
   return (
-    <div
-      ref={sectionRef}
-      className="bg-gradient-to-t from-gray-950 to-gray-900 py-14 sm:py-20"
-      id="experiencias"
-    >
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div>
-          <h2 className="text-base font-semibold leading-7 text-indigo-400" data-reveal="title">
-            Minha jornada
-          </h2>
-          <p
-            className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl"
-            data-reveal="title"
-          >
-            Experiências Profissionais
+    <section ref={sectionRef} id="experiencia" className="border-t border-white/5 bg-ink py-24 sm:py-32">
+      <div className="site-container">
+        <div className="max-w-2xl">
+          <p className="section-label" data-reveal="title">
+            Trajetória
           </p>
-        </div>
-        <div className="mx-auto mt-4 grid grid-cols-1 justify-items-center gap-x-8 gap-y-10 pt-10 sm:grid-cols-2 dark:border-gray-700 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-          {Object.values(experienceData).map((experience: Experience) => (
-            <article
-              key={experience.experience_id}
-              className="flex w-full cursor-pointer flex-col items-start justify-between rounded-2xl border border-gray-600 bg-gray-900 p-6 transition-colors hover:bg-gray-800"
-              onClick={() => openModal(experience)}
-              data-reveal="card"
-            >
-              <div className="flex w-full items-center gap-x-4 text-xs">
-                {experience.experience_date_end === null ? (
-                  <div className="flex w-full items-center justify-between gap-3">
-                    <p className="text-xs text-gray-500">
-                      {formatarData(experience.experience_date_start)} -{" "}
-                      {experience.experience_date_end
-                        ? formatarData(experience.experience_date_end)
-                        : "Atual"}
-                    </p>
-                    <span className="flex items-center gap-x-1.5 rounded-md px-3 py-1 text-xs font-medium text-white ring-1 ring-inset ring-gray-700">
-                      <svg className="h-1.5 w-1.5 fill-green-400" viewBox="0 0 6 6" aria-hidden="true">
-                        <circle cx="3" cy="3" r="3" />
-                      </svg>
-                      online
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex w-full items-center justify-between gap-3">
-                    <p className="text-xs text-gray-500">
-                      {formatarData(experience.experience_date_start)} -{" "}
-                      {formatarData(experience.experience_date_end)}
-                    </p>
-                    <span className="flex items-center gap-x-1.5 rounded-md px-3 py-1 text-xs font-medium text-white ring-1 ring-inset ring-gray-700">
-                      <svg className="h-1.5 w-1.5 fill-red-800" viewBox="0 0 6 6" aria-hidden="true">
-                        <circle cx="3" cy="3" r="3" />
-                      </svg>
-                      offline
-                    </span>
-                  </div>
-                )}
-              </div>
-              <div className="relative mt-4 flex items-center gap-x-4">
-                <Image
-                  width={40}
-                  height={40}
-                  src={experience.experience_company_avatar_sync}
-                  alt=""
-                  className="h-10 w-10 rounded-full bg-gray-50"
-                />
-                <div className="text-sm leading-6">
-                  <p className="font-semibold text-white">
-                    <span className="absolute inset-0" />
-                    {experience.experience_company_name}
-                  </p>
-                  <p className="text-gray-400">{experience.experience_position}</p>
-                </div>
-              </div>
-            </article>
-          ))}
+          <h2 className="section-title mt-4" data-reveal="title">
+            Experiência profissional
+          </h2>
         </div>
 
-        {showModal && showExperience && (
+        <div className="relative mt-16">
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
-            onClick={closeModal}
-          >
-            <div
-              className="experience-modal-panel relative max-h-full w-full overflow-scroll rounded-2xl border border-gray-600 bg-gray-900 p-8 sm:w-4/5 2xl:w-2/6"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div>
-                <div className="flex items-center gap-x-4">
-                  <Image
-                    width={50}
-                    height={50}
-                    src={showExperience.experience_company_avatar_sync}
-                    alt=""
-                    className="h-12 w-12 rounded-full bg-black"
-                  />
-                  <div className="px-4 sm:px-0">
-                    <h3 className="text-base font-semibold leading-4 text-white">
-                      {showExperience?.experience_company_name}
-                    </h3>
-                    <p className="mt-1 max-w-2xl text-sm leading-4 text-gray-400">
-                      {showExperience?.experience_location}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-6 border-t border-white/10">
-                  <dl className="divide-y divide-white/10">
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-white">Nome da empresa:</dt>
-                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                        {showExperience?.experience_company_name}
-                      </dd>
-                    </div>
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-white">Site da empresa:</dt>
-                      <dd className="mt-1 text-sm leading-6 text-gray-400 underline sm:col-span-2 sm:mt-0">
-                        <a href={showExperience?.experience_company_website} target="_blank">
-                          {showExperience?.experience_company_website}
-                        </a>
-                      </dd>
-                    </div>
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-white">Cargo:</dt>
-                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                        {showExperience?.experience_position}
-                      </dd>
-                    </div>
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-white">Modelo de Atuação:</dt>
-                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                        {showExperience?.experience_operating_model}
-                      </dd>
-                    </div>
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-white">Inicio:</dt>
-                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                        {new Date(`${showExperience?.experience_date_start}T00:00:00`).toLocaleDateString(
-                          "pt-BR",
-                          { day: "numeric", month: "long", year: "numeric" }
-                        )}
-                      </dd>
-                    </div>
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-white">Saida:</dt>
-                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                        {showExperience.experience_date_end !== null
-                          ? new Date(
-                              `${showExperience?.experience_date_end}T00:00:00`
-                            ).toLocaleDateString("pt-BR", {
-                              day: "numeric",
-                              month: "long",
-                              year: "numeric",
-                            })
-                          : "-"}
-                      </dd>
-                    </div>
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-white">Sobre:</dt>
-                      <dd className="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">
-                        {showExperience?.experience_about}
-                      </dd>
-                    </div>
-                  </dl>
+            className="absolute bottom-4 left-[7px] top-4 hidden w-px bg-lime/70 md:block"
+            data-reveal="line"
+            aria-hidden="true"
+          />
 
-                  <button
-                    onClick={closeModal}
-                    className="absolute right-0 top-0 m-4 hidden rounded-full bg-white p-2 text-gray-800 shadow-md sm:block"
+          <ol className="space-y-0">
+            {experiences.map((experience) => {
+              const current = !experience.experience_date_end;
+              return (
+                <li
+                  key={experience.experience_id}
+                  data-reveal="from-left"
+                  className="group relative grid cursor-pointer gap-4 border-t border-white/10 py-8 transition hover:bg-white/[0.02] md:grid-cols-[200px_1fr_auto] md:items-center md:gap-8 md:pl-10"
+                  onClick={() => openModal(experience)}
+                >
+                  <span className="absolute left-0 top-1/2 hidden h-3.5 w-3.5 -translate-y-1/2 rounded-full border-2 border-lime bg-ink transition group-hover:scale-125 group-hover:bg-lime md:block" />
+
+                  <p className="text-sm text-chalk-dim">
+                    {formatMonthYear(experience.experience_date_start)}
+                    {" — "}
+                    {current ? "Atual" : formatMonthYear(experience.experience_date_end)}
+                  </p>
+
+                  <div className="flex items-center gap-4">
+                    {experience.experience_company_avatar_sync ? (
+                      <Image
+                        src={experience.experience_company_avatar_sync}
+                        alt=""
+                        width={44}
+                        height={44}
+                        className="h-11 w-11 rounded-full border border-white/10 object-cover transition group-hover:border-lime/50"
+                      />
+                    ) : null}
+                    <div>
+                      <h3 className="font-display text-xl font-semibold text-chalk transition group-hover:text-lime sm:text-2xl">
+                        {experience.experience_company_name}
+                      </h3>
+                      <p className="text-sm text-chalk-muted">{experience.experience_position}</p>
+                    </div>
+                  </div>
+
+                  <span
+                    className={`w-fit rounded-full px-3 py-1 text-xs font-semibold ${
+                      current ? "bg-lime/15 text-lime" : "border border-white/10 text-chalk-dim"
+                    }`}
                   >
-                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
+                    {current ? "Online" : "Anterior"}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </div>
+
+      {showModal && active && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+          onClick={closeModal}
+        >
+          <div
+            className="experience-modal-panel max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-white/10 bg-ink-soft p-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-4">
+                {active.experience_company_avatar_sync ? (
+                  <Image
+                    src={active.experience_company_avatar_sync}
+                    alt=""
+                    width={52}
+                    height={52}
+                    className="h-12 w-12 rounded-full object-cover"
+                  />
+                ) : null}
+                <div>
+                  <h3 className="font-display text-2xl font-semibold text-chalk">
+                    {active.experience_company_name}
+                  </h3>
+                  <p className="text-sm text-chalk-muted">{active.experience_location}</p>
                 </div>
               </div>
+              <button onClick={closeModal} className="text-sm text-chalk-muted hover:text-lime">
+                Fechar
+              </button>
             </div>
 
-            <button
-              onClick={closeModal}
-              className="absolute right-0 top-0 m-4 rounded-full bg-white p-2 text-gray-800 shadow-md sm:hidden"
-            >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <dl className="mt-8 space-y-5 text-sm">
+              <div>
+                <dt className="text-chalk-dim">Cargo</dt>
+                <dd className="mt-1 text-chalk">{active.experience_position}</dd>
+              </div>
+              <div>
+                <dt className="text-chalk-dim">Modelo</dt>
+                <dd className="mt-1 text-chalk">{active.experience_operating_model}</dd>
+              </div>
+              {active.experience_company_website ? (
+                <div>
+                  <dt className="text-chalk-dim">Site</dt>
+                  <dd className="mt-1">
+                    <a
+                      href={active.experience_company_website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-lime underline-offset-2 hover:underline"
+                    >
+                      {active.experience_company_website}
+                    </a>
+                  </dd>
+                </div>
+              ) : null}
+              <div>
+                <dt className="text-chalk-dim">Sobre</dt>
+                <dd className="mt-1 leading-relaxed text-chalk-muted">{active.experience_about}</dd>
+              </div>
+            </dl>
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </section>
   );
 };
 
