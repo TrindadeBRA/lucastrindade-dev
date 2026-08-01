@@ -37,15 +37,22 @@ export default function HeroSectionAnimated(profileData: Profile) {
       if (!sectionRef.current || prefersReducedMotion()) return;
 
       const isMobile = window.innerWidth < 768;
+      const portraitRadius = isMobile ? "1.5rem" : "2rem";
 
-      // Texto/CTAs já visíveis — só a foto entra com animação leve
       gsap.fromTo(
         ".hero-portrait",
-        { clipPath: "inset(10% 10% 10% 10% round 2rem)", opacity: 0 },
         {
-          clipPath: "inset(0% 0% 0% 0% round 2rem)",
+          clipPath: `inset(12% 12% 12% 12% round ${portraitRadius})`,
+          opacity: 0,
+          y: isMobile ? 32 : 16,
+          scale: isMobile ? 0.92 : 0.96,
+        },
+        {
+          clipPath: `inset(0% 0% 0% 0% round ${portraitRadius})`,
           opacity: 1,
-          duration: 0.85,
+          y: 0,
+          scale: 1,
+          duration: isMobile ? 1.05 : 0.85,
           ease: "power3.out",
         }
       );
@@ -85,19 +92,17 @@ export default function HeroSectionAnimated(profileData: Profile) {
         },
       });
 
-      if (!isMobile) {
-        gsap.to(".hero-portrait-media-scroll", {
-          yPercent: 22,
-          scale: 1.18,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1.1,
-          },
-        });
-      }
+      gsap.to(".hero-portrait-media-scroll", {
+        yPercent: isMobile ? 12 : 22,
+        scale: isMobile ? 1.1 : 1.18,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: isMobile ? 0.8 : 1.1,
+        },
+      });
 
       gsap.to(".hero-glow", {
         opacity: 0.05,

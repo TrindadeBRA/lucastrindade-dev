@@ -59,12 +59,46 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
 
       const mediaEl = getMedia();
 
-      // Mobile/touch: sem idle 3D — evita vazamento da foto/texto e jank no scroll
       if (!canHover) {
-        if (mediaEl) gsap.set(mediaEl, { clearProps: "transform" });
-        if (layer) gsap.set(layer, { clearProps: "transform" });
-        gsap.set(card, { clearProps: "transform" });
-        return;
+        if (!idle) {
+          if (mediaEl) gsap.set(mediaEl, { clearProps: "transform" });
+          if (layer) gsap.set(layer, { clearProps: "transform" });
+          gsap.set(card, { clearProps: "transform" });
+          return;
+        }
+
+        gsap.set(card, {
+          force3D: true,
+          transformOrigin: "center center",
+          transformStyle: "preserve-3d",
+        });
+        if (mediaEl) gsap.set(mediaEl, { force3D: true });
+
+        const mobileIdle = gsap.timeline({
+          repeat: -1,
+          paused: true,
+          defaults: { ease: "sine.inOut" },
+        });
+
+        mobileIdle
+          .to(card, { y: -8, rotationZ: 0.7, scale: 1.02, duration: 2.5 })
+          .to(card, { y: 5, rotationZ: -0.55, scale: 1.005, duration: 2.7 })
+          .to(card, { y: -4, rotationZ: 0.35, scale: 1.015, duration: 2.3 });
+
+        if (mediaEl) {
+          mobileIdle.to(mediaEl, { scale: 1.05, y: -5, duration: 2.5 }, 0);
+          mobileIdle.to(mediaEl, { scale: 1.02, y: 4, duration: 2.7 }, 2.5);
+          mobileIdle.to(mediaEl, { scale: 1.04, y: -2, duration: 2.3 }, 5.2);
+        }
+
+        const startIdle = gsap.delayedCall(1.15, () => {
+          mobileIdle.play(0);
+        });
+
+        return () => {
+          startIdle.kill();
+          mobileIdle.kill();
+        };
       }
 
       if (mediaEl) {
