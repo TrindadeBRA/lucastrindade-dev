@@ -1,11 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Experience } from "@/pages/api/sectionsExperiences";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { asList } from "@/utils/asList";
-import { gsap, prefersReducedMotion, registerGsap } from "@/lib/gsap";
+import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
 
 function formatMonthYear(date: string) {
   if (!date) return "";
@@ -14,10 +13,152 @@ function formatMonthYear(date: string) {
 }
 
 const Experiences = (experienceData: Experience[] | Record<string, Experience>) => {
-  const sectionRef = useScrollReveal();
+  const sectionRef = useRef<HTMLElement>(null);
   const experiences = asList(experienceData);
   const [showModal, setShowModal] = useState(false);
   const [active, setActive] = useState<Experience | null>(null);
+
+  useGSAP(
+    () => {
+      registerGsap();
+      const root = sectionRef.current;
+      if (!root || prefersReducedMotion()) return;
+
+      const header = root.querySelector<HTMLElement>("[data-exp='header']");
+      const list = root.querySelector<HTMLElement>("[data-exp='list']");
+      const line = root.querySelector<HTMLElement>("[data-exp='line']");
+      const items = gsap.utils.toArray<HTMLElement>("[data-exp='item']", root);
+      const isMobile = window.innerWidth < 768;
+
+      if (header) {
+        gsap.from(header.children, {
+          y: isMobile ? 10 : 16,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.05,
+          ease: "power2.out",
+          force3D: true,
+          clearProps: "transform,opacity",
+          scrollTrigger: {
+            trigger: header,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
+        });
+      }
+
+      // Linha: scrub no desktop; no mobile desenha uma vez (mais fluido no touch)
+      if (line && list) {
+        if (isMobile) {
+          gsap.fromTo(
+            line,
+            { scaleY: 0, transformOrigin: "top center" },
+            {
+              scaleY: 1,
+              duration: 0.9,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: list,
+                start: "top 80%",
+                toggleActions: "play none none none",
+              },
+            }
+          );
+        } else {
+          gsap.fromTo(
+            line,
+            { scaleY: 0, transformOrigin: "top center" },
+            {
+              scaleY: 1,
+              ease: "none",
+              force3D: true,
+              scrollTrigger: {
+                trigger: list,
+                start: "top 72%",
+                end: "bottom 45%",
+                scrub: 0.75,
+              },
+            }
+          );
+        }
+      }
+
+      items.forEach((item) => {
+        const dot = item.querySelector<HTMLElement>("[data-exp='dot']");
+
+        if (isMobile) {
+          // Touch: reveal único leve — evita card “preso” no meio do scrub
+          gsap.from(item, {
+            y: 14,
+            opacity: 0,
+            duration: 0.45,
+            ease: "power2.out",
+            force3D: true,
+            clearProps: "transform,opacity",
+            scrollTrigger: {
+              trigger: item,
+              start: "top 92%",
+              toggleActions: "play none none none",
+            },
+          });
+
+          if (dot) {
+            gsap.from(dot, {
+              scale: 0.6,
+              opacity: 0,
+              duration: 0.35,
+              ease: "power2.out",
+              clearProps: "transform,opacity",
+              scrollTrigger: {
+                trigger: item,
+                start: "top 92%",
+                toggleActions: "play none none none",
+              },
+            });
+          }
+          return;
+        }
+
+        gsap.fromTo(
+          item,
+          { y: 20, opacity: 0.12, scale: 0.992 },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            ease: "none",
+            force3D: true,
+            scrollTrigger: {
+              trigger: item,
+              start: "top 92%",
+              end: "top 68%",
+              scrub: 0.65,
+            },
+          }
+        );
+
+        if (dot) {
+          gsap.fromTo(
+            dot,
+            { scale: 0.4, opacity: 0.2 },
+            {
+              scale: 1,
+              opacity: 1,
+              ease: "none",
+              force3D: true,
+              scrollTrigger: {
+                trigger: item,
+                start: "top 90%",
+                end: "top 70%",
+                scrub: 0.5,
+              },
+            }
+          );
+        }
+      });
+    },
+    { scope: sectionRef, dependencies: [experiences.length] }
+  );
 
   const openModal = (experience: Experience) => {
     setActive(experience);
@@ -28,8 +169,8 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
       if (prefersReducedMotion()) return;
       gsap.fromTo(
         ".experience-modal-panel",
-        { y: 36, opacity: 0, scale: 0.97 },
-        { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }
+        { y: 24, opacity: 0, scale: 0.98 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }
       );
     });
   };
@@ -46,9 +187,9 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
       return;
     }
     gsap.to(".experience-modal-panel", {
-      y: 18,
+      y: 12,
       opacity: 0,
-      duration: 0.22,
+      duration: 0.2,
       ease: "power2.in",
       onComplete: finish,
     });
@@ -57,19 +198,15 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
   return (
     <section ref={sectionRef} id="experiencia" className="border-t border-white/5 bg-ink py-24 sm:py-32">
       <div className="site-container">
-        <div className="max-w-2xl">
-          <p className="section-label" data-reveal="title">
-            Trajetória
-          </p>
-          <h2 className="section-title mt-4" data-reveal="title">
-            Experiência profissional
-          </h2>
+        <div data-exp="header" className="max-w-2xl">
+          <p className="section-label">Trajetória</p>
+          <h2 className="section-title mt-4">Experiência profissional</h2>
         </div>
 
-        <div className="relative mt-16">
+        <div data-exp="list" className="relative mt-16">
           <div
+            data-exp="line"
             className="absolute bottom-4 left-[7px] top-4 hidden w-px bg-white/40 md:block"
-            data-reveal="line"
             aria-hidden="true"
           />
 
@@ -79,11 +216,14 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
               return (
                 <li
                   key={experience.experience_id}
-                  data-reveal="from-left"
+                  data-exp="item"
                   className="group relative grid cursor-pointer gap-4 border-t border-white/10 py-8 transition hover:bg-white/[0.02] md:grid-cols-[200px_1fr_auto] md:items-center md:gap-8 md:pl-10"
                   onClick={() => openModal(experience)}
                 >
-                  <span className="absolute left-0 top-1/2 hidden h-3.5 w-3.5 -translate-y-1/2 rounded-full border-2 border-white/50 bg-ink transition group-hover:scale-125 group-hover:bg-chalk md:block" />
+                  <span
+                    data-exp="dot"
+                    className="absolute left-0 top-1/2 hidden h-3.5 w-3.5 -translate-y-1/2 rounded-full border-2 border-white/50 bg-ink transition group-hover:scale-125 group-hover:bg-chalk md:block"
+                  />
 
                   <p className="text-sm text-chalk-dim">
                     {formatMonthYear(experience.experience_date_start)}
@@ -91,17 +231,17 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
                     {current ? "Atual" : formatMonthYear(experience.experience_date_end)}
                   </p>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex min-w-0 items-center gap-4">
                     {experience.experience_company_avatar_sync ? (
                       <Image
                         src={experience.experience_company_avatar_sync}
                         alt=""
                         width={44}
                         height={44}
-                        className="h-11 w-11 rounded-full border border-white/10 object-cover transition group-hover:border-white/40"
+                        className="h-11 w-11 shrink-0 rounded-full border border-white/10 object-cover transition group-hover:border-white/40"
                       />
                     ) : null}
-                    <div>
+                    <div className="min-w-0">
                       <h3 className="font-display text-xl font-semibold text-chalk transition group-hover:text-white sm:text-2xl">
                         {experience.experience_company_name}
                       </h3>

@@ -16,7 +16,7 @@ const ENABLE_GITHUB_BG = false;
 export default function HeroSectionAnimated(profileData: Profile) {
   const sectionRef = useRef<HTMLElement>(null);
   const portraitStageRef = useTilt3D<HTMLDivElement>({
-    maxTilt: 16,
+    maxTilt: 9,
     idle: true,
     listenSelector: "#hero",
     mediaSelector: ".hero-portrait-media",
@@ -37,35 +37,18 @@ export default function HeroSectionAnimated(profileData: Profile) {
       if (!sectionRef.current || prefersReducedMotion()) return;
 
       const isMobile = window.innerWidth < 768;
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      gsap.set(".hero-word > span", { yPercent: 110 });
-      gsap.set(".hero-portrait", { clipPath: "inset(18% 18% 18% 18% round 2rem)", opacity: 0 });
-
-      tl.from(".hero-meta", { y: 20, opacity: 0, duration: 0.55 })
-        .to(
-          ".hero-word > span",
-          {
-            yPercent: 0,
-            duration: isMobile ? 0.7 : 0.95,
-            stagger: 0.08,
-            ease: "power4.out",
-          },
-          "-=0.15"
-        )
-        .from(".hero-line", { y: 28, opacity: 0, duration: 0.7 }, "-=0.35")
-        .from(".hero-cta", { y: 22, opacity: 0, stagger: 0.08, duration: 0.55 }, "-=0.35")
-        .to(
-          ".hero-portrait",
-          {
-            clipPath: "inset(0% 0% 0% 0% round 2rem)",
-            opacity: 1,
-            duration: 1.2,
-            ease: "power3.out",
-          },
-          "-=0.85"
-        )
-        .from(".hero-scroll", { opacity: 0, y: 10, duration: 0.5 }, "-=0.4");
+      // Texto/CTAs já visíveis — só a foto entra com animação leve
+      gsap.fromTo(
+        ".hero-portrait",
+        { clipPath: "inset(10% 10% 10% 10% round 2rem)", opacity: 0 },
+        {
+          clipPath: "inset(0% 0% 0% 0% round 2rem)",
+          opacity: 1,
+          duration: 0.85,
+          ease: "power3.out",
+        }
+      );
 
       gsap.to(".hero-scroll-dot", {
         y: 10,
@@ -87,33 +70,34 @@ export default function HeroSectionAnimated(profileData: Profile) {
         },
       });
 
-      // Scroll em wrapper separado — não disputa o tilt do mouse no card
+      // Scroll: no mobile só Y leve (sem rotate 3D — mais fluido no touch)
       gsap.to(".hero-portrait-scroll", {
-        y: isMobile ? 36 : 72,
-        rotateX: isMobile ? 4 : 10,
-        rotateY: isMobile ? -2 : -6,
-        scale: 0.94,
+        y: isMobile ? 28 : 72,
+        ...(isMobile
+          ? {}
+          : { rotateX: 10, rotateY: -6, scale: 0.94 }),
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
           end: "bottom top",
-          scrub: 1.1,
+          scrub: isMobile ? 0.8 : 1.1,
         },
       });
 
-      // Parallax no wrapper estável — não disputa x/y do tilt na Image
-      gsap.to(".hero-portrait-media-scroll", {
-        yPercent: isMobile ? 12 : 22,
-        scale: 1.18,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1.1,
-        },
-      });
+      if (!isMobile) {
+        gsap.to(".hero-portrait-media-scroll", {
+          yPercent: 22,
+          scale: 1.18,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.1,
+          },
+        });
+      }
 
       gsap.to(".hero-glow", {
         opacity: 0.05,
@@ -134,19 +118,19 @@ export default function HeroSectionAnimated(profileData: Profile) {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative flex min-h-[calc(100svh-4.75rem)] flex-col overflow-hidden bg-ink"
+      className="relative flex h-[calc(100svh-4.75rem)] min-h-[calc(100svh-4.75rem)] flex-col overflow-hidden bg-ink lg:h-auto lg:min-h-[calc(100svh-4.75rem)]"
     >
       <div className="hero-glow pointer-events-none absolute -right-24 top-10 z-[1] h-[28rem] w-[28rem] rounded-full bg-white/10 blur-[100px]" />
       <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_20%_20%,rgba(255,255,255,0.06),transparent_45%)]" />
       {ENABLE_GITHUB_BG ? <HeroGithubBg /> : null}
 
-      <div className="site-container relative z-10 grid flex-1 items-center gap-10 py-10 pb-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-12 lg:pb-24">
+      <div className="site-container relative z-10 grid flex-1 content-center items-center gap-10 py-6 pb-10 sm:gap-12 sm:py-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-12 lg:pb-24">
         <div className="hero-content relative max-w-2xl">
-          <p className="hero-meta mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-chalk-muted">
+          <p className="hero-meta mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-chalk-muted sm:mb-5">
             {role}
           </p>
 
-          <h1 className="font-display text-[clamp(2.75rem,8vw,6rem)] font-semibold leading-[0.9] tracking-tighter2 text-chalk">
+          <h1 className="font-display text-[clamp(2.35rem,9vw,6rem)] font-semibold leading-[0.9] tracking-tighter2 text-chalk">
             {words.map((word, index) => (
               <span key={`${word}-${index}`} className="hero-word mr-[0.22em] last:mr-0">
                 <span>{word}</span>
@@ -155,43 +139,56 @@ export default function HeroSectionAnimated(profileData: Profile) {
           </h1>
 
           {bio ? (
-            <p className="hero-line mt-6 max-w-lg text-base leading-relaxed text-chalk-muted sm:text-lg">
+            <p className="hero-line mt-4 max-w-lg text-sm leading-relaxed text-chalk-muted sm:mt-6 sm:text-base lg:text-lg">
               {bio}
             </p>
           ) : null}
 
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a
-              ref={primaryCtaRef}
-              href="https://api.whatsapp.com/send?phone=5511952498126"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hero-cta btn-primary inline-flex items-center gap-2 hover:bg-white hover:text-ink"
-            >
-              <FaWhatsapp size={16} />
-              Fale comigo
-            </a>
-            <Link
-              ref={ghostCtaRef}
-              href="/resume"
-              target="_blank"
-              className="hero-cta btn-ghost hover:border-white/40 hover:text-white"
-            >
-              Ver currículo
-            </Link>
-            <div className="hero-cta ml-1 flex items-center gap-3 pl-2">
-              <Link href="https://www.linkedin.com/in/trindadebra/" target="_blank" aria-label="LinkedIn">
-                <FaLinkedin className="text-chalk-muted transition hover:text-white" size={18} />
+          <div className="mt-6 flex flex-col gap-4 sm:mt-8 lg:flex-row lg:flex-wrap lg:items-center lg:gap-3">
+            <div className="flex w-full gap-2.5 sm:w-auto sm:gap-3">
+              <a
+                ref={primaryCtaRef}
+                href="https://api.whatsapp.com/send?phone=5511952498126"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hero-cta btn-primary inline-flex flex-1 items-center justify-center gap-2 px-4 py-2.5 text-xs hover:bg-white hover:text-ink sm:flex-none sm:px-5 sm:text-sm"
+              >
+                <FaWhatsapp size={15} />
+                Fale comigo
+              </a>
+              <Link
+                ref={ghostCtaRef}
+                href="/resume"
+                target="_blank"
+                className="hero-cta btn-ghost inline-flex flex-1 items-center justify-center px-4 py-2.5 text-xs hover:border-white/40 hover:text-white sm:flex-none sm:px-5 sm:text-sm"
+              >
+                Ver currículo
               </Link>
-              <Link href="https://github.com/TrindadeBRA/" target="_blank" aria-label="GitHub">
-                <FaGithub className="text-chalk-muted transition hover:text-white" size={18} />
+            </div>
+            <div className="hero-cta flex items-center gap-1 border-t border-white/10 pt-3 lg:ml-1 lg:border-0 lg:pt-0 lg:pl-1">
+              <Link
+                href="https://www.linkedin.com/in/trindadebra/"
+                target="_blank"
+                aria-label="LinkedIn"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-chalk-muted transition hover:bg-white/5 hover:text-white"
+              >
+                <FaLinkedin size={18} />
+              </Link>
+              <Link
+                href="https://github.com/TrindadeBRA/"
+                target="_blank"
+                aria-label="GitHub"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-chalk-muted transition hover:bg-white/5 hover:text-white"
+              >
+                <FaGithub size={18} />
               </Link>
               <Link
                 href="https://api.whatsapp.com/send?phone=5511952498126"
                 target="_blank"
                 aria-label="WhatsApp"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-chalk-muted transition hover:bg-white/5 hover:text-white"
               >
-                <FaWhatsapp className="text-chalk-muted transition hover:text-white" size={18} />
+                <FaWhatsapp size={18} />
               </Link>
             </div>
           </div>
@@ -199,8 +196,8 @@ export default function HeroSectionAnimated(profileData: Profile) {
 
         <div
           ref={portraitStageRef}
-          className="hero-portrait-stage relative mx-auto w-full max-w-sm lg:max-w-none"
-          style={{ perspective: 1400 }}
+          className="hero-portrait-stage relative mx-auto w-[min(100%,21rem)] sm:w-[min(100%,23rem)] lg:w-full lg:max-w-none"
+          style={{ perspective: 900 }}
         >
           <div
             className="hero-portrait-scroll will-change-transform"
@@ -208,35 +205,43 @@ export default function HeroSectionAnimated(profileData: Profile) {
           >
             <div
               data-tilt-card
-              className="hero-portrait relative mx-auto aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-white/10 bg-ink-muted will-change-transform lg:max-h-[min(68svh,34rem)] lg:w-full"
+              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted will-change-transform sm:rounded-[2rem] md:overflow-visible lg:aspect-[4/5] lg:max-h-[min(68svh,34rem)] lg:w-full"
               style={{ transformStyle: "preserve-3d" }}
             >
-              <div className="hero-portrait-media absolute inset-0 will-change-transform">
-                <div className="hero-portrait-media-scroll absolute inset-[-6%] will-change-transform">
-                  {avatar ? (
-                    <Image
-                      src={avatar}
-                      alt={name}
-                      fill
-                      priority
-                      className="object-cover"
-                      sizes="(max-width: 768px) 90vw, 40vw"
-                    />
-                  ) : (
-                    <div className="flex h-full items-center justify-center bg-ink-muted text-chalk-dim">
-                      Foto
-                    </div>
-                  )}
+              {/* Layer atrás: no mobile fica plana/clipada; no desktop ganha profundidade Z */}
+              <div
+                className="absolute inset-0 overflow-hidden rounded-[2rem] md:[transform:translateZ(-48px)_scale(1.12)]"
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="hero-portrait-media absolute inset-0 will-change-transform">
+                  <div className="hero-portrait-media-scroll absolute inset-0 will-change-transform md:inset-[-8%]">
+                    {avatar ? (
+                      <Image
+                        src={avatar}
+                        alt={name}
+                        fill
+                        priority
+                        className="object-cover"
+                        sizes="(max-width: 768px) 90vw, 40vw"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center bg-ink-muted text-chalk-dim">
+                        Foto
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
               <div
                 data-tilt-shine
-                className="pointer-events-none absolute inset-0 z-[1] opacity-0 mix-blend-soft-light"
+                className="pointer-events-none absolute inset-0 z-[1] rounded-[2rem] opacity-0 mix-blend-soft-light md:[transform:translateZ(12px)]"
               />
-              <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-ink via-ink/50 to-transparent opacity-95" />
+              <div className="pointer-events-none absolute inset-0 z-[2] rounded-[2rem] bg-gradient-to-t from-ink via-ink/50 to-transparent opacity-95 md:[transform:translateZ(24px)]" />
+              {/* Layer da frente: profundidade só no desktop */}
               <div
-                className="absolute inset-x-0 bottom-0 z-[3] px-5 pb-5 pt-16 sm:px-6 sm:pb-6"
-                style={{ transform: "translateZ(36px)" }}
+                data-tilt-layer
+                className="absolute inset-x-0 bottom-0 z-[3] px-5 pb-5 pt-16 sm:px-6 sm:pb-6 md:[transform:translateZ(64px)]"
+                style={{ transformStyle: "preserve-3d" }}
               >
                 <div className="max-w-[19rem]">
                   <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-chalk-muted sm:text-sm">

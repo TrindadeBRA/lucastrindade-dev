@@ -146,7 +146,7 @@ export default function CertificateCard({ certificate, onOpen }: CertificateCard
       className="group overflow-hidden rounded-2xl border border-white/10 bg-ink text-left transition hover:border-white/30"
       data-reveal="card"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-ink-muted" data-reveal="clip">
+      <div className="relative aspect-[4/3] overflow-hidden bg-ink-muted">
         {certificate.certificate_file_sync ? (
           <Image
             src={certificate.certificate_file_sync}

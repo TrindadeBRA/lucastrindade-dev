@@ -5,13 +5,14 @@ type UseTilt3DOptions = {
   maxTilt?: number;
   shineSelector?: string;
   mediaSelector?: string;
+  layerSelector?: string;
   /** Escuta o mouse neste seletor (ex: #hero) em vez de só no card. */
   listenSelector?: string;
   /** Animação 3D suave enquanto não há interação. */
   idle?: boolean;
 };
 
-/** Perspective tilt reativo — mouse + idle + profundidade na mídia. */
+/** Perspective tilt reativo — mouse + idle + profundidade entre mídia e layer. */
 export function useTilt3D<T extends HTMLElement = HTMLElement>(
   options: UseTilt3DOptions = {}
 ) {
@@ -19,6 +20,7 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
     maxTilt = 16,
     shineSelector,
     mediaSelector = ".hero-portrait-media",
+    layerSelector = "[data-tilt-layer]",
     listenSelector = "#hero",
     idle = true,
   } = options;
@@ -38,10 +40,12 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
       const shine = shineSelector
         ? stage.querySelector<HTMLElement>(shineSelector)
         : stage.querySelector<HTMLElement>("[data-tilt-shine]");
+      const layer = stage.querySelector<HTMLElement>(layerSelector);
       const listenEl =
         (listenSelector && document.querySelector<HTMLElement>(listenSelector)) || stage;
 
-      gsap.set(stage, { perspective: 1400 });
+      // Perspective mais curta = depth mais perceptível entre layers
+      gsap.set(stage, { perspective: 900 });
       gsap.set(card, {
         transformStyle: "preserve-3d",
         transformOrigin: "center center",
@@ -50,11 +54,25 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
 
       const getMedia = () => stage.querySelector<HTMLElement>(mediaSelector);
 
-      const mediaEl = getMedia();
-      if (mediaEl) gsap.set(mediaEl, { force3D: true, scale: 1.08 });
-
       const finePointer = window.matchMedia("(pointer: fine)").matches;
       const canHover = finePointer && window.innerWidth >= 768;
+
+      const mediaEl = getMedia();
+
+      // Mobile/touch: sem idle 3D — evita vazamento da foto/texto e jank no scroll
+      if (!canHover) {
+        if (mediaEl) gsap.set(mediaEl, { clearProps: "transform" });
+        if (layer) gsap.set(layer, { clearProps: "transform" });
+        gsap.set(card, { clearProps: "transform" });
+        return;
+      }
+
+      if (mediaEl) {
+        gsap.set(mediaEl, { force3D: true, transformStyle: "preserve-3d", z: -20, scale: 1.06 });
+      }
+      if (layer) {
+        gsap.set(layer, { force3D: true, transformStyle: "preserve-3d", z: 64 });
+      }
 
       let idleTween: gsap.core.Timeline | null = null;
       let resetTween: gsap.core.Tween | null = null;
@@ -84,32 +102,39 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
 
         idleTween
           .to(card, {
-            rotationY: 9,
-            rotationX: -5,
-            z: 20,
-            scale: 1.02,
-            duration: 2.6,
+            rotationY: 5.5,
+            rotationX: -3,
+            z: 12,
+            scale: 1.015,
+            duration: 2.8,
           })
           .to(card, {
-            rotationY: -8,
-            rotationX: 4,
+            rotationY: -5,
+            rotationX: 2.5,
+            z: 6,
+            scale: 1.008,
+            duration: 3.1,
+          })
+          .to(card, {
+            rotationY: 2.5,
+            rotationX: -1.5,
             z: 10,
-            scale: 1.01,
-            duration: 2.9,
-          })
-          .to(card, {
-            rotationY: 4,
-            rotationX: -2.5,
-            z: 16,
-            scale: 1.025,
-            duration: 2.4,
+            scale: 1.012,
+            duration: 2.6,
           });
 
         if (media) {
-          // x/y em px — não disputa yPercent/scale do scroll
-          idleTween.to(media, { x: 10, y: -8, duration: 2.6, ease: "sine.inOut" }, 0);
-          idleTween.to(media, { x: -12, y: 8, duration: 2.9, ease: "sine.inOut" }, 2.6);
-          idleTween.to(media, { x: 6, y: -4, duration: 2.4, ease: "sine.inOut" }, 5.5);
+          // Fundo: move mais (parallax contrário à layer)
+          idleTween.to(media, { x: 10, y: -8, z: -28, duration: 2.8, ease: "sine.inOut" }, 0);
+          idleTween.to(media, { x: -12, y: 8, z: -18, duration: 3.1, ease: "sine.inOut" }, 2.8);
+          idleTween.to(media, { x: 6, y: -4, z: -24, duration: 2.6, ease: "sine.inOut" }, 5.9);
+        }
+
+        if (layer) {
+          // Frente: deslocamento oposto — sensação de volume
+          idleTween.to(layer, { x: -6, y: 4, z: 72, duration: 2.8, ease: "sine.inOut" }, 0);
+          idleTween.to(layer, { x: 7, y: -5, z: 58, duration: 3.1, ease: "sine.inOut" }, 2.8);
+          idleTween.to(layer, { x: -4, y: 3, z: 68, duration: 2.6, ease: "sine.inOut" }, 5.9);
         }
 
         if (shine) {
@@ -135,30 +160,33 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
 
       if (idle) startIdle();
 
-      if (!canHover) {
-        return () => {
-          idleTween?.kill();
-          shineIdleTween?.kill();
-          if (shine) gsap.killTweensOf(shine);
-        };
-      }
-
       const rotateXTo = gsap.quickTo(card, "rotationX", { duration: 0.18, ease: "power3.out" });
       const rotateYTo = gsap.quickTo(card, "rotationY", { duration: 0.18, ease: "power3.out" });
       const zTo = gsap.quickTo(card, "z", { duration: 0.22, ease: "power3.out" });
       const scaleTo = gsap.quickTo(card, "scale", { duration: 0.22, ease: "power3.out" });
 
-      // quickTo por propriedade, recriado se o nó da mídia mudar (Next/Image)
       let mediaXTo: ((v: number) => void) | null = null;
       let mediaYTo: ((v: number) => void) | null = null;
+      let mediaZTo: ((v: number) => void) | null = null;
       let mediaBound: HTMLElement | null = null;
+
+      let layerXTo: ((v: number) => void) | null = null;
+      let layerYTo: ((v: number) => void) | null = null;
+      let layerZTo: ((v: number) => void) | null = null;
+
+      if (layer) {
+        layerXTo = gsap.quickTo(layer, "x", { duration: 0.22, ease: "power3.out" });
+        layerYTo = gsap.quickTo(layer, "y", { duration: 0.22, ease: "power3.out" });
+        layerZTo = gsap.quickTo(layer, "z", { duration: 0.22, ease: "power3.out" });
+      }
 
       const bindMediaQuickTo = (media: HTMLElement | null) => {
         if (!media || media === mediaBound) return;
         mediaBound = media;
-        gsap.set(media, { force3D: true });
+        gsap.set(media, { force3D: true, transformStyle: "preserve-3d" });
         mediaXTo = gsap.quickTo(media, "x", { duration: 0.22, ease: "power3.out" });
         mediaYTo = gsap.quickTo(media, "y", { duration: 0.22, ease: "power3.out" });
+        mediaZTo = gsap.quickTo(media, "z", { duration: 0.22, ease: "power3.out" });
       };
 
       bindMediaQuickTo(getMedia());
@@ -169,14 +197,21 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         const x = gsap.utils.clamp(-0.55, 0.55, (mx - (rect.left + rect.width / 2)) / rect.width);
         const y = gsap.utils.clamp(-0.55, 0.55, (my - (rect.top + rect.height / 2)) / rect.height);
 
-        rotateYTo(x * maxTilt * 2.2);
-        rotateXTo(-y * maxTilt * 1.9);
-        zTo(28 + Math.abs(x) * 12 + Math.abs(y) * 8);
-        scaleTo(1.035);
+        rotateYTo(x * maxTilt * 1.35);
+        rotateXTo(-y * maxTilt * 1.2);
+        zTo(16 + Math.abs(x) * 6 + Math.abs(y) * 4);
+        scaleTo(1.02);
 
         bindMediaQuickTo(getMedia());
-        mediaXTo?.(x * -28);
-        mediaYTo?.(y * -22);
+        // Imagem recua e desliza contra o mouse
+        mediaXTo?.(x * -22);
+        mediaYTo?.(y * -16);
+        mediaZTo?.(-20 - Math.abs(x) * 18 - Math.abs(y) * 12);
+
+        // Texto avança e desliza a favor do mouse (layer da frente)
+        layerXTo?.(x * 14);
+        layerYTo?.(y * 10);
+        layerZTo?.(64 + Math.abs(x) * 20 + Math.abs(y) * 14);
 
         if (shine) {
           const px = (x + 0.5) * 100;
@@ -224,6 +259,17 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
           gsap.to(media, {
             x: 0,
             y: 0,
+            z: -20,
+            duration: 0.85,
+            ease: "power3.out",
+            overwrite: "auto",
+          });
+        }
+        if (layer) {
+          gsap.to(layer, {
+            x: 0,
+            y: 0,
+            z: 64,
             duration: 0.85,
             ease: "power3.out",
             overwrite: "auto",
@@ -240,7 +286,6 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
 
         if (!isInsideListen(mx, my)) {
           if (interacting && !leaveTimer) {
-            // debounce: evita perder o rastro ao cruzar header/bordas por 1 frame
             leaveTimer = window.setTimeout(() => {
               leaveTimer = 0;
               if (!isInsideListen(mx, my)) endInteraction();
@@ -253,7 +298,6 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         if (!raf) raf = window.requestAnimationFrame(applyTilt);
       };
 
-      // document: não perde eventos ao cruzar filhos, sticky header ou gaps
       document.addEventListener("pointermove", onPointerMove, { passive: true });
 
       return () => {
@@ -269,7 +313,7 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
     },
     {
       scope: stageRef,
-      dependencies: [maxTilt, shineSelector, mediaSelector, listenSelector, idle],
+      dependencies: [maxTilt, shineSelector, mediaSelector, layerSelector, listenSelector, idle],
     }
   );
 
