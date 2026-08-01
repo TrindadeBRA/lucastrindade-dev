@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import {
   DOLLAR_BILL_SRC,
   MONEY_RAIN_COUNT,
-  MONEY_RAIN_DURATION_MS,
+  MONEY_RAIN_MAX_BILLS,
 } from "../constants";
 import styles from "../styles/money-rain.module.css";
 
@@ -18,9 +18,8 @@ type MoneyBill = {
 };
 
 type MoneyRainProps = {
-  sessionKey: string | null;
+  burstKey: string | null;
   count?: number;
-  durationMs?: number;
   imageSrc?: string;
 };
 
@@ -29,47 +28,44 @@ type BillStyle = CSSProperties & {
   "--bill-sway": string;
 };
 
-function createBills(count: number, sessionKey: string): MoneyBill[] {
+function createBills(count: number, burstKey: string): MoneyBill[] {
   return Array.from({ length: count }, (_, index) => {
     const size = 34 + Math.random() * 42;
     return {
-      id: `${sessionKey}-${index}`,
-      left: Math.random() * 108 - 4,
-      delay: Math.random() * 1.35,
-      duration: 1.35 + Math.random() * 1.8,
+      id: `${burstKey}-${index}`,
+      left: Math.random() * 110 - 5,
+      delay: Math.random() * 0.85,
+      duration: 2.4 + Math.random() * 1.6,
       size,
       rotate: Math.random() * 720 - 360,
-      sway: 18 + Math.random() * 42,
+      sway: 18 + Math.random() * 48,
       opacity: 0.78 + Math.random() * 0.22,
     };
   });
 }
 
 export default function MoneyRain({
-  sessionKey,
+  burstKey,
   count = MONEY_RAIN_COUNT,
-  durationMs = MONEY_RAIN_DURATION_MS,
   imageSrc = DOLLAR_BILL_SRC,
 }: MoneyRainProps) {
-  const [activeKey, setActiveKey] = useState<string | null>(null);
+  const [bills, setBills] = useState<MoneyBill[]>([]);
 
   useEffect(() => {
-    if (!sessionKey) return;
+    if (!burstKey) return;
 
-    setActiveKey(sessionKey);
-    const timer = window.setTimeout(() => {
-      setActiveKey((current) => (current === sessionKey ? null : current));
-    }, durationMs);
+    setBills((current) => {
+      const next = [...current, ...createBills(count, burstKey)];
+      if (next.length <= MONEY_RAIN_MAX_BILLS) return next;
+      return next.slice(next.length - MONEY_RAIN_MAX_BILLS);
+    });
+  }, [burstKey, count]);
 
-    return () => window.clearTimeout(timer);
-  }, [sessionKey, durationMs]);
+  const removeBill = (id: string) => {
+    setBills((current) => current.filter((bill) => bill.id !== id));
+  };
 
-  const bills = useMemo(() => {
-    if (!activeKey) return [];
-    return createBills(count, activeKey);
-  }, [activeKey, count]);
-
-  if (!activeKey || bills.length === 0) return null;
+  if (bills.length === 0) return null;
 
   return (
     <div className={styles.root} aria-hidden="true">
@@ -92,6 +88,7 @@ export default function MoneyRain({
             className={styles.bill}
             draggable={false}
             style={style}
+            onAnimationEnd={() => removeBill(bill.id)}
           />
         );
       })}
