@@ -5,7 +5,8 @@ export type CheatEffectId = "money-rain";
 export type CheatCodeDefinition = {
   id: CheatCodeId;
   code: string;
-  label?: string;
+  label: string;
+  description: string;
   effect?: CheatEffectId;
   onActivate?: () => void;
 };

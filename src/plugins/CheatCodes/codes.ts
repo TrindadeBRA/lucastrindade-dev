@@ -4,7 +4,9 @@ export const defaultCheatCodes: CheatCodeDefinition[] = [
   {
     id: "moneyyy",
     code: "moneyyy",
-    label: "Money",
+    label: "Chuva de Dinheiro",
+    description:
+      "Modo rico instantâneo: notas caindo do céu. Zero IR, zero blockchain, só ostentação digital.",
     effect: "money-rain",
   },
 ];
