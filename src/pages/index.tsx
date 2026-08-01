@@ -45,11 +45,11 @@ export default function Home({
       <Header />
       <main>
         <HeroSectionAnimated {...(profileData || ({} as Profile))} />
-        <PersonalProjects {...(personalProjectsData || [])} />
         <Presentation {...(profileData || ({} as Profile))} />
         <Experiences {...(experienceData || [])} />
         <Skills {...(skillsData || [])} />
         <Certificates {...(certificateData || [])} />
+        <PersonalProjects {...(personalProjectsData || [])} />
       </main>
       <Footer />
     </>

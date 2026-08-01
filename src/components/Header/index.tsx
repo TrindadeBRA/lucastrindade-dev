@@ -7,11 +7,11 @@ import Link from "next/link";
 import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
 
 const navigation = [
-  { name: "Projetos", href: "#projetos" },
   { name: "Sobre", href: "#sobre" },
   { name: "Experiência", href: "#experiencia" },
   { name: "Skills", href: "#skills" },
   { name: "Estudos", href: "#estudos" },
+  { name: "Projetos", href: "#projetos" },
 ];
 
 export default function Header() {

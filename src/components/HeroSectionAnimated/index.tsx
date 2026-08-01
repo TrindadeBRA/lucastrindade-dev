@@ -7,6 +7,7 @@ import { Profile } from "@/pages/api/sectionProfile";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
 import { useMagnetic } from "@/hooks/useMagnetic";
+import HeroGithubCalendar from "@/components/HeroGithubCalendar";
 
 export default function HeroSectionAnimated(profileData: Profile) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -43,6 +44,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
         )
         .from(".hero-line", { y: 28, opacity: 0, duration: 0.7 }, "-=0.35")
         .from(".hero-cta", { y: 22, opacity: 0, stagger: 0.08, duration: 0.55 }, "-=0.35")
+        .from(".hero-github", { y: 16, opacity: 0, duration: 0.7 }, "-=0.25")
         .to(
           ".hero-portrait",
           {
@@ -165,6 +167,8 @@ export default function HeroSectionAnimated(profileData: Profile) {
               </Link>
             </div>
           </div>
+
+          <HeroGithubCalendar />
         </div>
 
         <div className="hero-portrait relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-ink-muted lg:max-h-[min(68svh,34rem)] lg:max-w-none lg:w-full">
@@ -190,7 +194,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
       </div>
 
       <a
-        href="#projetos"
+        href="#sobre"
         className="hero-scroll absolute bottom-5 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
       >
         <span className="text-[10px] uppercase tracking-[0.3em] text-chalk-dim">Scroll</span>

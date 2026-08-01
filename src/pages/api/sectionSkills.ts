@@ -35,8 +35,8 @@ export async function getSectionSkills(): Promise<Skill[]> {
     database_id: "f956ac4be74a42f8a9171149c1c9bc5a",
   });
 
-  const skills = response.results.map((skill: any) => {
-    const properties = skill.properties || {};
+  const skills = response.results.map((row: any) => {
+    const properties = row.properties || {};
     const nameProp = pickProp(properties, ["skill_name", "Name", "name", "Skill"]);
     const descriptionProp = pickProp(properties, [
       "skill_description",
@@ -61,12 +61,17 @@ export async function getSectionSkills(): Promise<Skill[]> {
       "proficiency",
     ]);
 
-    return {
-      skill_name: readTitle(nameProp) || readRichText(nameProp),
-      skill_description: readRichText(descriptionProp) || undefined,
-      skill_category: readSelect(categoryProp) || readRichText(categoryProp) || undefined,
-      skill_level: readSelect(levelProp) || readRichText(levelProp) || undefined,
-    };
+    const skill_name = readTitle(nameProp) || readRichText(nameProp);
+    const skill_description = readRichText(descriptionProp);
+    const skill_category = readSelect(categoryProp) || readRichText(categoryProp);
+    const skill_level = readSelect(levelProp) || readRichText(levelProp);
+
+    // Omit empty optionals — Next.js getStaticProps cannot serialize `undefined`
+    const mapped: Skill = { skill_name };
+    if (skill_description) mapped.skill_description = skill_description;
+    if (skill_category) mapped.skill_category = skill_category;
+    if (skill_level) mapped.skill_level = skill_level;
+    return mapped;
   });
 
   return skills.filter((skill) => skill.skill_name);
