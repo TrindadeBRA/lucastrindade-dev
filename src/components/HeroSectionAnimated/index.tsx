@@ -15,11 +15,7 @@ const ENABLE_GITHUB_BG = false;
 
 export default function HeroSectionAnimated(profileData: Profile) {
   const sectionRef = useRef<HTMLElement>(null);
-  const portraitStageRef = useTilt3D<HTMLDivElement>({
-    maxTilt: 9,
-    idle: true,
-    listenSelector: "#hero",
-  });
+  const portraitStageRef = useTilt3D<HTMLDivElement>();
   const primaryCtaRef = useMagnetic<HTMLAnchorElement>(0.4);
   const ghostCtaRef = useMagnetic<HTMLAnchorElement>(0.3);
 
@@ -46,7 +42,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
       gsap.fromTo(
         ".hero-portrait-flip",
         {
-          rotateY: isMobile ? -180 : -360,
+          rotateY: -360,
           opacity: 0,
           y: isMobile ? 16 : 28,
           scale: isMobile ? 0.94 : 0.88,
@@ -56,12 +52,24 @@ export default function HeroSectionAnimated(profileData: Profile) {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: isMobile ? 0.85 : 1.35,
+          duration: isMobile ? 1 : 1.35,
           delay: 0.05,
           ease: "power3.out",
-          ...(isMobile ? { clearProps: "transform" } : {}),
         }
       );
+
+      gsap.to(".hero-portrait-scroll", {
+        rotateY: 360,
+        y: isMobile ? 56 : 96,
+        scale: isMobile ? 0.9 : 0.82,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: isMobile ? true : 1.15,
+        },
+      });
 
       if (!isMobile) {
         gsap.to(".hero-scroll-dot", {
@@ -70,19 +78,6 @@ export default function HeroSectionAnimated(profileData: Profile) {
           yoyo: true,
           duration: 1.1,
           ease: "sine.inOut",
-        });
-
-        gsap.to(".hero-portrait-scroll", {
-          rotateY: 360,
-          y: 96,
-          scale: 0.82,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1.15,
-          },
         });
 
         gsap.to(".hero-content", {
@@ -129,14 +124,14 @@ export default function HeroSectionAnimated(profileData: Profile) {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative flex flex-col overflow-x-clip bg-ink lg:min-h-[calc(100svh-4.75rem)]"
+      className="relative flex min-h-[calc(100svh-4.75rem)] flex-col overflow-x-clip bg-ink"
     >
       <div className="hero-glow pointer-events-none absolute -right-24 top-10 z-[1] h-[28rem] w-[28rem] rounded-full bg-white/10 blur-[100px]" />
       <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_20%_20%,rgba(255,255,255,0.06),transparent_45%)]" />
       {ENABLE_GITHUB_BG ? <HeroGithubBg /> : null}
 
-      <div className="site-container relative z-10 grid items-center gap-8 py-6 pb-10 sm:gap-12 sm:py-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-12 lg:pb-24">
-        <div className="hero-content relative max-w-2xl">
+      <div className="site-container relative z-10 grid flex-1 items-center gap-8 py-10 sm:gap-12 sm:py-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-16">
+        <div className="hero-content relative max-w-2xl self-center">
           <div className="mb-3 flex items-center gap-3 sm:mb-4">
             <Link
               href="https://www.linkedin.com/in/trindadebra/"
@@ -206,7 +201,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
 
         <div
           ref={portraitStageRef}
-          className="hero-portrait-stage relative mx-auto w-[300px] max-w-full [perspective:1400px] sm:w-full sm:max-w-[20rem] md:max-w-[23rem] lg:max-w-none"
+          className="hero-portrait-stage relative mx-auto w-[300px] max-w-full self-center [perspective:1400px] sm:w-full sm:max-w-[20rem] md:max-w-[23rem] lg:max-w-none"
         >
           <div className="hero-portrait-scroll md:will-change-transform md:[transform-style:preserve-3d]">
             <div className="hero-portrait-flip md:will-change-transform md:[transform-style:preserve-3d]">
