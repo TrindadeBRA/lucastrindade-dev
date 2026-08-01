@@ -39,29 +39,18 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         (listenSelector && document.querySelector<HTMLElement>(listenSelector)) || stage;
       const getMedia = () => stage.querySelector<HTMLElement>(mediaSelector);
 
-      const finePointer = window.matchMedia("(pointer: fine)").matches;
-      const canHover = finePointer && window.innerWidth >= 768;
-      const mediaEl = getMedia();
-
-      if (!canHover) {
-        if (mediaEl) gsap.set(mediaEl, { clearProps: "transform" });
-        gsap.set(card, { clearProps: "transform" });
-        gsap.set(stage, { clearProps: "perspective" });
-        return;
-      }
-
-      gsap.set(stage, { perspective: 900 });
+      gsap.set(stage, { perspective: 1200 });
       gsap.set(card, {
         transformOrigin: "center center",
         force3D: true,
       });
 
-      if (mediaEl) {
-        gsap.set(mediaEl, { force3D: true, scale: 1.06 });
-      }
-      if (shine) {
-        gsap.set(shine, { opacity: 0 });
-      }
+      const mediaEl = getMedia();
+      if (mediaEl) gsap.set(mediaEl, { force3D: true, scale: 1.08 });
+      if (shine) gsap.set(shine, { opacity: 0 });
+
+      const finePointer = window.matchMedia("(pointer: fine)").matches;
+      const canHover = finePointer && window.innerWidth >= 768;
 
       let idleTween: gsap.core.Timeline | null = null;
       let resetTween: gsap.core.Tween | null = null;
@@ -94,28 +83,31 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
 
         idleTween
           .to(card, {
-            rotationY: 5.5,
-            rotationX: -3,
-            scale: 1.015,
-            duration: 2.8,
-          })
-          .to(card, {
-            rotationY: -5,
-            rotationX: 2.5,
-            scale: 1.008,
-            duration: 3.1,
-          })
-          .to(card, {
-            rotationY: 2.5,
-            rotationX: -1.5,
-            scale: 1.012,
+            rotationY: 9,
+            rotationX: -5,
+            z: 20,
+            scale: 1.02,
             duration: 2.6,
+          })
+          .to(card, {
+            rotationY: -8,
+            rotationX: 4,
+            z: 10,
+            scale: 1.01,
+            duration: 2.9,
+          })
+          .to(card, {
+            rotationY: 4,
+            rotationX: -2.5,
+            z: 16,
+            scale: 1.025,
+            duration: 2.4,
           });
 
         if (media) {
-          idleTween.to(media, { x: 8, y: -6, duration: 2.8, ease: "sine.inOut" }, 0);
-          idleTween.to(media, { x: -9, y: 6, duration: 3.1, ease: "sine.inOut" }, 2.8);
-          idleTween.to(media, { x: 5, y: -3, duration: 2.6, ease: "sine.inOut" }, 5.9);
+          idleTween.to(media, { x: 10, y: -8, duration: 2.6, ease: "sine.inOut" }, 0);
+          idleTween.to(media, { x: -12, y: 8, duration: 2.9, ease: "sine.inOut" }, 2.6);
+          idleTween.to(media, { x: 6, y: -4, duration: 2.4, ease: "sine.inOut" }, 5.5);
         }
       };
 
@@ -126,8 +118,16 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
 
       if (idle) startIdle();
 
+      if (!canHover) {
+        return () => {
+          idleTween?.kill();
+          if (shine) gsap.killTweensOf(shine);
+        };
+      }
+
       const rotateXTo = gsap.quickTo(card, "rotationX", { duration: 0.18, ease: "power3.out" });
       const rotateYTo = gsap.quickTo(card, "rotationY", { duration: 0.18, ease: "power3.out" });
+      const zTo = gsap.quickTo(card, "z", { duration: 0.22, ease: "power3.out" });
       const scaleTo = gsap.quickTo(card, "scale", { duration: 0.22, ease: "power3.out" });
 
       let mediaXTo: ((v: number) => void) | null = null;
@@ -150,19 +150,20 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         const x = gsap.utils.clamp(-0.55, 0.55, (mx - (rect.left + rect.width / 2)) / rect.width);
         const y = gsap.utils.clamp(-0.55, 0.55, (my - (rect.top + rect.height / 2)) / rect.height);
 
-        rotateYTo(x * maxTilt * 1.35);
-        rotateXTo(-y * maxTilt * 1.2);
-        scaleTo(1.02);
+        rotateYTo(x * maxTilt * 2.2);
+        rotateXTo(-y * maxTilt * 1.9);
+        zTo(28 + Math.abs(x) * 12 + Math.abs(y) * 8);
+        scaleTo(1.035);
 
         bindMediaQuickTo(getMedia());
-        mediaXTo?.(x * -18);
-        mediaYTo?.(y * -12);
+        mediaXTo?.(x * -28);
+        mediaYTo?.(y * -22);
 
         if (shine) {
           const px = (x + 0.5) * 100;
           const py = (y + 0.5) * 100;
-          shine.style.background = `radial-gradient(circle at ${px}% ${py}%, rgba(255,255,255,0.28), rgba(255,255,255,0.06) 30%, transparent 55%)`;
-          gsap.to(shine, { opacity: 0.55, duration: 0.2, overwrite: "auto" });
+          shine.style.background = `radial-gradient(circle at ${px}% ${py}%, rgba(255,255,255,0.4), rgba(255,255,255,0.08) 28%, transparent 55%)`;
+          gsap.to(shine, { opacity: 0.85, duration: 0.15, overwrite: "auto" });
         }
       };
 
@@ -188,6 +189,7 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         resetTween = gsap.to(card, {
           rotationX: 0,
           rotationY: 0,
+          z: 0,
           scale: 1,
           duration: 0.85,
           ease: "power3.out",
@@ -211,7 +213,7 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         if (shine) {
           gsap.to(shine, {
             opacity: 0,
-            duration: 0.35,
+            duration: 0.45,
             overwrite: "auto",
             onComplete: () => {
               shine.style.background = "none";

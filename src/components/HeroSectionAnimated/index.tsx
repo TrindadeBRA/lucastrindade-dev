@@ -67,6 +67,12 @@ export default function HeroSectionAnimated(profileData: Profile) {
         ease: "sine.inOut",
       });
 
+      gsap.set(".hero-portrait-scroll", {
+        transformPerspective: 1400,
+        transformOrigin: "center center",
+        force3D: true,
+      });
+
       if (!isMobile) {
         gsap.to(".hero-content", {
           y: 56,
@@ -79,33 +85,32 @@ export default function HeroSectionAnimated(profileData: Profile) {
             scrub: 1,
           },
         });
-
-        gsap.to(".hero-portrait-scroll", {
-          y: 72,
-          rotateX: 10,
-          rotateY: -6,
-          scale: 0.94,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1.1,
-          },
-        });
-
-        gsap.to(".hero-portrait-media-scroll", {
-          yPercent: 22,
-          scale: 1.18,
-          ease: "none",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1.1,
-          },
-        });
       }
+
+      gsap.to(".hero-portrait-scroll", {
+        rotateY: 360,
+        y: isMobile ? 48 : 96,
+        scale: isMobile ? 0.88 : 0.82,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.15,
+        },
+      });
+
+      gsap.to(".hero-portrait-media-scroll", {
+        yPercent: isMobile ? 12 : 22,
+        scale: isMobile ? 1.1 : 1.18,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.1,
+        },
+      });
 
       gsap.to(".hero-glow", {
         opacity: 0.05,
@@ -176,12 +181,12 @@ export default function HeroSectionAnimated(profileData: Profile) {
 
         <div
           ref={portraitStageRef}
-          className="hero-portrait-stage relative mx-auto w-[300px] max-w-full sm:w-full sm:max-w-[20rem] md:max-w-[23rem] lg:max-w-none lg:[perspective:900px]"
+          className="hero-portrait-stage relative mx-auto w-[300px] max-w-full [perspective:1400px] sm:w-full sm:max-w-[20rem] md:max-w-[23rem] lg:max-w-none"
         >
-          <div className="hero-portrait-scroll will-change-transform">
+          <div className="hero-portrait-scroll will-change-transform [transform-style:preserve-3d]">
             <div
               data-tilt-card
-              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted will-change-transform sm:aspect-[4/5] sm:rounded-[2rem] lg:max-h-[min(68svh,34rem)] lg:w-full"
+              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted will-change-transform [backface-visibility:visible] sm:aspect-[4/5] sm:rounded-[2rem] lg:max-h-[min(68svh,34rem)] lg:w-full"
             >
               <div className="hero-portrait-media absolute inset-0">
                 <div className="hero-portrait-media-scroll absolute inset-0 md:inset-[-6%]">
