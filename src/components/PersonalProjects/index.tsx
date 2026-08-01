@@ -1,112 +1,116 @@
-import { Fragment } from 'react'
-import { Tab } from '@headlessui/react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { twMerge } from 'tailwind-merge'
-import { PersonalProject } from '@/pages/api/sectionsPersonalProjects'
+"use client";
 
+import Image from "next/image";
+import Link from "next/link";
+import { PersonalProject } from "@/pages/api/sectionsPersonalProjects";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { asList } from "@/utils/asList";
+import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
 
-export default function PersonalProjects(personalProjectsData: PersonalProject[]) {
+export default function PersonalProjects(
+  personalProjectsData: PersonalProject[] | Record<string, PersonalProject>
+) {
+  const sectionRef = useScrollReveal();
+  const projects = asList(personalProjectsData).sort(
+    (a, b) => (a.project_order ?? 0) - (b.project_order ?? 0)
+  );
 
-  const tabs = Object.values(personalProjectsData).map((project: PersonalProject) => ({
-    name: project.project_name,
-    features: [
-      {
-        name: project.project_title,
-        description: project.project_description,
-        imageSrc: project.project_image_sync,
-        blogPostUrl: project.project_url
-      }
-    ]
-  }));
+  useGSAP(
+    () => {
+      registerGsap();
+      if (!sectionRef.current || prefersReducedMotion() || window.innerWidth < 768) return;
+
+      gsap.utils.toArray<HTMLElement>(".project-media img", sectionRef.current).forEach((img) => {
+        gsap.fromTo(
+          img,
+          { scale: 1.1 },
+          {
+            scale: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: img.closest(".project-row") || img,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+          }
+        );
+      });
+    },
+    { scope: sectionRef, dependencies: [projects.length] }
+  );
 
   return (
-    <div className="bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950" id="projetos">
-      <section aria-labelledby="features-heading" className="mx-auto max-w-7xl py-20 px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:max-w-none">
-          <div className="max-w-3xl">
-            <p className="text-base font-semibold leading-7 text-indigo-600" data-aos="fade-right">Projetos Pessoais</p>
-            <h2 id="features-heading" className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl" data-aos="fade-right">
-              Meus Projetos Online
-            </h2>
-            <p className="mt-4 text-gray-400" data-aos="fade-right">
-              Explore meus projetos pessoais desenvolvidos com tecnologias modernas.
-              Cada projeto demonstra diferentes aspectos do desenvolvimento fullstack,
-              desde interfaces responsivas até integrações com APIs e sistemas de deploy automatizado.
-            </p>
-          </div>
-
-          <Tab.Group as="div">
-            <div className="flex overflow-x-auto sm:mx-0" data-aos="fade-in">
-              <div className="flex-auto border-b border-gray-700">
-                <Tab.List className="-mb-px flex space-x-10">
-                  {tabs.map((tab) => (
-                    <Tab
-                      key={tab.name}
-                      className={({ selected }: { selected: boolean }) =>
-                        selected
-                          ? 'border-b-2 py-6 text-sm font-medium whitespace-nowrap focus:outline-none border-indigo-500 text-indigo-400'
-                          : 'border-b-2 py-6 text-sm font-medium whitespace-nowrap focus:outline-none border-transparent text-gray-400 hover:border-gray-600 hover:text-gray-300'
-                      }
-                    >
-                      {({ selected }: { selected: boolean }) => (
-                        <span className={twMerge(
-                          'transition-colors duration-200',
-                          selected ? 'text-indigo-400' : 'text-gray-400'
-                        )}
-                        data-aos="fade-in">
-                          {tab.name}
-                        </span>
-                      )}
-                    </Tab>
-                  ))}
-                </Tab.List>
-              </div>
-            </div>
-
-            <Tab.Panels as={Fragment}>
-              {tabs.map((tab) => (
-                <Tab.Panel key={tab.name} className="space-y-16 pt-10 lg:pt-16">
-                  {tab.features.map((feature) => (
-                    <div key={feature.name} className="flex flex-col-reverse lg:grid lg:grid-cols-12 lg:gap-x-8" data-aos="fade-in">
-                      <div className="mt-6 lg:col-span-5 lg:mt-0">
-                        <h3 className="text-lg font-medium text-white">{feature.name}</h3>
-                        <p className="mt-2 text-sm text-gray-400">{feature.description}</p>
-                        <div className='flex gap-4 items-center mt-6'>
-                          <a
-                            href={feature.blogPostUrl}
-                            target='_blank'
-                            className="inline-flex items-center rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                          >
-                            Ler mais sobre o projeto
-                          </a>
-                        </div>
-                      </div>
-                      <div className="lg:col-span-7">
-                        <Link
-                          href={feature.blogPostUrl}
-                          target='_blank'
-                          rel="noopener noreferrer"
-                          className="block"
-                        >
-                          <Image
-                            alt={feature.name}
-                            src={feature.imageSrc}
-                            className="w-full rounded-lg bg-gray-800 object-cover cursor-pointer"
-                            width={633}
-                            height={230}
-                            priority
-                          />
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
-                </Tab.Panel>
-              ))}
-            </Tab.Panels>
-          </Tab.Group>
+    <section ref={sectionRef} id="projetos" className="bg-gradient-to-b from-surface-muted to-surface-base py-20 sm:py-28">
+      <div className="site-container">
+        <div className="max-w-2xl">
+          <p className="section-label" data-reveal="title">
+            Portfolio
+          </p>
+          <h2 className="section-title mt-3 text-balance" data-reveal="title">
+            Projetos que transformam ideias em resultados
+          </h2>
+          <p className="mt-5 text-base text-content-secondary sm:text-lg" data-reveal="fade-up">
+            Casos e experimentos com foco em produto, performance e experiência.
+          </p>
         </div>
-      </section>
-    </div>
-  )
+
+        <div className="mt-16 space-y-4">
+          {projects.map((project, index) => (
+            <article
+              key={project.project_name || index}
+              className="project-row group grid gap-8 border-t border-content-primary/10 py-12 lg:grid-cols-12 lg:items-center"
+              data-reveal="card"
+            >
+              <div className="lg:col-span-5">
+                <p className="font-display text-5xl font-medium text-content-primary/10 transition group-hover:text-accent-gold">
+                  {String(index + 1).padStart(2, "0")}
+                </p>
+                <h3 className="mt-3 font-display text-2xl font-medium tracking-tight text-content-primary sm:text-4xl">
+                  {project.project_title || project.project_name}
+                </h3>
+                <p className="mt-2 text-sm font-semibold text-content-tertiary">{project.project_name}</p>
+                <p className="mt-4 max-w-md text-sm leading-relaxed text-content-secondary sm:text-base">
+                  {project.project_description}
+                </p>
+                {project.project_url ? (
+                  <a
+                    href={project.project_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-outline mt-7"
+                  >
+                    Ver projeto
+                  </a>
+                ) : null}
+              </div>
+
+              <div className="lg:col-span-7">
+                {project.project_image_sync || project.project_image ? (
+                  <Link
+                    href={project.project_url || "#"}
+                    target={project.project_url ? "_blank" : undefined}
+                    className="project-media clip-frame relative block aspect-[16/10] overflow-hidden rounded-4xl bg-surface-subtle"
+                    data-reveal="clip"
+                  >
+                    <Image
+                      src={project.project_image_sync || project.project_image}
+                      alt={project.project_title || project.project_name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 100vw, 55vw"
+                    />
+                  </Link>
+                ) : (
+                  <div className="flex aspect-video items-center justify-center rounded-4xl bg-surface-subtle text-content-muted">
+                    Sem imagem
+                  </div>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

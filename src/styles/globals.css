@@ -2,30 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@font-face {
+  font-family: "Mona Sans";
+  font-weight: 200 900;
+  font-display: swap;
+  font-style: normal;
+  font-stretch: 75% 125%;
+  src: url("../fonts/Mona-Sans.var.woff2") format("woff2");
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+:root {
+  --chrome: #1e1e1e;
+  --brand-dark: #0a0a0a;
+  --surface: #ffffff;
+  --content: #0a0a0a;
+  --content-secondary: #525252;
+  --accent-yellow: #f8ea1e;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: auto;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: var(--chrome);
+  color: var(--content);
+  font-family: "Mona Sans", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(248, 234, 30, 0.45);
+  color: #0a0a0a;
 }
 
 body.overflow-hidden {
   overflow: hidden;
+}
+
+@layer components {
+  .site-container {
+    @apply mx-auto w-full max-w-site px-6 lg:px-8;
+  }
+
+  .font-display {
+    font-family: "Mona Sans", ui-sans-serif, system-ui, sans-serif;
+    font-variation-settings: "wdth" 125;
+  }
+
+  .section-label {
+    @apply font-display text-base font-semibold text-content-primary;
+  }
+
+  .section-title {
+    @apply font-display text-3xl font-medium tracking-tight text-content-primary sm:text-5xl;
+  }
+
+  .btn-primary {
+    @apply inline-flex cursor-pointer items-center justify-center rounded-full bg-brand-dark px-4 py-1.5 text-sm font-semibold text-content-inverse transition will-change-transform hover:bg-brand-soft;
+  }
+
+  .btn-primary > span {
+    @apply relative top-px;
+  }
+
+  .btn-invert {
+    @apply inline-flex cursor-pointer items-center justify-center rounded-full bg-surface-base px-4 py-1.5 text-sm font-semibold text-content-primary transition will-change-transform hover:bg-content-muted;
+  }
+
+  .btn-outline {
+    @apply inline-flex cursor-pointer items-center justify-center rounded-full border border-border-strong bg-transparent px-5 py-2 text-sm font-semibold text-content-primary transition hover:bg-surface-subtle;
+  }
+
+  .sheet {
+    @apply overflow-hidden rounded-t-[40px] bg-surface-base shadow-sheet;
+  }
+
+  .marquee-track {
+    @apply flex w-max gap-3;
+  }
+
+  .clip-frame {
+    clip-path: inset(0% 0% 0% 0% round 1.5rem);
+  }
+
+  .hero-word {
+    @apply inline-block overflow-hidden pb-[0.08em];
+  }
+
+  .hero-word > span {
+    @apply inline-block will-change-transform;
+  }
+}
+
+@layer utilities {
+  .gsap-will-change {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .mask-fade-x {
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+}
+
+header.header-scrolled {
+  background: rgba(30, 30, 30, 0.96);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -1,47 +1,40 @@
 export const getBadgeConfig = (category: string) => {
-    switch (category) {
-        case 'Pós-Graduação':
-            return {
-                text: 'Pós-Graduação',
-                bgColor: 'bg-indigo-600',
-                textColor: 'text-white',
-                importance: 'highest'
-            };
-        case 'Tecnólogo':
-            return {
-                text: 'Tecnólogo',
-                bgColor: 'bg-indigo-800',
-                textColor: 'text-white',
-                importance: 'high'
-            };
-        case 'Extensão':
-            return {
-                text: 'Extensão',
-                bgColor: 'bg-indigo-500',
-                textColor: 'text-white',
-                importance: 'medium-high'
-            };
-        case 'Horas':
-            return {
-                text: 'Horas',
-                bgColor: 'bg-indigo-400',
-                textColor: 'text-white',
-                importance: 'medium'
-            };
-        case 'Eventos':
-            return {
-                text: 'Eventos',
-                bgColor: 'bg-indigo-500',
-                textColor: 'text-white',
-                importance: 'low'
-            };
-        default:
-            return {
-                text: category || 'Certificado',
-                bgColor: 'bg-indigo-400',
-                textColor: 'text-white',
-                importance: 'low'
-            };
-    }
+  switch (category) {
+    case "Pós-Graduação":
+      return {
+        text: "Pós-Graduação",
+        bgColor: "bg-brand-dark text-content-inverse",
+        importance: "highest",
+      };
+    case "Tecnólogo":
+      return {
+        text: "Tecnólogo",
+        bgColor: "bg-accent-yellow text-brand-dark",
+        importance: "high",
+      };
+    case "Extensão":
+      return {
+        text: "Extensão",
+        bgColor: "bg-surface-base text-content-primary",
+        importance: "medium-high",
+      };
+    case "Horas":
+      return {
+        text: "Horas",
+        bgColor: "bg-white/90 text-content-secondary",
+        importance: "medium",
+      };
+    case "Eventos":
+      return {
+        text: "Eventos",
+        bgColor: "bg-accent-gold text-content-inverse",
+        importance: "low",
+      };
+    default:
+      return {
+        text: category || "Certificado",
+        bgColor: "bg-surface-base text-content-primary",
+        importance: "low",
+      };
+  }
 };
-

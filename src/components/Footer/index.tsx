@@ -1,33 +1,159 @@
-import React from 'react';
+"use client";
+
+import { type MouseEvent } from "react";
+import Link from "next/link";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
+import { useMagnetic } from "@/hooks/useMagnetic";
+
+const links = [
+  { name: "Projetos", href: "#projetos" },
+  { name: "Sobre", href: "#sobre" },
+  { name: "Experiência", href: "#experiencia" },
+  { name: "Skills", href: "#skills" },
+  { name: "Estudos", href: "#estudos" },
+];
 
 const Footer = () => {
-  const navigation = {
-    main: [
-      { name: 'Apresentação', href: '#apresentacao' },
-      { name: 'Skills', href: '#skills' },
-      { name: 'Certificados', href: '#certificados' },
-      { name: 'Experiências Profissionais', href: '#experiencias' },
-      { name: 'Projetos Pessoais', href: '#projetos' },
-    ],
+  const sectionRef = useScrollReveal();
+  const ctaRef = useMagnetic<HTMLAnchorElement>(0.35);
+  const year = new Date().getFullYear();
+
+  useGSAP(
+    () => {
+      registerGsap();
+      if (!sectionRef.current || prefersReducedMotion()) return;
+
+      gsap.from(".footer-word", {
+        yPercent: 120,
+        duration: 0.85,
+        stagger: 0.07,
+        ease: "power4.out",
+        scrollTrigger: {
+          trigger: ".footer-headline",
+          start: "top 85%",
+        },
+      });
+    },
+    { scope: sectionRef }
+  );
+
+  const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith("#")) return;
+    event.preventDefault();
+    const target = document.querySelector(href);
+    if (!target) return;
+    registerGsap();
+    if (prefersReducedMotion()) {
+      target.scrollIntoView();
+      return;
+    }
+    gsap.to(window, {
+      duration: 1,
+      scrollTo: { y: target, offsetY: 88 },
+      ease: "power3.inOut",
+    });
   };
 
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="bg-gray-950">
-      <div className="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8" data-aos="fade-in">
-        <nav className="-mb-6 columns-1 text-center sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
-          {navigation.main.map((item) => (
-            <div key={item.name} className="pb-6">
-              <a href={item.href} className="text-sm leading-6 text-gray-300 hover:text-gray-200">{item.name}</a>
+    <footer ref={sectionRef} className="border-t border-content-primary/10 bg-surface-base">
+      <div className="site-container py-16 sm:py-24">
+        <div className="grid gap-12 lg:grid-cols-[1.3fr_0.7fr]">
+          <div>
+            <p className="footer-headline font-display text-4xl font-medium tracking-tight text-content-primary sm:text-6xl">
+              <span className="inline-block overflow-hidden pb-1">
+                <span className="footer-word inline-block">Vamos</span>
+              </span>{" "}
+              <span className="inline-block overflow-hidden pb-1">
+                <span className="footer-word inline-block">construir</span>
+              </span>
+              <br />
+              <span className="inline-block overflow-hidden pb-1">
+                <span className="footer-word inline-block">algo</span>
+              </span>{" "}
+              <span className="inline-block overflow-hidden pb-1">
+                <span className="footer-word inline-block">juntos?</span>
+              </span>
+            </p>
+            <a
+              ref={ctaRef}
+              href="https://api.whatsapp.com/send?phone=5511952498126"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary mt-8"
+            >
+              <span>Fale comigo</span>
+            </a>
+          </div>
+
+          <div className="grid gap-8 sm:grid-cols-2" data-reveal="item">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-content-muted">
+                Navegação
+              </p>
+              <ul className="mt-4 space-y-3">
+                {links.map((item) => (
+                  <li key={item.name}>
+                    <a
+                      href={item.href}
+                      onClick={(e) => handleNavClick(e, item.href)}
+                      className="text-sm text-content-secondary transition hover:text-content-primary"
+                    >
+                      {item.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
-          ))}
-        </nav>
-        <p className="mt-10 text-center text-xs leading-5 text-gray-300">&copy; {currentYear} Lucas Trindade, Todos direitos reservados.</p>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-content-muted">
+                Links
+              </p>
+              <ul className="mt-4 space-y-3 text-sm">
+                <li>
+                  <Link
+                    href="/resume"
+                    target="_blank"
+                    className="text-content-secondary transition hover:text-content-primary"
+                  >
+                    Currículo
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href="https://github.com/TrindadeBRA/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-content-secondary transition hover:text-content-primary"
+                  >
+                    GitHub
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.linkedin.com/in/trindadebra/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-content-secondary transition hover:text-content-primary"
+                  >
+                    LinkedIn
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="mt-14 flex flex-col justify-between gap-3 border-t border-content-primary/10 pt-8 text-[11px] text-content-tertiary sm:flex-row"
+          data-reveal="item"
+        >
+          <p>© {year} Lucas Trindade. Todos os direitos reservados.</p>
+          <p>Full Stack · Mogi-Mirim, SP</p>
+        </div>
       </div>
     </footer>
   );
 };
-
 
 export default Footer;

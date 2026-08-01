@@ -1,27 +1,47 @@
-import { Profile } from '@/pages/api/sectionProfile';
-import React from 'react';
-// import { format } from 'date-fns';
-// import { myAge } from './data';
+"use client";
+
+import { Profile } from "@/pages/api/sectionProfile";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+
 const Presentation = (profileData: Profile) => {
+  const sectionRef = useScrollReveal();
+  const paragraphs =
+    profileData?.user_presentation?.[0]?.plain_text
+      ?.split("\n")
+      .map((p: string) => p.trim())
+      .filter(Boolean) || [];
+
   return (
-    <div className="bg-gray-900 py-14 sm:py-20" id="apresentacao">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-          <p className="text-base font-semibold leading-7 text-indigo-600" data-aos="fade-right">Um pouco sobre mim</p>
-          <h1 className="mt-2 mb-10 text-3xl font-bold tracking-tight text-white sm:text-4xl" data-aos="fade-right">Apresentação</h1>
-          <p>
-            {
-              profileData?.user_presentation?.[0]?.plain_text?.split('\n').map((paragraph:string, index:number) => (
-                <span key={index} className='text-white' data-aos="fade-right">
-                  {paragraph}
-                  <br />
-                </span>
-              ))
-            }
+    <section ref={sectionRef} id="sobre" className="bg-surface-base py-20 sm:py-28">
+      <div className="site-container grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <p className="section-label" data-reveal="title">
+            Quem sou eu
           </p>
+          <h2 className="section-title mt-3" data-reveal="title">
+            Um pouco sobre mim
+          </h2>
+        </div>
+
+        <div className="space-y-7">
+          {paragraphs.length > 0 ? (
+            paragraphs.map((paragraph: string, index: number) => (
+              <p
+                key={index}
+                className="max-w-2xl text-base leading-8 text-content-secondary sm:text-xl sm:leading-9"
+                data-reveal="fade-up"
+              >
+                {paragraph}
+              </p>
+            ))
+          ) : (
+            <p className="text-content-secondary" data-reveal="fade-up">
+              Conteúdo de apresentação em breve.
+            </p>
+          )}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -25,9 +25,8 @@ function HeroSection(profileData: Profile) {
             width={800}
             height={800}
             priority
-            data-aos="fade-right"
           />
-          <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl" data-aos="fade-left">
+          <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
             <div className='flex justify-center md:justify-start gap-4'>
               <Link href={"https://www.linkedin.com/in/trindadebra/"} target='_blank'>
                 <FaLinkedin className="text-white hover:text-gray-400 mb-1" size={18} />
