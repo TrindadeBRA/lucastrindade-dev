@@ -19,10 +19,10 @@ const COMPANY_IMG = "/images/bg-profile.webp";
 
 export const mockProfile: Profile = {
   user_name: "Lucas Trindade",
-  user_title: "Full Stack Developer",
-  user_role: "Desenvolvedor Full Stack",
+  user_title: "Tech Lead · Full Stack",
+  user_role: "Tech Lead · Full Stack",
   user_bio:
-    "Crio soluções digitais modernas, performáticas e com foco em produto. Mock local para testar UI sem Notion.",
+    "Tech Lead e Full Stack com foco em produto, performance e liderança técnica. Fundador da TrinityWeb.",
   user_avatar: AVATAR,
   user_avatar_sync: AVATAR,
   user_presentation: [

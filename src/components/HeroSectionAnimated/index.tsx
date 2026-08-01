@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Profile } from "@/pages/api/sectionProfile";
-import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaMapMarkerAlt, FaWhatsapp } from "react-icons/fa";
 import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
 import { useMagnetic } from "@/hooks/useMagnetic";
 import { useTilt3D } from "@/hooks/useTilt3D";
@@ -25,7 +25,8 @@ export default function HeroSectionAnimated(profileData: Profile) {
   const ghostCtaRef = useMagnetic<HTMLAnchorElement>(0.3);
 
   const name = profileData?.user_name || "Lucas Trindade";
-  const role = profileData?.user_role || "Desenvolvedor Full Stack";
+  // Posicionamento para recrutamento (independente do texto cru do Notion)
+  const role = "Full Stack Tech Lead";
   const bio = profileData?.user_bio || "";
   const avatar = profileData?.user_avatar_sync || profileData?.user_avatar || "";
   const words = name.split(" ");
@@ -215,7 +216,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
                   alt={name}
                   fill
                   priority
-                  className="hero-portrait-media object-cover will-change-transform"
+                  className="hero-portrait-media object-cover grayscale will-change-transform"
                   sizes="(max-width: 768px) 90vw, 40vw"
                 />
               ) : (
@@ -227,33 +228,66 @@ export default function HeroSectionAnimated(profileData: Profile) {
                 data-tilt-shine
                 className="pointer-events-none absolute inset-0 z-[1] opacity-0 mix-blend-soft-light"
               />
-              <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-ink via-ink/40 to-transparent opacity-90" />
+              <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-ink via-ink/50 to-transparent opacity-95" />
               <div
-                className="absolute inset-x-0 bottom-0 z-[3] p-5 sm:p-6"
+                className="absolute inset-x-0 bottom-0 z-[3] px-5 pb-5 pt-16 sm:px-6 sm:pb-6"
                 style={{ transform: "translateZ(36px)" }}
               >
-                <blockquote className="max-w-[16rem] sm:max-w-[18rem]">
-                  <span
-                    className="mb-2 block font-display text-3xl leading-none text-white/25"
-                    aria-hidden="true"
-                  >
-                    “
-                  </span>
-                  <p className="font-display text-base font-semibold leading-snug tracking-tight text-chalk sm:text-lg">
-                    Done is better than perfect.
+                <div className="max-w-[19rem]">
+                  <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-chalk-muted sm:text-sm">
+                    <a
+                      href="https://www.google.com/maps/place/Mogi+Mirim,+SP"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Ver localização no Google Maps"
+                      title="Localização"
+                      className="inline-flex items-center gap-1.5 transition hover:text-white"
+                    >
+                      <FaMapMarkerAlt size={12} className="opacity-80" />
+                      <span>SP, Brasil</span>
+                    </a>
                   </p>
-                  <footer className="mt-3 flex items-center gap-2">
-                    <span className="h-px w-5 bg-white/25" aria-hidden="true" />
-                    <cite className="not-italic text-[10px] uppercase tracking-[0.18em] text-chalk-dim">
-                      Anne Mollegen Smith
-                    </cite>
-                  </footer>
-                </blockquote>
-                {profileData?.user_title ? (
-                  <p className="mt-4 text-[11px] text-chalk-muted/80">
-                    {profileData.user_title}
+                  <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[11px] leading-snug text-chalk-dim">
+                    <span>Fundador</span>
+                    <span aria-hidden="true">·</span>
+                    <a
+                      href="https://thetrinityweb.com.br"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-chalk-muted underline decoration-white/20 underline-offset-2 transition hover:text-white hover:decoration-white/50"
+                    >
+                      TrinityWeb
+                    </a>
+                    <span aria-hidden="true">·</span>
+                    <a
+                      href="https://kronuz.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-chalk-muted underline decoration-white/20 underline-offset-2 transition hover:text-white hover:decoration-white/50"
+                    >
+                      Kronuz
+                    </a>
+                    <span aria-hidden="true">·</span>
+                    <a
+                      href="https://protagonizei.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-chalk-muted underline decoration-white/20 underline-offset-2 transition hover:text-white hover:decoration-white/50"
+                    >
+                      Protagonizei
+                    </a>
                   </p>
-                ) : null}
+                  <ul className="mt-2 flex flex-wrap gap-1.5">
+                    {["Next.js", "React", "Node"].map((tag) => (
+                      <li
+                        key={tag}
+                        className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-chalk"
+                      >
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

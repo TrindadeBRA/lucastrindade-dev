@@ -32,10 +32,10 @@ export default function Home({
   return (
     <>
       <Head>
-        <title>Lucas Trindade — Desenvolvedor Full Stack</title>
+        <title>Lucas Trindade — Full Stack Tech Lead</title>
         <meta
           name="description"
-          content="Desenvolvedor Full Stack com experiência em JavaScript, WordPress, Next.js, React e Node.js. Localizado em Mogi-Mirim, SP. Crio soluções digitais modernas, performáticas e com foco em produto."
+          content="Full Stack Tech Lead em SP, Brasil, aberto a remoto. Fundador da TrinityWeb. Experiência com Next.js, React, Node.js e liderança técnica."
         />
         <meta property="og:image" content="/images/ogimage.png" />
         <meta property="og:image:type" content="image/png" />
