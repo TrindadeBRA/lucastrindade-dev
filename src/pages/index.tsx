@@ -5,6 +5,9 @@ import Header from "@/components/Header";
 import HeroSectionAnimated from "@/components/HeroSectionAnimated";
 import Presentation from "@/components/Presentation";
 import Skills from "@/components/Skills";
+import SmoothScroll from "@/components/SmoothScroll";
+import ParticlesBackground from "@/components/ParticlesBackground";
+import FloatingShapes from "@/components/FloatingShapes";
 import { GetStaticProps } from "next";
 import { Profile, getSectionProfile } from "./api/sectionProfile";
 import { Skill, getSectionSkills } from "./api/sectionSkills";
@@ -12,10 +15,7 @@ import { Certificate, getSectionCertificates } from "./api/sectionCertificates";
 import { Experience, getSectionExperiences } from "./api/sectionsExperiences";
 import PersonalProjects from "@/components/PersonalProjects";
 import { getSectionPersonalProjects, PersonalProject } from "./api/sectionsPersonalProjects";
-import AOS_Init from "@/components/AOS_Init";
 import InfoBanner from "@/components/InfoBanner";
-
-
 import Head from "next/head";
 
 export default function Home({ profileData, skillsData, certificateData, experienceData, personalProjectsData }:
@@ -30,16 +30,19 @@ export default function Home({ profileData, skillsData, certificateData, experie
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="675" />
       </Head>
-      <AOS_Init />
+      
+      <SmoothScroll />
+      <ParticlesBackground />
+      <FloatingShapes />
       <InfoBanner />
-      <Header></Header>
+      <Header />
       <HeroSectionAnimated {...profileData} />
       <Presentation {...profileData} />
       <Skills {...skillsData} />
       <Certificates {...certificateData} />
       <Experiences {...experienceData}/>
       <PersonalProjects {...personalProjectsData}/>
-      <Footer></Footer>
+      <Footer />
     </>
   )
 }
@@ -60,14 +63,12 @@ export const getStaticProps: GetStaticProps = async () => {
         experienceData,
         personalProjectsData
       },
-      // revalidate every 30 minutes
       revalidate: 60 * 30,
     };
   } catch (error) {
     console.error('Erro ao buscar dados:', error);
     return {
       props: {},
-      // revalidate every 30 minutes
       revalidate: 60 * 30,
     };
   }
