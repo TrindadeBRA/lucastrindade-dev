@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-import { gsap, prefersReducedMotion, registerGsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import {
+  gsap,
+  prefersReducedMotion,
+  refreshScrollTriggersSafe,
+  registerGsap,
+  ScrollTrigger,
+  useGSAP,
+} from "@/lib/gsap";
 
 export default function GsapInit() {
   useGSAP(() => {
@@ -40,12 +47,32 @@ export default function GsapInit() {
 
   useEffect(() => {
     registerGsap();
-    const onResize = () => ScrollTrigger.refresh();
+
+    let resizeTimer = 0;
+    const onResize = () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        refreshScrollTriggersSafe();
+      }, 250);
+    };
+
     window.addEventListener("resize", onResize);
-    window.addEventListener("load", onResize);
+
+    const boot = async () => {
+      try {
+        if (document.fonts?.ready) await document.fonts.ready;
+      } catch {
+        /* ignore */
+      }
+      requestAnimationFrame(() => {
+        refreshScrollTriggersSafe();
+      });
+    };
+    void boot();
+
     return () => {
+      window.clearTimeout(resizeTimer);
       window.removeEventListener("resize", onResize);
-      window.removeEventListener("load", onResize);
     };
   }, []);
 

@@ -39,24 +39,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
         force3D: !isMobile,
       });
 
-      gsap.fromTo(
-        ".hero-portrait-flip",
-        {
-          rotateY: -360,
-          opacity: 0,
-          y: isMobile ? 16 : 28,
-          scale: isMobile ? 0.94 : 0.88,
-        },
-        {
-          rotateY: 0,
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: isMobile ? 1 : 1.35,
-          delay: 0.05,
-          ease: "power3.out",
-        }
-      );
+      const section = sectionRef.current;
 
       gsap.to(".hero-portrait-scroll", {
         rotateY: 360,
@@ -64,10 +47,10 @@ export default function HeroSectionAnimated(profileData: Profile) {
         scale: isMobile ? 0.9 : 0.82,
         ease: "none",
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: section,
           start: "top top",
           end: "bottom top",
-          scrub: isMobile ? true : 1.15,
+          scrub: true,
         },
       });
 
@@ -85,10 +68,10 @@ export default function HeroSectionAnimated(profileData: Profile) {
           opacity: 0.15,
           ease: "none",
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: section,
             start: "top top",
             end: "bottom top",
-            scrub: 1,
+            scrub: true,
           },
         });
 
@@ -97,10 +80,10 @@ export default function HeroSectionAnimated(profileData: Profile) {
           scale: 1.18,
           ease: "none",
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: section,
             start: "top top",
             end: "bottom top",
-            scrub: 1.1,
+            scrub: true,
           },
         });
 
@@ -109,7 +92,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
           scale: 1.2,
           ease: "none",
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: section,
             start: "top top",
             end: "bottom top",
             scrub: true,

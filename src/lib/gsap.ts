@@ -20,7 +20,7 @@ export function registerGsap() {
 
   ScrollTrigger.config({
     ignoreMobileResize: true,
-    autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
+    autoRefreshEvents: "visibilitychange",
   });
 
   registered = true;
@@ -29,6 +29,12 @@ export function registerGsap() {
 export function prefersReducedMotion() {
   if (typeof window === "undefined") return false;
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+export function refreshScrollTriggersSafe() {
+  if (typeof window === "undefined") return;
+  if (window.scrollY > 8) return;
+  ScrollTrigger.refresh();
 }
 
 export { gsap, useGSAP, ScrollTrigger, ScrollToPlugin };

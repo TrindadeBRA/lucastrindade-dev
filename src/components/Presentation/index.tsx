@@ -63,9 +63,9 @@ export default function Presentation(profileData: Profile) {
           start: "top top",
           end: () => `+=${getDistance() + window.innerHeight * 0.35}`,
           pin: true,
-          scrub: 1,
+          scrub: true,
           invalidateOnRefresh: true,
-          anticipatePin: 1,
+          anticipatePin: 0.5,
         },
       });
 
