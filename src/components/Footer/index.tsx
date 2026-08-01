@@ -2,6 +2,7 @@
 
 import { type MouseEvent } from "react";
 import Link from "next/link";
+import { FaFileAlt, FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
 import { useMagnetic } from "@/hooks/useMagnetic";
@@ -12,6 +13,33 @@ const links = [
   { name: "Skills", href: "#skills" },
   { name: "Estudos", href: "#estudos" },
   { name: "Projetos", href: "#projetos" },
+];
+
+const socialLinks = [
+  {
+    name: "Currículo",
+    href: "/resume",
+    icon: FaFileAlt,
+    external: true,
+  },
+  {
+    name: "GitHub",
+    href: "https://github.com/TrindadeBRA/",
+    icon: FaGithub,
+    external: true,
+  },
+  {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/in/trindadebra/",
+    icon: FaLinkedin,
+    external: true,
+  },
+  {
+    name: "WhatsApp",
+    href: "https://api.whatsapp.com/send?phone=5511952498126",
+    icon: FaWhatsapp,
+    external: true,
+  },
 ];
 
 const Footer = () => {
@@ -81,8 +109,9 @@ const Footer = () => {
               href="https://api.whatsapp.com/send?phone=5511952498126"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary mt-10 hover:bg-white hover:text-ink"
+              className="btn-primary mt-10 inline-flex items-center gap-2 hover:bg-white hover:text-ink"
             >
+              <FaWhatsapp size={16} />
               Fale comigo
             </a>
           </div>
@@ -107,31 +136,36 @@ const Footer = () => {
             <div>
               <p className="text-xs uppercase tracking-[0.2em] text-chalk-dim">Links</p>
               <ul className="mt-4 space-y-3 text-sm">
-                <li>
-                  <Link href="/resume" target="_blank" className="text-chalk-muted transition hover:text-white">
-                    Currículo
-                  </Link>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/TrindadeBRA/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-chalk-muted transition hover:text-white"
-                  >
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.linkedin.com/in/trindadebra/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-chalk-muted transition hover:text-white"
-                  >
-                    LinkedIn
-                  </a>
-                </li>
+                {socialLinks.map((item) => {
+                  const Icon = item.icon;
+                  const className =
+                    "inline-flex items-center gap-2.5 text-chalk-muted transition hover:text-white";
+
+                  if (item.href.startsWith("/")) {
+                    return (
+                      <li key={item.name}>
+                        <Link href={item.href} target="_blank" className={className}>
+                          <Icon size={15} className="shrink-0 opacity-80" />
+                          {item.name}
+                        </Link>
+                      </li>
+                    );
+                  }
+
+                  return (
+                    <li key={item.name}>
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={className}
+                      >
+                        <Icon size={15} className="shrink-0 opacity-80" />
+                        {item.name}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>

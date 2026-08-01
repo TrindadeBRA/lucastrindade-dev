@@ -106,7 +106,7 @@ export default function PersonalProjects(
                       src={project.project_image_sync || project.project_image}
                       alt={project.project_title || project.project_name}
                       fill
-                      className="object-cover"
+                      className="object-cover grayscale transition duration-500 group-hover:grayscale-0"
                       sizes="(max-width: 1024px) 100vw, 55vw"
                     />
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-ink/40 via-transparent to-white/10 opacity-0 transition duration-500 group-hover:opacity-100" />

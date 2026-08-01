@@ -4,6 +4,7 @@ import { useState, useRef, type MouseEvent } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { FaWhatsapp } from "react-icons/fa";
 import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
 
 const navigation = [
@@ -82,8 +83,9 @@ export default function Header() {
               href="https://api.whatsapp.com/send?phone=5511952498126"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary"
+              className="btn-primary inline-flex items-center gap-2"
             >
+              <FaWhatsapp size={15} />
               Contato
             </a>
           </div>
@@ -126,8 +128,9 @@ export default function Header() {
               <Link
                 href="https://api.whatsapp.com/send?phone=5511952498126"
                 target="_blank"
-                className="btn-primary w-fit"
+                className="btn-primary inline-flex w-fit items-center gap-2"
               >
+                <FaWhatsapp size={15} />
                 Contato
               </Link>
             </div>

@@ -7,7 +7,7 @@ import { Profile } from "@/pages/api/sectionProfile";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
 import { useMagnetic } from "@/hooks/useMagnetic";
-import HeroGithubCalendar from "@/components/HeroGithubCalendar";
+import HeroGithubBg from "@/components/HeroGithubBg";
 
 export default function HeroSectionAnimated(profileData: Profile) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -44,7 +44,6 @@ export default function HeroSectionAnimated(profileData: Profile) {
         )
         .from(".hero-line", { y: 28, opacity: 0, duration: 0.7 }, "-=0.35")
         .from(".hero-cta", { y: 22, opacity: 0, stagger: 0.08, duration: 0.55 }, "-=0.35")
-        .from(".hero-github", { y: 16, opacity: 0, duration: 0.7 }, "-=0.25")
         .to(
           ".hero-portrait",
           {
@@ -110,11 +109,12 @@ export default function HeroSectionAnimated(profileData: Profile) {
       id="hero"
       className="relative flex min-h-[calc(100svh-4.75rem)] flex-col overflow-hidden bg-ink"
     >
-      <div className="hero-glow pointer-events-none absolute -right-24 top-10 h-[28rem] w-[28rem] rounded-full bg-white/10 blur-[100px]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(255,255,255,0.06),transparent_45%)]" />
+      <div className="hero-glow pointer-events-none absolute -right-24 top-10 z-[1] h-[28rem] w-[28rem] rounded-full bg-white/10 blur-[100px]" />
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_20%_20%,rgba(255,255,255,0.06),transparent_45%)]" />
+      <HeroGithubBg />
 
-      <div className="site-container relative grid flex-1 items-center gap-10 py-10 pb-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-12 lg:pb-24">
-        <div className="hero-content relative z-10 max-w-2xl">
+      <div className="site-container relative z-10 grid flex-1 items-center gap-10 py-10 pb-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-12 lg:pb-24">
+        <div className="hero-content relative max-w-2xl">
           <p className="hero-meta mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-chalk-muted">
             {role}
           </p>
@@ -139,8 +139,9 @@ export default function HeroSectionAnimated(profileData: Profile) {
               href="https://api.whatsapp.com/send?phone=5511952498126"
               target="_blank"
               rel="noopener noreferrer"
-              className="hero-cta btn-primary hover:bg-white hover:text-ink"
+              className="hero-cta btn-primary inline-flex items-center gap-2 hover:bg-white hover:text-ink"
             >
+              <FaWhatsapp size={16} />
               Fale comigo
             </a>
             <Link
@@ -167,8 +168,6 @@ export default function HeroSectionAnimated(profileData: Profile) {
               </Link>
             </div>
           </div>
-
-          <HeroGithubCalendar />
         </div>
 
         <div className="hero-portrait relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-ink-muted lg:max-h-[min(68svh,34rem)] lg:max-w-none lg:w-full">

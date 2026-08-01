@@ -30,7 +30,6 @@
     "postprocessing": "^6.37.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-github-calendar": "^5.0.8",
     "swiper": "^11.1.14",
     "tailwind-merge": "^3.0.1",
     "three": "^0.174.0"
