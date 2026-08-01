@@ -77,7 +77,7 @@ export function applyDollarTakeover(dollarSrc = DOLLAR_BILL_SRC) {
     "width:100%",
     "height:100%",
     "pointer-events:none",
-    "z-index:9990",
+    "z-index:30",
     "overflow:hidden",
   ].join(";");
 
