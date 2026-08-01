@@ -14,7 +14,7 @@
   padding: 0.7rem 1.35rem 0.65rem 0.95rem;
   background: rgba(0, 0, 0, 0.72);
   border-radius: 0;
-  animation: cheatToastIn 60ms linear, cheatToastOut 120ms linear 2.5s forwards;
+  animation: cheatToastIn 60ms linear, cheatToastOut 150ms linear 4.85s forwards;
 }
 
 .text {

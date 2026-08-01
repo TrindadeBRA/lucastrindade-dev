@@ -1,0 +1,44 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bill {
+  position: absolute;
+  top: -12vh;
+  height: auto;
+  aspect-ratio: 128 / 80;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35));
+  will-change: transform;
+  animation-name: moneyFall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes moneyFall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(var(--bill-sway), 25vh, 0)
+      rotate(calc(var(--bill-rotate) * 0.35));
+  }
+  55% {
+    transform: translate3d(calc(var(--bill-sway) * -1), 60vh, 0)
+      rotate(calc(var(--bill-rotate) * 0.7));
+  }
+  100% {
+    transform: translate3d(calc(var(--bill-sway) * 0.4), 115vh, 0)
+      rotate(var(--bill-rotate));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bill {
+    animation-duration: 2.2s !important;
+  }
+}

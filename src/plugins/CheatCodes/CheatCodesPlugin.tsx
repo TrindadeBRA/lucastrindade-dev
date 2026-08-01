@@ -4,10 +4,12 @@ import {
   DEFAULT_CHEAT_MESSAGE,
   DEFAULT_DURATION_MS,
   DEFAULT_SOUND_SRC,
+  MONEY_RAIN_DURATION_MS,
 } from "./constants";
 import { useCheatListener } from "./hooks/useCheatListener";
 import { useCheatSound } from "./hooks/useCheatSound";
 import CheatToast from "./parts/CheatToast";
+import MoneyRain from "./parts/MoneyRain";
 import type { CheatCodeDefinition, CheatCodesPluginProps, CheatNotification } from "./types";
 
 export default function CheatCodesPlugin({
@@ -18,6 +20,7 @@ export default function CheatCodesPlugin({
   enabled = true,
 }: CheatCodesPluginProps) {
   const [notification, setNotification] = useState<CheatNotification | null>(null);
+  const [moneyRainKey, setMoneyRainKey] = useState<string | null>(null);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { play } = useCheatSound(soundSrc);
 
@@ -31,14 +34,20 @@ export default function CheatCodesPlugin({
     (cheat: CheatCodeDefinition) => {
       if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
 
+      const sessionId = `${cheat.id}-${Date.now()}`;
+
       setNotification({
-        id: `${cheat.id}-${Date.now()}`,
+        id: sessionId,
         codeId: cheat.id,
         message,
       });
 
       void play();
       cheat.onActivate?.();
+
+      if (cheat.effect === "money-rain") {
+        setMoneyRainKey(sessionId);
+      }
 
       hideTimerRef.current = setTimeout(() => {
         setNotification(null);
@@ -50,5 +59,10 @@ export default function CheatCodesPlugin({
 
   useCheatListener(codes, handleMatch, enabled);
 
-  return <CheatToast notification={notification} />;
+  return (
+    <>
+      <CheatToast notification={notification} />
+      <MoneyRain sessionKey={moneyRainKey} durationMs={MONEY_RAIN_DURATION_MS} />
+    </>
+  );
 }

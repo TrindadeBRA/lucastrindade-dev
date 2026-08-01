@@ -1,9 +1,12 @@
 export type CheatCodeId = string;
 
+export type CheatEffectId = "money-rain";
+
 export type CheatCodeDefinition = {
   id: CheatCodeId;
   code: string;
   label?: string;
+  effect?: CheatEffectId;
   onActivate?: () => void;
 };
 
