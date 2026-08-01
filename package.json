@@ -2,6 +2,10 @@
   "name": "lucastrindade-dev",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "yarn@4.17.0",
+  "engines": {
+    "node": ">=20 <23"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
