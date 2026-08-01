@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Lucas Trindade">
+  <title>Lucas Trindade — LT</title>
+  <!--
+    Template premium: anel luminoso + placa interna + monograma.
+    Regenerar: yarn icons
+  -->
+  <defs>
+    <radialGradient id="spot" cx="50%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.07"/>
+      <stop offset="55%" stop-color="#070707" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="35%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="70%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.12"/>
+    </linearGradient>
+    <linearGradient id="plate" x1="30%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="#141414"/>
+      <stop offset="48%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#070707"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" fill="#070707"/>
+  <rect width="512" height="512" fill="url(#spot)"/>
+
+  <!-- anel -->
+  <rect x="46" y="46" width="420" height="420" rx="112" ry="112" fill="url(#ring)"/>
+  <!-- placa -->
+  <rect x="61" y="61" width="390" height="390" rx="98" ry="98" fill="url(#plate)"/>
+  <!-- highlight topo -->
+  <path d="M120 72 h272 a90 90 0 0 1 18 8" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+
+  <!-- Monograma LT -->
+  <g fill="#f7f5f0" transform="translate(256 274)">
+    <path d="M-112 -86 h26 v142 h90 v26 h-116 z"/>
+    <path d="M0 -86 h112 v26 h-43 v142 h-26 v-142 h-43 z"/>
+  </g>
+</svg>
