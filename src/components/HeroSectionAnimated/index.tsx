@@ -38,52 +38,53 @@ export default function HeroSectionAnimated(profileData: Profile) {
       const isMobile = window.innerWidth < 768;
 
       gsap.set([".hero-portrait-scroll", ".hero-portrait-flip"], {
-        transformPerspective: 1400,
+        transformPerspective: isMobile ? 900 : 1400,
         transformOrigin: "center center",
-        force3D: true,
+        force3D: !isMobile,
       });
 
       gsap.fromTo(
         ".hero-portrait-flip",
         {
-          rotateY: -360,
+          rotateY: isMobile ? -180 : -360,
           opacity: 0,
-          y: isMobile ? 20 : 28,
-          scale: isMobile ? 0.92 : 0.88,
+          y: isMobile ? 16 : 28,
+          scale: isMobile ? 0.94 : 0.88,
         },
         {
           rotateY: 0,
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: isMobile ? 1.15 : 1.35,
-          delay: 0.08,
+          duration: isMobile ? 0.85 : 1.35,
+          delay: 0.05,
           ease: "power3.out",
+          ...(isMobile ? { clearProps: "transform" } : {}),
         }
       );
 
-      gsap.to(".hero-scroll-dot", {
-        y: 10,
-        repeat: -1,
-        yoyo: true,
-        duration: 1.1,
-        ease: "sine.inOut",
-      });
-
-      gsap.to(".hero-portrait-scroll", {
-        rotateY: 360,
-        y: isMobile ? 48 : 96,
-        scale: isMobile ? 0.88 : 0.82,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1.15,
-        },
-      });
-
       if (!isMobile) {
+        gsap.to(".hero-scroll-dot", {
+          y: 10,
+          repeat: -1,
+          yoyo: true,
+          duration: 1.1,
+          ease: "sine.inOut",
+        });
+
+        gsap.to(".hero-portrait-scroll", {
+          rotateY: 360,
+          y: 96,
+          scale: 0.82,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.15,
+          },
+        });
+
         gsap.to(".hero-content", {
           y: 56,
           opacity: 0.15,
@@ -107,19 +108,19 @@ export default function HeroSectionAnimated(profileData: Profile) {
             scrub: 1.1,
           },
         });
-      }
 
-      gsap.to(".hero-glow", {
-        opacity: 0.05,
-        scale: 1.2,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
+        gsap.to(".hero-glow", {
+          opacity: 0.05,
+          scale: 1.2,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      }
     },
     { scope: sectionRef }
   );
@@ -207,11 +208,11 @@ export default function HeroSectionAnimated(profileData: Profile) {
           ref={portraitStageRef}
           className="hero-portrait-stage relative mx-auto w-[300px] max-w-full [perspective:1400px] sm:w-full sm:max-w-[20rem] md:max-w-[23rem] lg:max-w-none"
         >
-          <div className="hero-portrait-scroll will-change-transform [transform-style:preserve-3d]">
-            <div className="hero-portrait-flip will-change-transform [transform-style:preserve-3d]">
+          <div className="hero-portrait-scroll md:will-change-transform md:[transform-style:preserve-3d]">
+            <div className="hero-portrait-flip md:will-change-transform md:[transform-style:preserve-3d]">
             <div
               data-tilt-card
-              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted will-change-transform [backface-visibility:visible] sm:aspect-[4/5] sm:rounded-[2rem] lg:max-h-[min(68svh,34rem)] lg:w-full"
+              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted sm:aspect-[4/5] sm:rounded-[2rem] md:will-change-transform lg:max-h-[min(68svh,34rem)] lg:w-full"
             >
               <div className="hero-portrait-media absolute inset-0">
                 <div className="hero-portrait-media-scroll absolute inset-0 md:inset-[-6%]">

@@ -27,6 +27,10 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
       const stage = stageRef.current;
       if (!stage || prefersReducedMotion()) return;
 
+      const finePointer = window.matchMedia("(pointer: fine)").matches;
+      const canHover = finePointer && window.innerWidth >= 768;
+      if (!canHover) return;
+
       const card =
         stage.querySelector<HTMLElement>("[data-tilt-card]") ||
         (stage.firstElementChild as HTMLElement | null);
@@ -48,9 +52,6 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
       const mediaEl = getMedia();
       if (mediaEl) gsap.set(mediaEl, { force3D: true, scale: 1.08 });
       if (shine) gsap.set(shine, { opacity: 0 });
-
-      const finePointer = window.matchMedia("(pointer: fine)").matches;
-      const canHover = finePointer && window.innerWidth >= 768;
 
       let idleTween: gsap.core.Timeline | null = null;
       let resetTween: gsap.core.Tween | null = null;
@@ -117,13 +118,6 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
       };
 
       if (idle) startIdle();
-
-      if (!canHover) {
-        return () => {
-          idleTween?.kill();
-          if (shine) gsap.killTweensOf(shine);
-        };
-      }
 
       const rotateXTo = gsap.quickTo(card, "rotationX", { duration: 0.18, ease: "power3.out" });
       const rotateYTo = gsap.quickTo(card, "rotationY", { duration: 0.18, ease: "power3.out" });

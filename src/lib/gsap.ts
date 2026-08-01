@@ -9,13 +9,18 @@ export function registerGsap() {
   if (registered || typeof window === "undefined") return;
 
   gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollToPlugin);
+
+  const isCoarse =
+    window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768;
+
   gsap.defaults({
     ease: "power3.out",
-    force3D: true,
+    force3D: !isCoarse,
   });
 
   ScrollTrigger.config({
     ignoreMobileResize: true,
+    autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
   });
 
   registered = true;

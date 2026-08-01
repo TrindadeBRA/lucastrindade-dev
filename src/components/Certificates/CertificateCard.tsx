@@ -152,7 +152,7 @@ export default function CertificateCard({ certificate, onOpen }: CertificateCard
             src={certificate.certificate_file_sync}
             alt={certificate.certificate_name}
             fill
-            className="cert-media object-cover will-change-transform"
+            className="cert-media object-cover md:will-change-transform"
             sizes="(max-width: 768px) 100vw, 33vw"
           />
         ) : null}

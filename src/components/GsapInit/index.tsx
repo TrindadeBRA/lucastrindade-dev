@@ -8,6 +8,8 @@ export default function GsapInit() {
     registerGsap();
     if (prefersReducedMotion()) return;
 
+    const isMobile = window.innerWidth < 768;
+
     gsap.set(".scroll-progress", { scaleX: 0, transformOrigin: "left center" });
 
     gsap.to(".scroll-progress", {
@@ -17,16 +19,20 @@ export default function GsapInit() {
         trigger: document.documentElement,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.2,
+        scrub: isMobile ? true : 0.2,
       },
     });
 
     const header = document.querySelector("header");
     if (header) {
+      let scrolled = false;
       ScrollTrigger.create({
         start: 12,
         onUpdate: (self) => {
-          header.classList.toggle("header-scrolled", self.scroll() > 24);
+          const next = self.scroll() > 24;
+          if (next === scrolled) return;
+          scrolled = next;
+          header.classList.toggle("header-scrolled", next);
         },
       });
     }

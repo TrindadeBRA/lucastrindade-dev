@@ -138,7 +138,7 @@ export default function ProjectMedia({ project, index }: ProjectMediaProps) {
         src={imageSrc}
         alt={title}
         fill
-        className="object-cover object-top will-change-[filter,transform]"
+        className="object-cover object-top md:will-change-[filter,transform]"
         sizes="(max-width: 1024px) 100vw, 55vw"
       />
 
