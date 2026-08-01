@@ -6,13 +6,10 @@ type UseTilt3DOptions = {
   shineSelector?: string;
   mediaSelector?: string;
   layerSelector?: string;
-  /** Escuta o mouse neste seletor (ex: #hero) em vez de só no card. */
   listenSelector?: string;
-  /** Animação 3D suave enquanto não há interação. */
   idle?: boolean;
 };
 
-/** Perspective tilt reativo — mouse + idle + profundidade entre mídia e layer. */
 export function useTilt3D<T extends HTMLElement = HTMLElement>(
   options: UseTilt3DOptions = {}
 ) {
@@ -41,16 +38,9 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         ? stage.querySelector<HTMLElement>(shineSelector)
         : stage.querySelector<HTMLElement>("[data-tilt-shine]");
       const layer = stage.querySelector<HTMLElement>(layerSelector);
+      const bg = stage.querySelector<HTMLElement>(".hero-portrait-bg");
       const listenEl =
         (listenSelector && document.querySelector<HTMLElement>(listenSelector)) || stage;
-
-      // Perspective mais curta = depth mais perceptível entre layers
-      gsap.set(stage, { perspective: 900 });
-      gsap.set(card, {
-        transformStyle: "preserve-3d",
-        transformOrigin: "center center",
-        force3D: true,
-      });
 
       const getMedia = () => stage.querySelector<HTMLElement>(mediaSelector);
 
@@ -60,28 +50,43 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
       const mediaEl = getMedia();
 
       if (!canHover) {
-        if (mediaEl) gsap.set(mediaEl, { clearProps: "transform" });
-        if (layer) gsap.set(layer, { clearProps: "transform" });
-        gsap.set(card, { clearProps: "transform" });
+        if (mediaEl) gsap.set(mediaEl, { clearProps: "transform,transformStyle" });
+        if (layer) gsap.set(layer, { clearProps: "transform,transformStyle" });
+        if (bg) gsap.set(bg, { clearProps: "transform,transformStyle" });
+        gsap.set(card, { clearProps: "transform,transformStyle" });
+        gsap.set(stage, { clearProps: "perspective" });
         return;
       }
 
+      gsap.set(stage, { perspective: 900 });
+      gsap.set(card, {
+        transformStyle: "preserve-3d",
+        transformOrigin: "center center",
+        force3D: true,
+      });
+
+      if (bg) {
+        gsap.set(bg, { force3D: true, z: -1 });
+      }
       if (mediaEl) {
-        gsap.set(mediaEl, { force3D: true, transformStyle: "preserve-3d", z: -20, scale: 1.06 });
+        gsap.set(mediaEl, { force3D: true, transformStyle: "preserve-3d", z: 8, scale: 1.06 });
       }
       if (layer) {
-        gsap.set(layer, { force3D: true, transformStyle: "preserve-3d", z: 64 });
+        gsap.set(layer, { force3D: true, transformStyle: "preserve-3d", z: 48 });
       }
 
       let idleTween: gsap.core.Timeline | null = null;
       let resetTween: gsap.core.Tween | null = null;
-      let shineIdleTween: gsap.core.Tween | null = null;
       let interacting = false;
       let raf = 0;
       let leaveTimer = 0;
       let mx = 0;
       let my = 0;
       let session = 0;
+
+      if (shine) {
+        gsap.set(shine, { opacity: 0 });
+      }
 
       const isInsideListen = (x: number, y: number) => {
         const rect = listenEl.getBoundingClientRect();
@@ -91,7 +96,11 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
       const startIdle = () => {
         if (!idle || interacting) return;
         idleTween?.kill();
-        shineIdleTween?.kill();
+        if (shine) {
+          gsap.killTweensOf(shine);
+          gsap.set(shine, { opacity: 0 });
+          shine.style.background = "none";
+        }
 
         const media = getMedia();
         idleTween = gsap.timeline({
@@ -123,38 +132,21 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
           });
 
         if (media) {
-          // Fundo: move mais (parallax contrário à layer)
-          idleTween.to(media, { x: 10, y: -8, z: -28, duration: 2.8, ease: "sine.inOut" }, 0);
-          idleTween.to(media, { x: -12, y: 8, z: -18, duration: 3.1, ease: "sine.inOut" }, 2.8);
-          idleTween.to(media, { x: 6, y: -4, z: -24, duration: 2.6, ease: "sine.inOut" }, 5.9);
+          idleTween.to(media, { x: 10, y: -8, duration: 2.8, ease: "sine.inOut" }, 0);
+          idleTween.to(media, { x: -12, y: 8, duration: 3.1, ease: "sine.inOut" }, 2.8);
+          idleTween.to(media, { x: 6, y: -4, duration: 2.6, ease: "sine.inOut" }, 5.9);
         }
 
         if (layer) {
-          // Frente: deslocamento oposto — sensação de volume
-          idleTween.to(layer, { x: -6, y: 4, z: 72, duration: 2.8, ease: "sine.inOut" }, 0);
-          idleTween.to(layer, { x: 7, y: -5, z: 58, duration: 3.1, ease: "sine.inOut" }, 2.8);
-          idleTween.to(layer, { x: -4, y: 3, z: 68, duration: 2.6, ease: "sine.inOut" }, 5.9);
-        }
-
-        if (shine) {
-          shineIdleTween = gsap.to(shine, {
-            opacity: 0.35,
-            duration: 1.2,
-            yoyo: true,
-            repeat: -1,
-            ease: "sine.inOut",
-          });
-          shine.style.background =
-            "radial-gradient(circle at 35% 30%, rgba(255,255,255,0.22), transparent 45%)";
+          idleTween.to(layer, { x: -4, y: 3, duration: 2.8, ease: "sine.inOut" }, 0);
+          idleTween.to(layer, { x: 5, y: -3, duration: 3.1, ease: "sine.inOut" }, 2.8);
+          idleTween.to(layer, { x: -3, y: 2, duration: 2.6, ease: "sine.inOut" }, 5.9);
         }
       };
 
       const stopIdle = () => {
         idleTween?.kill();
         idleTween = null;
-        shineIdleTween?.kill();
-        shineIdleTween = null;
-        if (shine) gsap.killTweensOf(shine);
       };
 
       if (idle) startIdle();
@@ -202,21 +194,19 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         scaleTo(1.02);
 
         bindMediaQuickTo(getMedia());
-        // Imagem recua e desliza contra o mouse
         mediaXTo?.(x * -22);
         mediaYTo?.(y * -16);
-        mediaZTo?.(-20 - Math.abs(x) * 18 - Math.abs(y) * 12);
+        mediaZTo?.(8);
 
-        // Texto avança e desliza a favor do mouse (layer da frente)
-        layerXTo?.(x * 14);
-        layerYTo?.(y * 10);
-        layerZTo?.(64 + Math.abs(x) * 20 + Math.abs(y) * 14);
+        layerXTo?.(x * 10);
+        layerYTo?.(y * 7);
+        layerZTo?.(48);
 
         if (shine) {
           const px = (x + 0.5) * 100;
           const py = (y + 0.5) * 100;
-          shine.style.background = `radial-gradient(circle at ${px}% ${py}%, rgba(255,255,255,0.4), rgba(255,255,255,0.08) 28%, transparent 55%)`;
-          gsap.to(shine, { opacity: 0.85, duration: 0.15, overwrite: "auto" });
+          shine.style.background = `radial-gradient(circle at ${px}% ${py}%, rgba(255,255,255,0.28), rgba(255,255,255,0.06) 30%, transparent 55%)`;
+          gsap.to(shine, { opacity: 0.55, duration: 0.2, overwrite: "auto" });
         }
       };
 
@@ -258,7 +248,7 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
           gsap.to(media, {
             x: 0,
             y: 0,
-            z: -20,
+            z: 8,
             duration: 0.85,
             ease: "power3.out",
             overwrite: "auto",
@@ -268,14 +258,21 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
           gsap.to(layer, {
             x: 0,
             y: 0,
-            z: 64,
+            z: 48,
             duration: 0.85,
             ease: "power3.out",
             overwrite: "auto",
           });
         }
         if (shine) {
-          gsap.to(shine, { opacity: 0, duration: 0.45, overwrite: "auto" });
+          gsap.to(shine, {
+            opacity: 0,
+            duration: 0.35,
+            overwrite: "auto",
+            onComplete: () => {
+              shine.style.background = "none";
+            },
+          });
         }
       };
 
@@ -302,9 +299,12 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
       return () => {
         session += 1;
         idleTween?.kill();
-        shineIdleTween?.kill();
         resetTween?.kill();
-        if (shine) gsap.killTweensOf(shine);
+        if (shine) {
+          gsap.killTweensOf(shine);
+          gsap.set(shine, { opacity: 0 });
+          shine.style.background = "none";
+        }
         if (raf) window.cancelAnimationFrame(raf);
         if (leaveTimer) window.clearTimeout(leaveTimer);
         document.removeEventListener("pointermove", onPointerMove);

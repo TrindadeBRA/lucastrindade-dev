@@ -179,19 +179,16 @@ export default function HeroSectionAnimated(profileData: Profile) {
           ref={portraitStageRef}
           className="hero-portrait-stage relative mx-auto w-[300px] max-w-full sm:w-full sm:max-w-[20rem] md:max-w-[23rem] lg:max-w-none lg:[perspective:900px]"
         >
-          <div
-            className="hero-portrait-scroll will-change-transform"
-            style={{ transformStyle: "preserve-3d" }}
-          >
+          <div className="hero-portrait-scroll will-change-transform">
             <div
               data-tilt-card
-              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted will-change-transform sm:aspect-[4/5] sm:rounded-[2rem] md:overflow-visible lg:max-h-[min(68svh,34rem)] lg:w-full"
-              style={{ transformStyle: "preserve-3d" }}
+              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 will-change-transform sm:aspect-[4/5] sm:rounded-[2rem] md:overflow-visible lg:max-h-[min(68svh,34rem)] lg:w-full"
             >
               <div
-                className="absolute inset-0 overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] md:[transform:translateZ(-48px)_scale(1.12)]"
-                style={{ transformStyle: "preserve-3d" }}
-              >
+                aria-hidden
+                className="hero-portrait-bg absolute inset-0 rounded-[1.5rem] bg-ink-muted sm:rounded-[2rem]"
+              />
+              <div className="absolute inset-0 overflow-hidden rounded-[1.5rem] sm:rounded-[2rem]">
                 <div className="hero-portrait-media absolute inset-0 will-change-transform">
                   <div className="hero-portrait-media-scroll absolute inset-0 will-change-transform md:inset-[-8%]">
                     {avatar ? (
@@ -213,13 +210,12 @@ export default function HeroSectionAnimated(profileData: Profile) {
               </div>
               <div
                 data-tilt-shine
-                className="pointer-events-none absolute inset-0 z-[1] rounded-[1.5rem] opacity-0 mix-blend-soft-light sm:rounded-[2rem] md:[transform:translateZ(12px)]"
+                className="pointer-events-none absolute inset-0 z-[1] rounded-[1.5rem] opacity-0 sm:rounded-[2rem]"
               />
-              <div className="pointer-events-none absolute inset-0 z-[2] rounded-[1.5rem] bg-gradient-to-t from-ink via-ink/45 to-transparent opacity-90 sm:rounded-[2rem] md:[transform:translateZ(24px)] md:opacity-95" />
+              <div className="pointer-events-none absolute inset-0 z-[2] rounded-[1.5rem] bg-gradient-to-t from-ink via-ink/50 to-transparent sm:rounded-[2rem]" />
               <div
                 data-tilt-layer
-                className="absolute inset-x-0 bottom-0 z-[3] px-4 pb-5 pt-12 sm:px-6 sm:pb-6 sm:pt-16 md:[transform:translateZ(64px)]"
-                style={{ transformStyle: "preserve-3d" }}
+                className="absolute inset-x-0 bottom-0 z-[3] px-4 pb-5 pt-12 sm:px-6 sm:pb-6 sm:pt-16"
               >
                 <div className="max-w-[19rem]">
                   <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-chalk sm:text-sm">
