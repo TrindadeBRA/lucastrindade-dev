@@ -35,6 +35,20 @@ const config: Config = {
         "hero-wash":
           "radial-gradient(ellipse 80% 60% at 70% 40%, rgba(255,255,255,0.08), transparent 55%), linear-gradient(180deg, #0a0a0a 0%, #141414 100%)",
       },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        "marquee-reverse": {
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+      },
+      animation: {
+        marquee: "marquee 45s linear infinite",
+        "marquee-reverse": "marquee-reverse 50s linear infinite",
+      },
     },
   },
   plugins: [],
