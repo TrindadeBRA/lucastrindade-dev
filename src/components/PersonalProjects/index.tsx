@@ -3,7 +3,7 @@
 import { PersonalProject } from "@/pages/api/sectionsPersonalProjects";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { asList } from "@/utils/asList";
-import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
+import { gsap, prefersReducedMotion, registerGsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import ProjectMedia from "./ProjectMedia";
 
 export default function PersonalProjects(
@@ -20,51 +20,99 @@ export default function PersonalProjects(
       if (!sectionRef.current) return;
 
       const rows = gsap.utils.toArray<HTMLElement>(".project-row", sectionRef.current);
+      if (!rows.length) return;
 
-      rows.forEach((row) => {
-        const img = row.querySelector<HTMLElement>(".project-media img");
-        if (!img) return;
+      let activeRow: HTMLElement | null = null;
 
-        if (prefersReducedMotion()) {
-          gsap.set(img, { filter: "grayscale(0%)" });
-          return;
-        }
+      const setActiveRow = (next: HTMLElement | null) => {
+        if (next === activeRow) return;
+        activeRow = next;
 
-        // Item atual em tela → tira o P&B
-        gsap.fromTo(
-          img,
-          { filter: "grayscale(100%)" },
-          {
-            filter: "grayscale(0%)",
+        rows.forEach((row) => {
+          const img = row.querySelector<HTMLElement>(".project-media img");
+          const isActive = row === next;
+          row.classList.toggle("is-active", isActive);
+
+          if (!img) return;
+
+          if (prefersReducedMotion()) {
+            gsap.set(img, { filter: isActive ? "grayscale(0%)" : "grayscale(100%)" });
+            return;
+          }
+
+          gsap.to(img, {
+            filter: isActive ? "grayscale(0%)" : "grayscale(100%)",
             duration: 0.55,
             ease: "power2.out",
-            scrollTrigger: {
-              trigger: row,
-              start: "top 70%",
-              end: "bottom 35%",
-              toggleActions: "play reverse play reverse",
-            },
-          }
-        );
+            overwrite: "auto",
+          });
+        });
+      };
 
-        if (window.innerWidth < 768) return;
-
-        gsap.fromTo(
-          img,
-          { scale: 1.12, yPercent: -4 },
-          {
-            scale: 1,
-            yPercent: 4,
-            ease: "none",
-            scrollTrigger: {
-              trigger: row,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-            },
-          }
-        );
+      // Estado inicial: todos em P&B
+      rows.forEach((row) => {
+        const img = row.querySelector<HTMLElement>(".project-media img");
+        if (img) gsap.set(img, { filter: "grayscale(100%)" });
       });
+
+      const pickActive = () => {
+        const focusY = window.innerHeight * 0.42;
+        let best: HTMLElement | null = null;
+        let bestDist = Infinity;
+
+        rows.forEach((row) => {
+          const rect = row.getBoundingClientRect();
+          const inView = rect.bottom > window.innerHeight * 0.12 && rect.top < window.innerHeight * 0.88;
+          if (!inView) return;
+          const mid = rect.top + rect.height / 2;
+          const dist = Math.abs(mid - focusY);
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = row;
+          }
+        });
+
+        setActiveRow(best);
+      };
+
+      const trigger = ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        onUpdate: pickActive,
+        onEnter: pickActive,
+        onEnterBack: pickActive,
+        onLeave: () => setActiveRow(null),
+        onLeaveBack: () => setActiveRow(null),
+      });
+
+      pickActive();
+
+      if (!prefersReducedMotion() && window.innerWidth >= 768) {
+        rows.forEach((row) => {
+          const img = row.querySelector<HTMLElement>(".project-media img");
+          if (!img) return;
+          gsap.fromTo(
+            img,
+            { scale: 1.12, yPercent: -4 },
+            {
+              scale: 1,
+              yPercent: 4,
+              ease: "none",
+              scrollTrigger: {
+                trigger: row,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1,
+              },
+            }
+          );
+        });
+      }
+
+      return () => {
+        trigger.kill();
+      };
     },
     { scope: sectionRef, dependencies: [projects.length] }
   );
@@ -97,8 +145,8 @@ export default function PersonalProjects(
               className="project-row group grid gap-8 border-t border-white/10 py-12 lg:grid-cols-12 lg:items-center"
               data-reveal="card"
             >
-              <div className="lg:col-span-5">
-                <p className="font-display text-5xl font-semibold text-white/10 transition group-hover:text-white/25">
+              <div className="relative z-[1] lg:col-span-5">
+                <p className="font-display text-5xl font-semibold text-white/10 transition group-hover:text-white/25 group-[.is-active]:text-white/30">
                   {String(index + 1).padStart(2, "0")}
                 </p>
                 <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-chalk sm:text-4xl">

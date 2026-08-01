@@ -142,6 +142,60 @@ export default function ProjectMedia({ project, index }: ProjectMediaProps) {
         sizes="(max-width: 1024px) 100vw, 55vw"
       />
 
+      {/* Blur em degradê — topo no mobile (texto acima) / esquerda no desktop (texto ao lado) */}
+      <div
+        className="project-blur-edge inset-x-0 top-0 h-[50%] w-full lg:hidden"
+        aria-hidden="true"
+      >
+        <span
+          className="backdrop-blur-[2px]"
+          style={{
+            WebkitMaskImage: "linear-gradient(to bottom, black, transparent)",
+            maskImage: "linear-gradient(to bottom, black, transparent)",
+          }}
+        />
+        <span
+          className="backdrop-blur-[8px]"
+          style={{
+            WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 65%)",
+            maskImage: "linear-gradient(to bottom, black 0%, transparent 65%)",
+          }}
+        />
+        <span
+          className="backdrop-blur-[16px]"
+          style={{
+            WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 40%)",
+            maskImage: "linear-gradient(to bottom, black 0%, transparent 40%)",
+          }}
+        />
+      </div>
+      <div
+        className="project-blur-edge inset-y-0 left-0 hidden h-full w-[46%] lg:block"
+        aria-hidden="true"
+      >
+        <span
+          className="backdrop-blur-[2px]"
+          style={{
+            WebkitMaskImage: "linear-gradient(to right, black, transparent)",
+            maskImage: "linear-gradient(to right, black, transparent)",
+          }}
+        />
+        <span
+          className="backdrop-blur-[8px]"
+          style={{
+            WebkitMaskImage: "linear-gradient(to right, black 0%, transparent 70%)",
+            maskImage: "linear-gradient(to right, black 0%, transparent 70%)",
+          }}
+        />
+        <span
+          className="backdrop-blur-[16px]"
+          style={{
+            WebkitMaskImage: "linear-gradient(to right, black 0%, transparent 42%)",
+            maskImage: "linear-gradient(to right, black 0%, transparent 42%)",
+          }}
+        />
+      </div>
+
       {/* Overlay inicial */}
       <div
         ref={idleOverlayRef}

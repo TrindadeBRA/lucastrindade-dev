@@ -158,7 +158,7 @@ export default function CertificateCard({ certificate, onOpen }: CertificateCard
         ) : null}
 
         <span
-          className={`absolute left-3 top-3 z-20 rounded-full px-3 py-1 text-[11px] font-semibold ${badge.bgColor}`}
+          className={`absolute left-3 top-3 z-20 ${badge.bgColor}`}
         >
           {badge.text}
         </span>

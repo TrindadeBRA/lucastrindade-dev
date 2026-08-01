@@ -83,6 +83,19 @@ body.overflow-hidden {
   .mask-fade-x {
     mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   }
+
+  /* Blur em degradê (camadas) — perto do texto nos projetos */
+  .project-blur-edge {
+    @apply pointer-events-none absolute z-[4];
+  }
+
+  .project-blur-edge > span {
+    @apply absolute inset-0;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
 }
 
 header.header-scrolled {

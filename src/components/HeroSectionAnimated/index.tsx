@@ -227,14 +227,33 @@ export default function HeroSectionAnimated(profileData: Profile) {
                 data-tilt-shine
                 className="pointer-events-none absolute inset-0 z-[1] opacity-0 mix-blend-soft-light"
               />
-              <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-ink via-transparent to-transparent opacity-80" />
+              <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-ink via-ink/40 to-transparent opacity-90" />
               <div
-                className="absolute bottom-5 left-5 right-5 z-[3]"
+                className="absolute inset-x-0 bottom-0 z-[3] p-5 sm:p-6"
                 style={{ transform: "translateZ(36px)" }}
               >
-                <p className="font-display text-sm text-chalk/90">
-                  {profileData?.user_title || "Full Stack Developer"}
-                </p>
+                <blockquote className="max-w-[16rem] sm:max-w-[18rem]">
+                  <span
+                    className="mb-2 block font-display text-3xl leading-none text-white/25"
+                    aria-hidden="true"
+                  >
+                    “
+                  </span>
+                  <p className="font-display text-base font-semibold leading-snug tracking-tight text-chalk sm:text-lg">
+                    Done is better than perfect.
+                  </p>
+                  <footer className="mt-3 flex items-center gap-2">
+                    <span className="h-px w-5 bg-white/25" aria-hidden="true" />
+                    <cite className="not-italic text-[10px] uppercase tracking-[0.18em] text-chalk-dim">
+                      Anne Mollegen Smith
+                    </cite>
+                  </footer>
+                </blockquote>
+                {profileData?.user_title ? (
+                  <p className="mt-4 text-[11px] text-chalk-muted/80">
+                    {profileData.user_title}
+                  </p>
+                ) : null}
               </div>
             </div>
           </div>

@@ -220,7 +220,7 @@ export default function CertificateViewer({
               <div>
                 {badge ? (
                   <span
-                    className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold ${badge.bgColor}`}
+                    className={badge.bgColor}
                   >
                     {badge.text}
                   </span>
