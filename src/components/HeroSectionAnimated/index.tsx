@@ -32,29 +32,37 @@ export default function HeroSectionAnimated(profileData: Profile) {
       if (!sectionRef.current || prefersReducedMotion()) return;
 
       const isMobile = window.innerWidth < 768;
-      const section = sectionRef.current;
-      const flipEl = section.querySelector<HTMLElement>(".hero-portrait-scroll");
-      if (!flipEl) return;
 
-      gsap.set(flipEl, {
-        transformPerspective: 900,
+      gsap.set([".hero-portrait-scroll", ".hero-portrait-flip"], {
+        transformPerspective: isMobile ? 900 : 1400,
         transformOrigin: "center center",
         force3D: true,
-        willChange: "transform",
       });
 
-      gsap.to(flipEl, {
-        rotationY: 360,
-        y: isMobile ? 40 : 64,
+      const section = sectionRef.current;
+      const flipDistance = () => window.innerHeight * (isMobile ? 0.42 : 0.5);
+
+      gsap.to(".hero-portrait-scroll", {
+        rotateY: 180,
         ease: "none",
-        force3D: true,
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: () => `+=${window.innerHeight * (isMobile ? 0.38 : 0.45)}`,
+          end: () => `+=${flipDistance()}`,
           scrub: true,
           fastScrollEnd: true,
-          invalidateOnRefresh: true,
+        },
+      });
+
+      gsap.to(".hero-portrait-scroll", {
+        y: isMobile ? 48 : 80,
+        scale: isMobile ? 0.92 : 0.86,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
         },
       });
 
@@ -68,8 +76,32 @@ export default function HeroSectionAnimated(profileData: Profile) {
         });
 
         gsap.to(".hero-content", {
-          y: 40,
-          opacity: 0.2,
+          y: 56,
+          opacity: 0.15,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+
+        gsap.to(".hero-portrait-media-scroll", {
+          yPercent: 18,
+          scale: 1.14,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+
+        gsap.to(".hero-glow", {
+          opacity: 0.05,
+          scale: 1.2,
           ease: "none",
           scrollTrigger: {
             trigger: section,
@@ -164,14 +196,16 @@ export default function HeroSectionAnimated(profileData: Profile) {
 
         <div
           ref={portraitStageRef}
-          className="hero-portrait-stage relative mx-auto w-[300px] max-w-full self-center [perspective:900px] sm:w-full sm:max-w-[20rem] md:max-w-[23rem] lg:max-w-none"
+          className="hero-portrait-stage relative mx-auto w-[300px] max-w-full self-center [perspective:1400px] sm:w-full sm:max-w-[20rem] md:max-w-[23rem] lg:max-w-none"
         >
-          <div className="hero-portrait-scroll will-change-transform [backface-visibility:hidden]">
+          <div className="hero-portrait-scroll md:will-change-transform md:[transform-style:preserve-3d]">
+            <div className="hero-portrait-flip md:will-change-transform md:[transform-style:preserve-3d]">
             <div
               data-tilt-card
-              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted [backface-visibility:hidden] sm:aspect-[4/5] sm:rounded-[2rem] lg:max-h-[min(68svh,34rem)] lg:w-full"
+              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted sm:aspect-[4/5] sm:rounded-[2rem] md:will-change-transform lg:max-h-[min(68svh,34rem)] lg:w-full"
             >
               <div className="hero-portrait-media absolute inset-0">
+                <div className="hero-portrait-media-scroll absolute inset-0 md:inset-[-6%]">
                   {avatar ? (
                     <Image
                       src={avatar}
@@ -186,6 +220,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
                       Foto
                     </div>
                   )}
+                </div>
               </div>
               <div
                 data-tilt-shine
@@ -245,6 +280,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
                   </p>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>
