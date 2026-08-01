@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import { PersonalProject } from "@/pages/api/sectionsPersonalProjects";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { asList } from "@/utils/asList";
 import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
+import ProjectMedia from "./ProjectMedia";
 
 export default function PersonalProjects(
   personalProjectsData: PersonalProject[] | Record<string, PersonalProject>
@@ -123,27 +122,7 @@ export default function PersonalProjects(
               </div>
 
               <div className="lg:col-span-7">
-                {project.project_image_sync || project.project_image ? (
-                  <Link
-                    href={project.project_url || "#"}
-                    target={project.project_url ? "_blank" : undefined}
-                    className="project-media clip-frame relative block aspect-[21/9] overflow-hidden rounded-2xl border border-white/10 bg-ink-muted"
-                    data-reveal="clip"
-                  >
-                    <Image
-                      src={project.project_image_sync || project.project_image}
-                      alt={project.project_title || project.project_name}
-                      fill
-                      className="object-cover object-top will-change-[filter,transform]"
-                      sizes="(max-width: 1024px) 100vw, 55vw"
-                    />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-ink/30 via-transparent to-white/5" />
-                  </Link>
-                ) : (
-                  <div className="flex aspect-[21/9] items-center justify-center rounded-2xl border border-white/10 bg-ink-muted text-chalk-dim">
-                    Sem imagem
-                  </div>
-                )}
+                <ProjectMedia project={project} index={index} />
               </div>
             </article>
           ))}

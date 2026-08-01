@@ -2,68 +2,89 @@
 
 import Image from "next/image";
 import { useRef } from "react";
+import { FaExpand } from "react-icons/fa";
 import { Certificate } from "@/pages/api/sectionCertificates";
 import { getBadgeConfig } from "./getBadgeConfig";
+import { formatCertificateDate, formatDaysAgo } from "./formatCertificateDate";
 import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
 
 type CertificateCardProps = {
   certificate: Certificate;
-  onOpen: (url: string) => void;
+  onOpen: () => void;
 };
-
-function formatDate(value?: string) {
-  if (!value) return null;
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-}
 
 export default function CertificateCard({ certificate, onOpen }: CertificateCardProps) {
   const cardRef = useRef<HTMLButtonElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const idleOverlayRef = useRef<HTMLDivElement>(null);
+  const ctaOverlayRef = useRef<HTMLDivElement>(null);
   const badge = getBadgeConfig(certificate.certificate_category);
-  const dateLabel = formatDate(certificate.certificate_date);
+  const dateLabel = formatCertificateDate(certificate.certificate_date);
+  const daysAgoLabel = formatDaysAgo(certificate.certificate_date);
 
   useGSAP(
     () => {
       registerGsap();
       const card = cardRef.current;
-      const overlay = overlayRef.current;
-      if (!card || !overlay) return;
+      const idle = idleOverlayRef.current;
+      const cta = ctaOverlayRef.current;
+      if (!card || !idle || !cta) return;
 
-      const dateEl = overlay.querySelector<HTMLElement>(".cert-date");
       const media = card.querySelector<HTMLElement>(".cert-media");
+      const idleContent = idle.querySelector<HTMLElement>(".cert-idle-content");
+      const ctaContent = cta.querySelector<HTMLElement>(".cert-cta-content");
 
-      gsap.set(overlay, { yPercent: 110, opacity: 0 });
-      if (dateEl) gsap.set(dateEl, { y: 16, opacity: 0 });
+      // Estado inicial: overlay de info visível
+      gsap.set(idle, { opacity: 1 });
+      gsap.set(cta, { opacity: 0 });
+      gsap.set(ctaContent, { y: 14, scale: 0.96, opacity: 0 });
 
       const enter = () => {
         if (prefersReducedMotion()) {
-          gsap.set(overlay, { yPercent: 0, opacity: 1 });
-          if (dateEl) gsap.set(dateEl, { y: 0, opacity: 1 });
+          gsap.set(idle, { opacity: 0 });
+          gsap.set(cta, { opacity: 1 });
+          gsap.set(ctaContent, { y: 0, scale: 1, opacity: 1 });
           return;
         }
+
         gsap
           .timeline({ defaults: { ease: "power3.out" } })
-          .to(overlay, { yPercent: 0, opacity: 1, duration: 0.45 })
-          .to(dateEl, { y: 0, opacity: 1, duration: 0.35 }, "-=0.2");
+          .to(idleContent, { y: 8, opacity: 0, duration: 0.22 }, 0)
+          .to(idle, { opacity: 0, duration: 0.3 }, 0)
+          .to(cta, { opacity: 1, duration: 0.35 }, 0.08)
+          .to(ctaContent, { y: 0, scale: 1, opacity: 1, duration: 0.4 }, 0.1);
+
+        if (media) {
+          gsap.to(media, {
+            scale: 1.06,
+            duration: 0.55,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        }
       };
 
       const leave = () => {
         if (prefersReducedMotion()) {
-          gsap.set(overlay, { yPercent: 110, opacity: 0 });
-          if (dateEl) gsap.set(dateEl, { y: 16, opacity: 0, x: 0 });
+          gsap.set(idle, { opacity: 1 });
+          gsap.set(cta, { opacity: 0 });
+          gsap.set(ctaContent, { y: 14, scale: 0.96, opacity: 0 });
+          gsap.set(idleContent, { y: 0, opacity: 1 });
           if (media) gsap.set(media, { x: 0, y: 0, scale: 1 });
           return;
         }
+
         gsap
           .timeline({ defaults: { ease: "power3.inOut" } })
-          .to(dateEl, { y: 12, opacity: 0, duration: 0.2 })
-          .to(overlay, { yPercent: 110, opacity: 0, duration: 0.35 }, "-=0.05");
+          .to(ctaContent, { y: 10, x: 0, scale: 0.96, opacity: 0, duration: 0.22 }, 0)
+          .to(cta, { opacity: 0, duration: 0.28 }, 0.05)
+          .to(idle, { opacity: 1, duration: 0.35 }, 0.1)
+          .fromTo(
+            idleContent,
+            { y: 10, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" },
+            0.12
+          );
+
         if (media) {
           gsap.to(media, {
             x: 0,
@@ -74,34 +95,30 @@ export default function CertificateCard({ certificate, onOpen }: CertificateCard
             overwrite: "auto",
           });
         }
-        if (dateEl) gsap.set(dateEl, { x: 0 });
       };
 
       const onMove = (event: PointerEvent) => {
         if (prefersReducedMotion()) return;
         if (!window.matchMedia("(pointer: fine)").matches) return;
+        if (!media) return;
         const rect = card.getBoundingClientRect();
         const x = (event.clientX - rect.left) / rect.width - 0.5;
         const y = (event.clientY - rect.top) / rect.height - 0.5;
-        if (dateEl) {
-          gsap.to(dateEl, {
-            x: x * 18,
-            y: y * 10,
-            duration: 0.35,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
-        }
-        if (media) {
-          gsap.to(media, {
-            x: x * 8,
-            y: y * 6,
-            scale: 1.06,
-            duration: 0.4,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
-        }
+        gsap.to(media, {
+          x: x * 8,
+          y: y * 6,
+          scale: 1.07,
+          duration: 0.35,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+        gsap.to(ctaContent, {
+          x: x * 10,
+          y: y * 8,
+          duration: 0.35,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
       };
 
       card.addEventListener("mouseenter", enter);
@@ -125,9 +142,7 @@ export default function CertificateCard({ certificate, onOpen }: CertificateCard
     <button
       ref={cardRef}
       type="button"
-      onClick={() => {
-        if (certificate.certificate_file_sync) onOpen(certificate.certificate_file_sync);
-      }}
+      onClick={onOpen}
       className="group overflow-hidden rounded-2xl border border-white/10 bg-ink text-left transition hover:border-white/30"
       data-reveal="card"
     >
@@ -143,21 +158,46 @@ export default function CertificateCard({ certificate, onOpen }: CertificateCard
         ) : null}
 
         <span
-          className={`absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-[11px] font-semibold ${badge.bgColor}`}
+          className={`absolute left-3 top-3 z-20 rounded-full px-3 py-1 text-[11px] font-semibold ${badge.bgColor}`}
         >
           {badge.text}
         </span>
 
+        {/* Overlay inicial — data / contexto */}
         <div
-          ref={overlayRef}
-          className="pointer-events-none absolute inset-0 z-[5] flex items-end bg-gradient-to-t from-ink via-ink/70 to-transparent p-4"
+          ref={idleOverlayRef}
+          className="pointer-events-none absolute inset-0 z-[5] flex items-end bg-gradient-to-t from-ink via-ink/55 to-transparent p-4"
         >
-          <div className="cert-date">
+          <div className="cert-idle-content">
             <p className="text-[10px] uppercase tracking-[0.18em] text-chalk-dim">Conclusão</p>
             <p className="mt-1 font-display text-sm font-semibold text-chalk">
               {dateLabel || "Data indisponível"}
             </p>
+            {daysAgoLabel ? (
+              <p className="mt-0.5 text-[11px] text-chalk-dim/90">{daysAgoLabel}</p>
+            ) : null}
           </div>
+        </div>
+
+        {/* Overlay hover — incentivo a abrir o viewer */}
+        <div
+          ref={ctaOverlayRef}
+          className="pointer-events-none absolute inset-0 z-[6] flex items-center justify-center bg-ink/55 p-4 backdrop-blur-[2px]"
+        >
+          <div className="cert-cta-content flex flex-col items-center text-center">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/25 bg-white/10 text-chalk">
+              <FaExpand size={14} />
+            </span>
+            <p className="mt-3 font-display text-sm font-semibold text-chalk">Ver certificado</p>
+            <p className="mt-1 max-w-[12rem] text-[11px] leading-relaxed text-chalk-muted">
+              Abrir visualização com detalhes e navegação
+            </p>
+          </div>
+        </div>
+
+        {/* Mobile: hint sutil sem hover */}
+        <div className="pointer-events-none absolute bottom-3 right-3 z-[7] rounded-full border border-white/15 bg-ink/70 px-2.5 py-1 text-[10px] text-chalk-muted backdrop-blur md:hidden">
+          Toque para abrir
         </div>
       </div>
 
