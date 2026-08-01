@@ -37,10 +37,23 @@ export default function Home({
           name="description"
           content="Full Stack Tech Lead em SP, Brasil, aberto a remoto. Fundador da TrinityWeb. Experiência com Next.js, React, Node.js e liderança técnica."
         />
-        <meta property="og:image" content="/images/ogimage.png" />
+        <meta property="og:title" content="Lucas Trindade — Full Stack Tech Lead" />
+        <meta
+          property="og:description"
+          content="Full Stack Tech Lead em SP, Brasil, aberto a remoto. Fundador da TrinityWeb. Experiência com Next.js, React, Node.js e liderança técnica."
+        />
+        <meta
+          property="og:image"
+          content={`${process.env.NEXT_PUBLIC_SITE_URL || "https://lucastrindade.dev"}/api/og`}
+        />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="675" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:image"
+          content={`${process.env.NEXT_PUBLIC_SITE_URL || "https://lucastrindade.dev"}/api/og`}
+        />
       </Head>
       <GsapInit />
       <Header />

@@ -4,7 +4,9 @@ export { defaultCheatCodes } from "./codes";
 export { useCheatListener } from "./hooks/useCheatListener";
 export { useCheatSound } from "./hooks/useCheatSound";
 export { default as CheatToast } from "./parts/CheatToast";
+export { default as CheatPad } from "./parts/CheatPad";
 export { default as MoneyRain } from "./parts/MoneyRain";
+export { findCheatMatch, normalizeCheatInput } from "./utils/matchCheat";
 export type {
   CheatCodeDefinition,
   CheatCodeId,

@@ -1,6 +1,11 @@
 import { useEffect, useRef } from "react";
 import { BUFFER_IDLE_RESET_MS } from "../constants";
 import type { CheatCodeDefinition } from "../types";
+import {
+  findCheatMatch,
+  normalizeCheatCodes,
+  normalizeCheatInput,
+} from "../utils/matchCheat";
 
 function isEditableTarget(target: EventTarget | null) {
   if (!(target instanceof HTMLElement)) return false;
@@ -12,28 +17,6 @@ function isEditableTarget(target: EventTarget | null) {
   return Boolean(target.closest("[contenteditable='true']"));
 }
 
-function normalizeInput(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9]/g, "");
-}
-
-function normalizeCodes(codes: CheatCodeDefinition[]) {
-  return codes
-    .map((entry) => ({
-      ...entry,
-      code: normalizeInput(entry.code),
-    }))
-    .filter((entry) => entry.code.length > 0)
-    .sort((a, b) => b.code.length - a.code.length);
-}
-
-function findMatch(buffer: string, codes: CheatCodeDefinition[]) {
-  return (
-    codes.find((cheat) => buffer.endsWith(cheat.code)) ??
-    codes.find((cheat) => buffer.includes(cheat.code)) ??
-    null
-  );
-}
-
 export function useCheatListener(
   codes: CheatCodeDefinition[],
   onMatch: (cheat: CheatCodeDefinition) => void,
@@ -42,14 +25,14 @@ export function useCheatListener(
   const bufferRef = useRef("");
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const onMatchRef = useRef(onMatch);
-  const codesRef = useRef(normalizeCodes(codes));
+  const codesRef = useRef(normalizeCheatCodes(codes));
 
   useEffect(() => {
     onMatchRef.current = onMatch;
   }, [onMatch]);
 
   useEffect(() => {
-    codesRef.current = normalizeCodes(codes);
+    codesRef.current = normalizeCheatCodes(codes);
   }, [codes]);
 
   useEffect(() => {
@@ -73,13 +56,13 @@ export function useCheatListener(
     };
 
     const ingest = (raw: string) => {
-      const chunk = normalizeInput(raw);
+      const chunk = normalizeCheatInput(raw);
       if (!chunk) return;
 
       bufferRef.current = `${bufferRef.current}${chunk}`.slice(-64);
       scheduleIdleReset();
 
-      const matched = findMatch(bufferRef.current, codesRef.current);
+      const matched = findCheatMatch(bufferRef.current, codesRef.current);
       if (!matched) return;
 
       resetBuffer();

@@ -7,9 +7,12 @@ import {
 } from "./constants";
 import { useCheatListener } from "./hooks/useCheatListener";
 import { useCheatSound } from "./hooks/useCheatSound";
+import CheatHotspot from "./parts/CheatHotspot";
+import CheatPad from "./parts/CheatPad";
 import CheatToast from "./parts/CheatToast";
 import MoneyRain from "./parts/MoneyRain";
 import type { CheatCodeDefinition, CheatCodesPluginProps, CheatNotification } from "./types";
+import { findCheatMatch } from "./utils/matchCheat";
 
 export default function CheatCodesPlugin({
   codes = defaultCheatCodes,
@@ -20,6 +23,7 @@ export default function CheatCodesPlugin({
 }: CheatCodesPluginProps) {
   const [notification, setNotification] = useState<CheatNotification | null>(null);
   const [moneyRainBurstKey, setMoneyRainBurstKey] = useState<string | null>(null);
+  const [padOpen, setPadOpen] = useState(false);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { play } = useCheatSound(soundSrc);
 
@@ -56,12 +60,32 @@ export default function CheatCodesPlugin({
     [durationMs, message, play],
   );
 
+  const handlePadSubmit = useCallback(
+    (value: string) => {
+      const matched = findCheatMatch(value, codes);
+      if (!matched) return false;
+      handleMatch(matched);
+      return true;
+    },
+    [codes, handleMatch],
+  );
+
   useCheatListener(codes, handleMatch, enabled);
 
   return (
     <>
       <CheatToast notification={notification} />
       <MoneyRain burstKey={moneyRainBurstKey} />
+      {enabled ? (
+        <>
+          <CheatHotspot onUnlock={() => setPadOpen(true)} />
+          <CheatPad
+            open={padOpen}
+            onClose={() => setPadOpen(false)}
+            onSubmit={handlePadSubmit}
+          />
+        </>
+      ) : null}
     </>
   );
 }
