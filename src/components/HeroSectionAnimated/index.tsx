@@ -36,15 +36,27 @@ export default function HeroSectionAnimated(profileData: Profile) {
       gsap.set([".hero-portrait-scroll", ".hero-portrait-flip"], {
         transformPerspective: isMobile ? 900 : 1400,
         transformOrigin: "center center",
-        force3D: !isMobile,
+        force3D: true,
       });
 
       const section = sectionRef.current;
+      const flipDistance = () => window.innerHeight * (isMobile ? 0.42 : 0.5);
 
       gsap.to(".hero-portrait-scroll", {
         rotateY: 360,
-        y: isMobile ? 56 : 96,
-        scale: isMobile ? 0.9 : 0.82,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => `+=${flipDistance()}`,
+          scrub: true,
+          fastScrollEnd: true,
+        },
+      });
+
+      gsap.to(".hero-portrait-scroll", {
+        y: isMobile ? 48 : 80,
+        scale: isMobile ? 0.92 : 0.86,
         ease: "none",
         scrollTrigger: {
           trigger: section,
@@ -76,8 +88,8 @@ export default function HeroSectionAnimated(profileData: Profile) {
         });
 
         gsap.to(".hero-portrait-media-scroll", {
-          yPercent: 22,
-          scale: 1.18,
+          yPercent: 18,
+          scale: 1.14,
           ease: "none",
           scrollTrigger: {
             trigger: section,
