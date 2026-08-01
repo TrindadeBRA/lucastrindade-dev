@@ -35,7 +35,6 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         (stage.firstElementChild as HTMLElement | null);
       if (!card) return;
 
-      const media = stage.querySelector<HTMLElement>(mediaSelector);
       const shine = shineSelector
         ? stage.querySelector<HTMLElement>(shineSelector)
         : stage.querySelector<HTMLElement>("[data-tilt-shine]");
@@ -48,20 +47,36 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         transformOrigin: "center center",
         force3D: true,
       });
-      if (media) gsap.set(media, { force3D: true, scale: 1.08 });
+
+      const getMedia = () => stage.querySelector<HTMLElement>(mediaSelector);
+
+      const mediaEl = getMedia();
+      if (mediaEl) gsap.set(mediaEl, { force3D: true, scale: 1.08 });
 
       const finePointer = window.matchMedia("(pointer: fine)").matches;
       const canHover = finePointer && window.innerWidth >= 768;
 
       let idleTween: gsap.core.Timeline | null = null;
+      let resetTween: gsap.core.Tween | null = null;
+      let shineIdleTween: gsap.core.Tween | null = null;
       let interacting = false;
       let raf = 0;
+      let leaveTimer = 0;
       let mx = 0;
       let my = 0;
+      let session = 0;
+
+      const isInsideListen = (x: number, y: number) => {
+        const rect = listenEl.getBoundingClientRect();
+        return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+      };
 
       const startIdle = () => {
         if (!idle || interacting) return;
         idleTween?.kill();
+        shineIdleTween?.kill();
+
+        const media = getMedia();
         idleTween = gsap.timeline({
           repeat: -1,
           defaults: { ease: "sine.inOut" },
@@ -98,7 +113,7 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         }
 
         if (shine) {
-          gsap.to(shine, {
+          shineIdleTween = gsap.to(shine, {
             opacity: 0.35,
             duration: 1.2,
             yoyo: true,
@@ -111,7 +126,10 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
       };
 
       const stopIdle = () => {
-        idleTween?.pause();
+        idleTween?.kill();
+        idleTween = null;
+        shineIdleTween?.kill();
+        shineIdleTween = null;
         if (shine) gsap.killTweensOf(shine);
       };
 
@@ -120,6 +138,7 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
       if (!canHover) {
         return () => {
           idleTween?.kill();
+          shineIdleTween?.kill();
           if (shine) gsap.killTweensOf(shine);
         };
       }
@@ -128,17 +147,25 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
       const rotateYTo = gsap.quickTo(card, "rotationY", { duration: 0.18, ease: "power3.out" });
       const zTo = gsap.quickTo(card, "z", { duration: 0.22, ease: "power3.out" });
       const scaleTo = gsap.quickTo(card, "scale", { duration: 0.22, ease: "power3.out" });
-      const mediaXTo = media
-        ? gsap.quickTo(media, "x", { duration: 0.22, ease: "power3.out" })
-        : null;
-      const mediaYTo = media
-        ? gsap.quickTo(media, "y", { duration: 0.22, ease: "power3.out" })
-        : null;
+
+      // quickTo por propriedade, recriado se o nó da mídia mudar (Next/Image)
+      let mediaXTo: ((v: number) => void) | null = null;
+      let mediaYTo: ((v: number) => void) | null = null;
+      let mediaBound: HTMLElement | null = null;
+
+      const bindMediaQuickTo = (media: HTMLElement | null) => {
+        if (!media || media === mediaBound) return;
+        mediaBound = media;
+        gsap.set(media, { force3D: true });
+        mediaXTo = gsap.quickTo(media, "x", { duration: 0.22, ease: "power3.out" });
+        mediaYTo = gsap.quickTo(media, "y", { duration: 0.22, ease: "power3.out" });
+      };
+
+      bindMediaQuickTo(getMedia());
 
       const applyTilt = () => {
         raf = 0;
         const rect = stage.getBoundingClientRect();
-        // Normaliza pelo hero inteiro, mas ancora no centro do stage
         const x = gsap.utils.clamp(-0.55, 0.55, (mx - (rect.left + rect.width / 2)) / rect.width);
         const y = gsap.utils.clamp(-0.55, 0.55, (my - (rect.top + rect.height / 2)) / rect.height);
 
@@ -147,6 +174,7 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         zTo(28 + Math.abs(x) * 12 + Math.abs(y) * 8);
         scaleTo(1.035);
 
+        bindMediaQuickTo(getMedia());
         mediaXTo?.(x * -28);
         mediaYTo?.(y * -22);
 
@@ -158,21 +186,26 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         }
       };
 
-      const onMove = (event: PointerEvent) => {
-        mx = event.clientX;
-        my = event.clientY;
-
+      const beginInteraction = () => {
+        if (leaveTimer) {
+          window.clearTimeout(leaveTimer);
+          leaveTimer = 0;
+        }
+        resetTween?.kill();
+        resetTween = null;
         if (!interacting) {
           interacting = true;
           stopIdle();
         }
-
-        if (!raf) raf = window.requestAnimationFrame(applyTilt);
       };
 
-      const onLeave = () => {
+      const endInteraction = () => {
+        if (!interacting) return;
         interacting = false;
-        gsap.to(card, {
+        const leaveSession = ++session;
+
+        resetTween?.kill();
+        resetTween = gsap.to(card, {
           rotationX: 0,
           rotationY: 0,
           z: 0,
@@ -180,8 +213,13 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
           duration: 0.85,
           ease: "power3.out",
           overwrite: "auto",
-          onComplete: () => startIdle(),
+          onComplete: () => {
+            if (leaveSession !== session || interacting) return;
+            startIdle();
+          },
         });
+
+        const media = getMedia();
         if (media) {
           gsap.to(media, {
             x: 0,
@@ -196,15 +234,37 @@ export function useTilt3D<T extends HTMLElement = HTMLElement>(
         }
       };
 
-      listenEl.addEventListener("pointermove", onMove);
-      listenEl.addEventListener("pointerleave", onLeave);
+      const onPointerMove = (event: PointerEvent) => {
+        mx = event.clientX;
+        my = event.clientY;
+
+        if (!isInsideListen(mx, my)) {
+          if (interacting && !leaveTimer) {
+            // debounce: evita perder o rastro ao cruzar header/bordas por 1 frame
+            leaveTimer = window.setTimeout(() => {
+              leaveTimer = 0;
+              if (!isInsideListen(mx, my)) endInteraction();
+            }, 80);
+          }
+          return;
+        }
+
+        beginInteraction();
+        if (!raf) raf = window.requestAnimationFrame(applyTilt);
+      };
+
+      // document: não perde eventos ao cruzar filhos, sticky header ou gaps
+      document.addEventListener("pointermove", onPointerMove, { passive: true });
 
       return () => {
+        session += 1;
         idleTween?.kill();
+        shineIdleTween?.kill();
+        resetTween?.kill();
         if (shine) gsap.killTweensOf(shine);
         if (raf) window.cancelAnimationFrame(raf);
-        listenEl.removeEventListener("pointermove", onMove);
-        listenEl.removeEventListener("pointerleave", onLeave);
+        if (leaveTimer) window.clearTimeout(leaveTimer);
+        document.removeEventListener("pointermove", onPointerMove);
       };
     },
     {

@@ -102,7 +102,8 @@ export default function HeroSectionAnimated(profileData: Profile) {
         },
       });
 
-      gsap.to(".hero-portrait-media", {
+      // Parallax no wrapper estável — não disputa x/y do tilt na Image
+      gsap.to(".hero-portrait-media-scroll", {
         yPercent: isMobile ? 12 : 22,
         scale: 1.18,
         ease: "none",
@@ -210,20 +211,24 @@ export default function HeroSectionAnimated(profileData: Profile) {
               className="hero-portrait relative mx-auto aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-white/10 bg-ink-muted will-change-transform lg:max-h-[min(68svh,34rem)] lg:w-full"
               style={{ transformStyle: "preserve-3d" }}
             >
-              {avatar ? (
-                <Image
-                  src={avatar}
-                  alt={name}
-                  fill
-                  priority
-                  className="hero-portrait-media object-cover grayscale will-change-transform"
-                  sizes="(max-width: 768px) 90vw, 40vw"
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center bg-ink-muted text-chalk-dim">
-                  Foto
+              <div className="hero-portrait-media absolute inset-0 will-change-transform">
+                <div className="hero-portrait-media-scroll absolute inset-[-6%] will-change-transform">
+                  {avatar ? (
+                    <Image
+                      src={avatar}
+                      alt={name}
+                      fill
+                      priority
+                      className="object-cover"
+                      sizes="(max-width: 768px) 90vw, 40vw"
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center bg-ink-muted text-chalk-dim">
+                      Foto
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
               <div
                 data-tilt-shine
                 className="pointer-events-none absolute inset-0 z-[1] opacity-0 mix-blend-soft-light"

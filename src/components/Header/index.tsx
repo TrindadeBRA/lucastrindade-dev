@@ -1,22 +1,11 @@
 "use client";
 
-import { useState, useRef, type MouseEvent } from "react";
-import { Dialog } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useRef, type MouseEvent } from "react";
 import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa";
 import { gsap, prefersReducedMotion, registerGsap, useGSAP } from "@/lib/gsap";
 
-const navigation = [
-  { name: "Sobre", href: "#sobre" },
-  { name: "Experiência", href: "#experiencia" },
-  { name: "Skills", href: "#skills" },
-  { name: "Estudos", href: "#estudos" },
-  { name: "Projetos", href: "#projetos" },
-];
-
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -29,6 +18,7 @@ export default function Header() {
         stagger: 0.05,
         duration: 0.55,
         delay: 0.1,
+        clearProps: "opacity,transform",
       });
     },
     { scope: headerRef }
@@ -37,7 +27,6 @@ export default function Header() {
   const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
     if (!href.startsWith("#")) return;
     event.preventDefault();
-    setMobileMenuOpen(false);
     const target = document.querySelector(href);
     if (!target) return;
     registerGsap();
@@ -64,79 +53,21 @@ export default function Header() {
           </span>
         </a>
 
-        <div className="hidden items-center gap-8 lg:flex">
-          {navigation.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              onClick={(e) => handleNavClick(e, item.href)}
-              className="nav-anim text-sm text-chalk-muted transition hover:text-chalk"
-            >
-              {item.name}
-            </a>
-          ))}
-          <div className="nav-anim flex items-center gap-3">
-            <Link href="/resume" target="_blank" className="btn-ghost">
-              Currículo
-            </Link>
-            <a
-              href="https://api.whatsapp.com/send?phone=5511952498126"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary inline-flex items-center gap-2"
-            >
-              <FaWhatsapp size={15} />
-              Contato
-            </a>
-          </div>
+        <div className="nav-anim flex items-center gap-3">
+          <Link href="/resume" target="_blank" className="btn-ghost">
+            Currículo
+          </Link>
+          <a
+            href="https://api.whatsapp.com/send?phone=5511952498126"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary inline-flex items-center gap-2"
+          >
+            <FaWhatsapp size={15} />
+            Contato
+          </a>
         </div>
-
-        <button
-          type="button"
-          className="nav-anim rounded-md p-2 text-chalk lg:hidden"
-          onClick={() => setMobileMenuOpen(true)}
-        >
-          <span className="sr-only">Abrir menu</span>
-          <Bars3Icon className="h-6 w-6" />
-        </button>
       </nav>
-
-      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-        <div className="fixed inset-0 z-50 bg-ink/70" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-ink-soft p-6">
-          <div className="flex items-center justify-between">
-            <span className="font-display text-lg font-semibold text-chalk">Lucas Trindade</span>
-            <button type="button" className="p-2 text-chalk-muted" onClick={() => setMobileMenuOpen(false)}>
-              <XMarkIcon className="h-6 w-6" />
-            </button>
-          </div>
-          <div className="mt-10 flex flex-col gap-5">
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
-                className="font-display text-2xl text-chalk"
-              >
-                {item.name}
-              </a>
-            ))}
-            <div className="mt-4 flex flex-wrap gap-3">
-              <Link href="/resume" target="_blank" className="btn-ghost w-fit">
-                Currículo
-              </Link>
-              <Link
-                href="https://api.whatsapp.com/send?phone=5511952498126"
-                target="_blank"
-                className="btn-primary inline-flex w-fit items-center gap-2"
-              >
-                <FaWhatsapp size={15} />
-                Contato
-              </Link>
-            </div>
-          </div>
-        </Dialog.Panel>
-      </Dialog>
     </header>
   );
 }
