@@ -19,7 +19,6 @@ export default function HeroSectionAnimated(profileData: Profile) {
     maxTilt: 9,
     idle: true,
     listenSelector: "#hero",
-    mediaSelector: ".hero-portrait-media",
   });
   const primaryCtaRef = useMagnetic<HTMLAnchorElement>(0.4);
   const ghostCtaRef = useMagnetic<HTMLAnchorElement>(0.3);
@@ -182,30 +181,24 @@ export default function HeroSectionAnimated(profileData: Profile) {
           <div className="hero-portrait-scroll will-change-transform">
             <div
               data-tilt-card
-              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 will-change-transform sm:aspect-[4/5] sm:rounded-[2rem] md:overflow-visible lg:max-h-[min(68svh,34rem)] lg:w-full"
+              className="hero-portrait relative mx-auto aspect-square w-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-ink-muted will-change-transform sm:aspect-[4/5] sm:rounded-[2rem] lg:max-h-[min(68svh,34rem)] lg:w-full"
             >
-              <div
-                aria-hidden
-                className="hero-portrait-bg absolute inset-0 rounded-[1.5rem] bg-ink-muted sm:rounded-[2rem]"
-              />
-              <div className="absolute inset-0 overflow-hidden rounded-[1.5rem] sm:rounded-[2rem]">
-                <div className="hero-portrait-media absolute inset-0 will-change-transform">
-                  <div className="hero-portrait-media-scroll absolute inset-0 will-change-transform md:inset-[-8%]">
-                    {avatar ? (
-                      <Image
-                        src={avatar}
-                        alt={name}
-                        fill
-                        priority
-                        className="object-cover object-[center_22%] md:object-center"
-                        sizes="(max-width: 768px) 60vw, 40vw"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center bg-ink-muted text-chalk-dim">
-                        Foto
-                      </div>
-                    )}
-                  </div>
+              <div className="hero-portrait-media absolute inset-0">
+                <div className="hero-portrait-media-scroll absolute inset-0 md:inset-[-6%]">
+                  {avatar ? (
+                    <Image
+                      src={avatar}
+                      alt={name}
+                      fill
+                      priority
+                      className="object-cover object-[center_22%] md:object-center"
+                      sizes="(max-width: 768px) 60vw, 40vw"
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center bg-ink-muted text-chalk-dim">
+                      Foto
+                    </div>
+                  )}
                 </div>
               </div>
               <div
@@ -213,10 +206,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
                 className="pointer-events-none absolute inset-0 z-[1] rounded-[1.5rem] opacity-0 sm:rounded-[2rem]"
               />
               <div className="pointer-events-none absolute inset-0 z-[2] rounded-[1.5rem] bg-gradient-to-t from-ink via-ink/50 to-transparent sm:rounded-[2rem]" />
-              <div
-                data-tilt-layer
-                className="absolute inset-x-0 bottom-0 z-[3] px-4 pb-5 pt-12 sm:px-6 sm:pb-6 sm:pt-16"
-              >
+              <div className="absolute inset-x-0 bottom-0 z-[3] px-4 pb-5 pt-12 sm:px-6 sm:pb-6 sm:pt-16">
                 <div className="max-w-[19rem]">
                   <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-chalk sm:text-sm">
                     <a
