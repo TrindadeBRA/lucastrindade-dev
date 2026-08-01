@@ -38,21 +38,20 @@ export default function Skills(skillsData: Skill[] | Record<string, Skill>) {
   );
 
   return (
-    <section
-      ref={sectionRef}
-      id="skills"
-      className="overflow-hidden border-t border-white/5 bg-ink-soft py-24 sm:py-32"
-    >
+    <section ref={sectionRef} id="skills" className="overflow-hidden bg-brand-dark py-20 sm:py-28">
       <div className="site-container">
         <div className="max-w-2xl">
-          <p className="section-label" data-reveal="title">
-            Stack
+          <p className="font-display text-base font-semibold text-content-inverse" data-reveal="title">
+            Stacks e ferramentas
           </p>
-          <h2 className="section-title mt-4" data-reveal="title">
-            Skills & ferramentas
+          <h2
+            className="mt-3 font-display text-3xl font-medium tracking-tight text-content-inverse sm:text-5xl"
+            data-reveal="title"
+          >
+            Tecnologias que dominamos no dia a dia
           </h2>
-          <p className="mt-5 text-chalk-muted" data-reveal="fade-up">
-            Tecnologias e práticas que uso no dia a dia para construir produtos digitais.
+          <p className="mt-5 text-content-inverse-muted" data-reveal="fade-up">
+            Um mix prático de ferramentas para produto, front, back e entrega.
           </p>
         </div>
       </div>
@@ -63,7 +62,7 @@ export default function Skills(skillsData: Skill[] | Record<string, Skill>) {
             {loop.map((skill, index) => (
               <li
                 key={`a-${skill.skill_name}-${index}`}
-                className="whitespace-nowrap rounded-full border border-white/10 bg-ink px-5 py-2.5 text-sm text-chalk"
+                className="whitespace-nowrap rounded-full border border-white/15 bg-brand-soft px-5 py-2.5 text-sm text-content-inverse"
               >
                 {skill.skill_name}
               </li>
@@ -75,7 +74,7 @@ export default function Skills(skillsData: Skill[] | Record<string, Skill>) {
             {[...loop].reverse().map((skill, index) => (
               <li
                 key={`b-${skill.skill_name}-${index}`}
-                className="whitespace-nowrap rounded-full border border-lime/20 bg-ink px-5 py-2.5 text-sm text-lime"
+                className="whitespace-nowrap rounded-full bg-accent-yellow px-5 py-2.5 text-sm font-semibold text-brand-dark"
               >
                 {skill.skill_name}
               </li>
@@ -84,13 +83,13 @@ export default function Skills(skillsData: Skill[] | Record<string, Skill>) {
         </div>
       </div>
 
-      <div className="site-container mt-12">
-        <ul className="flex flex-wrap gap-3 md:hidden">
+      <div className="site-container mt-10 md:hidden">
+        <ul className="flex flex-wrap gap-3">
           {skills.map((skill, index) => (
             <li
               key={`${skill.skill_name}-${index}`}
               data-reveal="item"
-              className="rounded-full border border-white/10 bg-ink px-4 py-2 text-sm text-chalk"
+              className="rounded-full border border-white/15 px-4 py-2 text-sm text-content-inverse"
             >
               {skill.skill_name}
             </li>

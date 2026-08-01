@@ -52,17 +52,13 @@ export default function Certificates(
   };
 
   return (
-    <section
-      ref={sectionRef}
-      id="estudos"
-      className="border-t border-white/5 bg-ink-soft py-24 sm:py-32"
-    >
+    <section ref={sectionRef} id="estudos" className="bg-surface-base py-20 sm:py-28">
       <div className="site-container">
         <div className="max-w-2xl">
           <p className="section-label" data-reveal="title">
             Estudos
           </p>
-          <h2 className="section-title mt-4" data-reveal="title">
+          <h2 className="section-title mt-3" data-reveal="title">
             Certificados & formação
           </h2>
         </div>
@@ -75,16 +71,16 @@ export default function Certificates(
                 key={certificate.certificate_id}
                 type="button"
                 onClick={() => openModal(certificate.certificate_file_sync)}
-                className="group overflow-hidden rounded-2xl border border-white/10 bg-ink text-left transition hover:border-lime/40 hover:-translate-y-1"
+                className="group overflow-hidden rounded-4xl border border-border-subtle bg-surface-subtle text-left transition hover:-translate-y-1 hover:border-border-strong"
                 data-reveal="card"
               >
-                <div className="relative aspect-[4/3] overflow-hidden bg-ink-muted" data-reveal="clip">
+                <div className="relative aspect-[4/3] overflow-hidden bg-surface-muted" data-reveal="clip">
                   {certificate.certificate_file_sync ? (
                     <Image
                       src={certificate.certificate_file_sync}
                       alt={certificate.certificate_name}
                       fill
-                      className="object-cover transition duration-700 group-hover:scale-110"
+                      className="object-cover transition duration-700 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
                   ) : null}
@@ -95,10 +91,10 @@ export default function Certificates(
                   </span>
                 </div>
                 <div className="p-5">
-                  <h3 className="line-clamp-2 font-display text-base font-semibold text-chalk">
+                  <h3 className="line-clamp-2 font-display text-base font-medium text-content-primary">
                     {certificate.certificate_name}
                   </h3>
-                  <p className="mt-2 line-clamp-1 text-sm text-chalk-muted">
+                  <p className="mt-2 line-clamp-1 text-sm text-content-secondary">
                     {certificate.certificate_instructors}
                   </p>
                 </div>
@@ -109,11 +105,7 @@ export default function Certificates(
 
         {certificates.length > 6 ? (
           <div className="mt-10 flex justify-center" data-reveal="item">
-            <button
-              type="button"
-              onClick={() => setExpanded((v) => !v)}
-              className="btn-ghost"
-            >
+            <button type="button" onClick={() => setExpanded((v) => !v)} className="btn-outline">
               {expanded ? "Mostrar menos" : `Ver todos (${certificates.length})`}
             </button>
           </div>
@@ -122,7 +114,7 @@ export default function Certificates(
 
       {showModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-brand-dark/75 p-4"
           onClick={closeModal}
         >
           <div className="relative w-full max-w-3xl" onClick={(e) => e.stopPropagation()}>
@@ -131,13 +123,10 @@ export default function Certificates(
               alt="Certificado"
               width={1200}
               height={850}
-              className="certificate-modal-image h-auto w-full rounded-xl"
+              className="certificate-modal-image h-auto w-full rounded-2xl"
             />
-            <button
-              onClick={closeModal}
-              className="absolute -top-3 right-0 rounded-full bg-chalk px-3 py-1 text-sm font-semibold text-ink"
-            >
-              Fechar
+            <button onClick={closeModal} className="btn-invert absolute -top-2 right-0">
+              <span>Fechar</span>
             </button>
           </div>
         </div>

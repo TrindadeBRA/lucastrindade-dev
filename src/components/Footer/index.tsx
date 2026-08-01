@@ -16,7 +16,7 @@ const links = [
 
 const Footer = () => {
   const sectionRef = useScrollReveal();
-  const ctaRef = useMagnetic<HTMLAnchorElement>(0.4);
+  const ctaRef = useMagnetic<HTMLAnchorElement>(0.35);
   const year = new Date().getFullYear();
 
   useGSAP(
@@ -26,8 +26,8 @@ const Footer = () => {
 
       gsap.from(".footer-word", {
         yPercent: 120,
-        duration: 0.9,
-        stagger: 0.08,
+        duration: 0.85,
+        stagger: 0.07,
         ease: "power4.out",
         scrollTrigger: {
           trigger: ".footer-headline",
@@ -50,18 +50,17 @@ const Footer = () => {
     }
     gsap.to(window, {
       duration: 1,
-      scrollTo: { y: target, offsetY: 80 },
+      scrollTo: { y: target, offsetY: 88 },
       ease: "power3.inOut",
     });
   };
 
   return (
-    <footer ref={sectionRef} className="relative overflow-hidden border-t border-white/5 bg-ink">
-      <div className="pointer-events-none absolute -left-20 bottom-0 h-72 w-72 rounded-full bg-lime/10 blur-[90px]" />
-      <div className="site-container py-20 sm:py-28">
+    <footer ref={sectionRef} className="border-t border-content-primary/10 bg-surface-base">
+      <div className="site-container py-16 sm:py-24">
         <div className="grid gap-12 lg:grid-cols-[1.3fr_0.7fr]">
           <div>
-            <p className="footer-headline font-display text-4xl font-semibold tracking-tighter2 text-chalk sm:text-6xl">
+            <p className="footer-headline font-display text-4xl font-medium tracking-tight text-content-primary sm:text-6xl">
               <span className="inline-block overflow-hidden pb-1">
                 <span className="footer-word inline-block">Vamos</span>
               </span>{" "}
@@ -70,10 +69,10 @@ const Footer = () => {
               </span>
               <br />
               <span className="inline-block overflow-hidden pb-1">
-                <span className="footer-word inline-block text-lime">algo</span>
+                <span className="footer-word inline-block">algo</span>
               </span>{" "}
               <span className="inline-block overflow-hidden pb-1">
-                <span className="footer-word inline-block text-lime">juntos?</span>
+                <span className="footer-word inline-block">juntos?</span>
               </span>
             </p>
             <a
@@ -81,22 +80,24 @@ const Footer = () => {
               href="https://api.whatsapp.com/send?phone=5511952498126"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary mt-10 hover:bg-lime hover:text-lime-ink"
+              className="btn-primary mt-8"
             >
-              Fale comigo
+              <span>Fale comigo</span>
             </a>
           </div>
 
           <div className="grid gap-8 sm:grid-cols-2" data-reveal="item">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-chalk-dim">Navegação</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-content-muted">
+                Navegação
+              </p>
               <ul className="mt-4 space-y-3">
                 {links.map((item) => (
                   <li key={item.name}>
                     <a
                       href={item.href}
                       onClick={(e) => handleNavClick(e, item.href)}
-                      className="text-sm text-chalk-muted transition hover:text-lime"
+                      className="text-sm text-content-secondary transition hover:text-content-primary"
                     >
                       {item.name}
                     </a>
@@ -105,10 +106,16 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-chalk-dim">Links</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-content-muted">
+                Links
+              </p>
               <ul className="mt-4 space-y-3 text-sm">
                 <li>
-                  <Link href="/resume" target="_blank" className="text-chalk-muted transition hover:text-lime">
+                  <Link
+                    href="/resume"
+                    target="_blank"
+                    className="text-content-secondary transition hover:text-content-primary"
+                  >
                     Currículo
                   </Link>
                 </li>
@@ -117,7 +124,7 @@ const Footer = () => {
                     href="https://github.com/TrindadeBRA/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-chalk-muted transition hover:text-lime"
+                    className="text-content-secondary transition hover:text-content-primary"
                   >
                     GitHub
                   </a>
@@ -127,7 +134,7 @@ const Footer = () => {
                     href="https://www.linkedin.com/in/trindadebra/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-chalk-muted transition hover:text-lime"
+                    className="text-content-secondary transition hover:text-content-primary"
                   >
                     LinkedIn
                   </a>
@@ -138,7 +145,7 @@ const Footer = () => {
         </div>
 
         <div
-          className="mt-16 flex flex-col justify-between gap-3 border-t border-white/10 pt-8 text-xs text-chalk-dim sm:flex-row"
+          className="mt-14 flex flex-col justify-between gap-3 border-t border-content-primary/10 pt-8 text-[11px] text-content-tertiary sm:flex-row"
           data-reveal="item"
         >
           <p>© {year} Lucas Trindade. Todos os direitos reservados.</p>

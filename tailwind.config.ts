@@ -9,38 +9,50 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: {
-          DEFAULT: "#0a0a0a",
-          soft: "#141414",
-          muted: "#1e1e1e",
-          line: "rgba(255,255,255,0.1)",
+        chrome: "#1e1e1e",
+        brand: {
+          dark: "#0a0a0a",
+          strong: "#171717",
+          soft: "#262626",
+          light: "#ffffff",
         },
-        chalk: {
-          DEFAULT: "#f5f5f5",
-          muted: "#9a9a9a",
-          dim: "#6b6b6b",
+        surface: {
+          base: "#ffffff",
+          subtle: "#fafafa",
+          muted: "#f5f5f5",
         },
-        lime: {
-          DEFAULT: "#d4ff4f",
-          soft: "#eaff99",
-          ink: "#10180a",
+        content: {
+          primary: "#0a0a0a",
+          secondary: "#525252",
+          tertiary: "#737373",
+          muted: "#a3a3a3",
+          inverse: "#ffffff",
+          "inverse-muted": "#a3a3a3",
+        },
+        accent: {
+          yellow: "#f8ea1e",
+          orange: "#f9b03a",
+          gold: "#b08f72",
+          link: "#2563eb",
+        },
+        border: {
+          subtle: "#e5e5e5",
+          DEFAULT: "#d4d4d4",
+          strong: "#525252",
         },
       },
       fontFamily: {
-        display: ["var(--font-display)", "sans-serif"],
-        body: ["var(--font-body)", "sans-serif"],
+        sans: ["Mona Sans", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Mona Sans", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       maxWidth: {
-        site: "72rem",
+        site: "80rem",
       },
-      letterSpacing: {
-        tighter2: "-0.04em",
+      borderRadius: {
+        "4xl": "2.5rem",
       },
-      backgroundImage: {
-        "hero-wash":
-          "radial-gradient(ellipse 80% 60% at 70% 40%, rgba(212,255,79,0.12), transparent 55%), linear-gradient(180deg, #0a0a0a 0%, #141414 100%)",
-        "noise-fade":
-          "linear-gradient(180deg, transparent, #0a0a0a)",
+      boxShadow: {
+        sheet: "0 -8px 40px rgba(0,0,0,0.25)",
       },
     },
   },

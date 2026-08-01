@@ -2,29 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Mona Sans";
+  font-weight: 200 900;
+  font-display: swap;
+  font-style: normal;
+  font-stretch: 75% 125%;
+  src: url("../fonts/Mona-Sans.var.woff2") format("woff2");
+}
+
 :root {
-  --bg: #0a0a0a;
-  --bg-soft: #141414;
-  --fg: #f5f5f5;
-  --fg-muted: #9a9a9a;
-  --accent: #d4ff4f;
-  --border: rgba(255, 255, 255, 0.1);
+  --chrome: #1e1e1e;
+  --brand-dark: #0a0a0a;
+  --surface: #ffffff;
+  --content: #0a0a0a;
+  --content-secondary: #525252;
+  --accent-yellow: #f8ea1e;
 }
 
 html {
+  color-scheme: dark;
   scroll-behavior: auto;
 }
 
 body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-body), sans-serif;
+  background-color: var(--chrome);
+  color: var(--content);
+  font-family: "Mona Sans", ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: rgba(212, 255, 79, 0.35);
+  background: rgba(248, 234, 30, 0.45);
   color: #0a0a0a;
 }
 
@@ -34,23 +44,40 @@ body.overflow-hidden {
 
 @layer components {
   .site-container {
-    @apply mx-auto w-full max-w-site px-5 sm:px-8;
+    @apply mx-auto w-full max-w-site px-6 lg:px-8;
+  }
+
+  .font-display {
+    font-family: "Mona Sans", ui-sans-serif, system-ui, sans-serif;
+    font-variation-settings: "wdth" 125;
   }
 
   .section-label {
-    @apply font-body text-xs font-semibold uppercase tracking-[0.22em] text-lime;
+    @apply font-display text-base font-semibold text-content-primary;
   }
 
   .section-title {
-    @apply font-display text-3xl font-semibold tracking-tighter2 text-chalk sm:text-5xl;
+    @apply font-display text-3xl font-medium tracking-tight text-content-primary sm:text-5xl;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-full bg-chalk px-5 py-2.5 text-sm font-semibold text-ink will-change-transform;
+    @apply inline-flex cursor-pointer items-center justify-center rounded-full bg-brand-dark px-4 py-1.5 text-sm font-semibold text-content-inverse transition will-change-transform hover:bg-brand-soft;
   }
 
-  .btn-ghost {
-    @apply inline-flex items-center justify-center rounded-full border border-white/15 bg-transparent px-5 py-2.5 text-sm font-semibold text-chalk will-change-transform;
+  .btn-primary > span {
+    @apply relative top-px;
+  }
+
+  .btn-invert {
+    @apply inline-flex cursor-pointer items-center justify-center rounded-full bg-surface-base px-4 py-1.5 text-sm font-semibold text-content-primary transition will-change-transform hover:bg-content-muted;
+  }
+
+  .btn-outline {
+    @apply inline-flex cursor-pointer items-center justify-center rounded-full border border-border-strong bg-transparent px-5 py-2 text-sm font-semibold text-content-primary transition hover:bg-surface-subtle;
+  }
+
+  .sheet {
+    @apply overflow-hidden rounded-t-[40px] bg-surface-base shadow-sheet;
   }
 
   .marquee-track {
@@ -86,9 +113,8 @@ body.overflow-hidden {
 }
 
 header.header-scrolled {
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(10, 10, 10, 0.92);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  background: rgba(30, 30, 30, 0.96);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
 
 @media (prefers-reduced-motion: reduce) {

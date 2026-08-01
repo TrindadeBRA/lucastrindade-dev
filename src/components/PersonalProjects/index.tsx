@@ -18,16 +18,14 @@ export default function PersonalProjects(
   useGSAP(
     () => {
       registerGsap();
-      if (!sectionRef.current || prefersReducedMotion()) return;
-      if (window.innerWidth < 768) return;
+      if (!sectionRef.current || prefersReducedMotion() || window.innerWidth < 768) return;
 
       gsap.utils.toArray<HTMLElement>(".project-media img", sectionRef.current).forEach((img) => {
         gsap.fromTo(
           img,
-          { scale: 1.12, yPercent: -4 },
+          { scale: 1.1 },
           {
             scale: 1,
-            yPercent: 4,
             ease: "none",
             scrollTrigger: {
               trigger: img.closest(".project-row") || img,
@@ -43,42 +41,36 @@ export default function PersonalProjects(
   );
 
   return (
-    <section
-      ref={sectionRef}
-      id="projetos"
-      className="relative border-t border-white/5 bg-ink py-24 sm:py-32"
-    >
+    <section ref={sectionRef} id="projetos" className="bg-gradient-to-b from-surface-muted to-surface-base py-20 sm:py-28">
       <div className="site-container">
-        <div className="flex flex-col justify-between gap-6 md:sticky md:top-24 md:z-10 md:mb-10 md:flex-row md:items-end md:bg-ink/80 md:py-4 md:backdrop-blur-md">
-          <div className="max-w-2xl">
-            <p className="section-label" data-reveal="title">
-              Portfolio
-            </p>
-            <h2 className="section-title mt-4 text-balance" data-reveal="title">
-              Projetos que transformam ideias em produto
-            </h2>
-          </div>
-          <p className="max-w-sm text-sm leading-relaxed text-chalk-muted" data-reveal="from-right">
-            Seleção de projetos pessoais com foco em produto, performance e experiência.
+        <div className="max-w-2xl">
+          <p className="section-label" data-reveal="title">
+            Portfolio
+          </p>
+          <h2 className="section-title mt-3 text-balance" data-reveal="title">
+            Projetos que transformam ideias em resultados
+          </h2>
+          <p className="mt-5 text-base text-content-secondary sm:text-lg" data-reveal="fade-up">
+            Casos e experimentos com foco em produto, performance e experiência.
           </p>
         </div>
 
-        <div className="mt-10 space-y-4 md:mt-6">
+        <div className="mt-16 space-y-4">
           {projects.map((project, index) => (
             <article
               key={project.project_name || index}
-              className="project-row group grid gap-8 border-t border-white/10 py-12 lg:grid-cols-12 lg:items-center"
+              className="project-row group grid gap-8 border-t border-content-primary/10 py-12 lg:grid-cols-12 lg:items-center"
               data-reveal="card"
             >
               <div className="lg:col-span-5">
-                <p className="font-display text-5xl font-semibold text-white/10 transition group-hover:text-lime/30">
+                <p className="font-display text-5xl font-medium text-content-primary/10 transition group-hover:text-accent-gold">
                   {String(index + 1).padStart(2, "0")}
                 </p>
-                <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-chalk sm:text-4xl">
+                <h3 className="mt-3 font-display text-2xl font-medium tracking-tight text-content-primary sm:text-4xl">
                   {project.project_title || project.project_name}
                 </h3>
-                <p className="mt-2 text-sm text-lime">{project.project_name}</p>
-                <p className="mt-5 max-w-md text-sm leading-relaxed text-chalk-muted sm:text-base">
+                <p className="mt-2 text-sm font-semibold text-content-tertiary">{project.project_name}</p>
+                <p className="mt-4 max-w-md text-sm leading-relaxed text-content-secondary sm:text-base">
                   {project.project_description}
                 </p>
                 {project.project_url ? (
@@ -86,10 +78,9 @@ export default function PersonalProjects(
                     href={project.project_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-chalk transition group-hover:gap-3 group-hover:text-lime"
+                    className="btn-outline mt-7"
                   >
                     Ver projeto
-                    <span aria-hidden="true">→</span>
                   </a>
                 ) : null}
               </div>
@@ -99,7 +90,7 @@ export default function PersonalProjects(
                   <Link
                     href={project.project_url || "#"}
                     target={project.project_url ? "_blank" : undefined}
-                    className="project-media clip-frame relative block aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 bg-ink-muted"
+                    className="project-media clip-frame relative block aspect-[16/10] overflow-hidden rounded-4xl bg-surface-subtle"
                     data-reveal="clip"
                   >
                     <Image
@@ -109,10 +100,9 @@ export default function PersonalProjects(
                       className="object-cover"
                       sizes="(max-width: 1024px) 100vw, 55vw"
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-ink/40 via-transparent to-lime/10 opacity-0 transition duration-500 group-hover:opacity-100" />
                   </Link>
                 ) : (
-                  <div className="flex aspect-video items-center justify-center rounded-2xl border border-white/10 bg-ink-muted text-chalk-dim">
+                  <div className="flex aspect-video items-center justify-center rounded-4xl bg-surface-subtle text-content-muted">
                     Sem imagem
                   </div>
                 )}

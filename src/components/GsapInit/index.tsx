@@ -45,7 +45,7 @@ export default function GsapInit() {
 
   return (
     <div
-      className="scroll-progress fixed left-0 top-0 z-[100] h-[2px] w-full origin-left bg-lime"
+      className="scroll-progress fixed left-0 top-0 z-[100] h-[2px] w-full origin-left bg-accent-yellow"
       aria-hidden="true"
     />
   );

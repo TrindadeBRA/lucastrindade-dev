@@ -40,18 +40,23 @@ export default function Home({
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="675" />
+        <meta name="theme-color" content="#1e1e1e" />
       </Head>
       <GsapInit />
-      <Header />
-      <main>
-        <HeroSectionAnimated {...(profileData || ({} as Profile))} />
-        <PersonalProjects {...(personalProjectsData || [])} />
-        <Presentation {...(profileData || ({} as Profile))} />
-        <Experiences {...(experienceData || [])} />
-        <Skills {...(skillsData || [])} />
-        <Certificates {...(certificateData || [])} />
-      </main>
-      <Footer />
+      <div className="min-h-screen bg-chrome">
+        <Header />
+        <div className="sheet">
+          <main>
+            <HeroSectionAnimated {...(profileData || ({} as Profile))} />
+            <PersonalProjects {...(personalProjectsData || [])} />
+            <Presentation {...(profileData || ({} as Profile))} />
+            <Experiences {...(experienceData || [])} />
+            <Skills {...(skillsData || [])} />
+            <Certificates {...(certificateData || [])} />
+          </main>
+          <Footer />
+        </div>
+      </div>
     </>
   );
 }

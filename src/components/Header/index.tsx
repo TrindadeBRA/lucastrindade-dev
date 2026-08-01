@@ -46,19 +46,16 @@ export default function Header() {
     }
     gsap.to(window, {
       duration: 0.95,
-      scrollTo: { y: target, offsetY: 80 },
+      scrollTo: { y: target, offsetY: 88 },
       ease: "power3.inOut",
     });
   };
 
   return (
-    <header
-      ref={headerRef}
-      className="sticky top-0 z-40 border-b border-white/5 bg-ink/80 backdrop-blur-xl"
-    >
-      <nav className="site-container flex items-center justify-between py-4" aria-label="Global">
-        <a href="#hero" onClick={(e) => handleNavClick(e, "#hero")} className="nav-anim group">
-          <span className="font-display text-lg font-semibold tracking-tight text-chalk transition group-hover:text-lime">
+    <header ref={headerRef} className="sticky top-0 z-50 bg-chrome py-4">
+      <nav className="site-container flex items-center justify-between" aria-label="Global">
+        <a href="#hero" onClick={(e) => handleNavClick(e, "#hero")} className="nav-anim">
+          <span className="font-display text-lg font-medium tracking-tight text-content-inverse">
             Lucas Trindade
           </span>
         </a>
@@ -69,7 +66,7 @@ export default function Header() {
               key={item.name}
               href={item.href}
               onClick={(e) => handleNavClick(e, item.href)}
-              className="nav-anim text-sm text-chalk-muted transition hover:text-chalk"
+              className="nav-anim text-sm text-content-inverse-muted transition hover:text-content-inverse"
             >
               {item.name}
             </a>
@@ -78,15 +75,15 @@ export default function Header() {
             href="https://api.whatsapp.com/send?phone=5511952498126"
             target="_blank"
             rel="noopener noreferrer"
-            className="nav-anim btn-primary"
+            className="nav-anim btn-invert"
           >
-            Contato
+            <span>Contato</span>
           </a>
         </div>
 
         <button
           type="button"
-          className="nav-anim rounded-md p-2 text-chalk lg:hidden"
+          className="nav-anim rounded-full p-2 text-content-inverse lg:hidden"
           onClick={() => setMobileMenuOpen(true)}
         >
           <span className="sr-only">Abrir menu</span>
@@ -95,31 +92,39 @@ export default function Header() {
       </nav>
 
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-        <div className="fixed inset-0 z-50 bg-ink/70" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full max-w-sm bg-ink-soft p-6">
-          <div className="flex items-center justify-between">
-            <span className="font-display text-lg font-semibold text-chalk">Lucas Trindade</span>
-            <button type="button" className="p-2 text-chalk-muted" onClick={() => setMobileMenuOpen(false)}>
+        <div className="fixed inset-0 z-50 bg-chrome/80" />
+        <Dialog.Panel className="fixed inset-0 z-50 flex flex-col bg-chrome">
+          <div className="flex items-center justify-between bg-brand-dark px-6 py-4">
+            <span className="font-display text-lg font-medium text-content-inverse">
+              Lucas Trindade
+            </span>
+            <button
+              type="button"
+              className="rounded-full p-2 text-content-inverse"
+              onClick={() => setMobileMenuOpen(false)}
+            >
               <XMarkIcon className="h-6 w-6" />
             </button>
           </div>
-          <div className="mt-10 flex flex-col gap-5">
+          <div className="grid flex-1 grid-cols-1 content-start gap-1 bg-brand-soft p-4 sm:grid-cols-2">
             {navigation.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="font-display text-2xl text-chalk"
+                className="rounded-2xl px-4 py-6 font-display text-4xl font-medium tracking-tight text-content-inverse transition hover:bg-brand-strong"
               >
                 {item.name}
               </a>
             ))}
+          </div>
+          <div className="border-t border-white/10 p-6">
             <Link
               href="https://api.whatsapp.com/send?phone=5511952498126"
               target="_blank"
-              className="btn-primary mt-4 w-fit"
+              className="btn-invert"
             >
-              Contato
+              <span>Contato</span>
             </Link>
           </div>
         </Dialog.Panel>

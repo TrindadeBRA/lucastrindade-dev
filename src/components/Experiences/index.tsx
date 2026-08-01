@@ -28,8 +28,8 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
       if (prefersReducedMotion()) return;
       gsap.fromTo(
         ".experience-modal-panel",
-        { y: 36, opacity: 0, scale: 0.97 },
-        { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" }
+        { y: 28, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" }
       );
     });
   };
@@ -46,46 +46,45 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
       return;
     }
     gsap.to(".experience-modal-panel", {
-      y: 18,
+      y: 16,
       opacity: 0,
-      duration: 0.22,
-      ease: "power2.in",
+      duration: 0.2,
       onComplete: finish,
     });
   };
 
   return (
-    <section ref={sectionRef} id="experiencia" className="border-t border-white/5 bg-ink py-24 sm:py-32">
+    <section ref={sectionRef} id="experiencia" className="bg-surface-subtle py-20 sm:py-28">
       <div className="site-container">
         <div className="max-w-2xl">
           <p className="section-label" data-reveal="title">
             Trajetória
           </p>
-          <h2 className="section-title mt-4" data-reveal="title">
+          <h2 className="section-title mt-3" data-reveal="title">
             Experiência profissional
           </h2>
         </div>
 
-        <div className="relative mt-16">
+        <div className="relative mt-14">
           <div
-            className="absolute bottom-4 left-[7px] top-4 hidden w-px bg-lime/70 md:block"
+            className="absolute bottom-4 left-[7px] top-4 hidden w-px bg-brand-dark md:block"
             data-reveal="line"
             aria-hidden="true"
           />
 
-          <ol className="space-y-0">
+          <ol>
             {experiences.map((experience) => {
               const current = !experience.experience_date_end;
               return (
                 <li
                   key={experience.experience_id}
                   data-reveal="from-left"
-                  className="group relative grid cursor-pointer gap-4 border-t border-white/10 py-8 transition hover:bg-white/[0.02] md:grid-cols-[200px_1fr_auto] md:items-center md:gap-8 md:pl-10"
+                  className="group relative grid cursor-pointer gap-4 border-t border-content-primary/10 py-8 transition hover:bg-surface-base md:grid-cols-[200px_1fr_auto] md:items-center md:gap-8 md:pl-10"
                   onClick={() => openModal(experience)}
                 >
-                  <span className="absolute left-0 top-1/2 hidden h-3.5 w-3.5 -translate-y-1/2 rounded-full border-2 border-lime bg-ink transition group-hover:scale-125 group-hover:bg-lime md:block" />
+                  <span className="absolute left-0 top-1/2 hidden h-3.5 w-3.5 -translate-y-1/2 rounded-full border-2 border-brand-dark bg-surface-subtle transition group-hover:bg-accent-yellow md:block" />
 
-                  <p className="text-sm text-chalk-dim">
+                  <p className="text-sm text-content-tertiary">
                     {formatMonthYear(experience.experience_date_start)}
                     {" — "}
                     {current ? "Atual" : formatMonthYear(experience.experience_date_end)}
@@ -98,20 +97,22 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
                         alt=""
                         width={44}
                         height={44}
-                        className="h-11 w-11 rounded-full border border-white/10 object-cover transition group-hover:border-lime/50"
+                        className="h-11 w-11 rounded-full border border-border-subtle object-cover"
                       />
                     ) : null}
                     <div>
-                      <h3 className="font-display text-xl font-semibold text-chalk transition group-hover:text-lime sm:text-2xl">
+                      <h3 className="font-display text-xl font-medium text-content-primary sm:text-2xl">
                         {experience.experience_company_name}
                       </h3>
-                      <p className="text-sm text-chalk-muted">{experience.experience_position}</p>
+                      <p className="text-sm text-content-secondary">{experience.experience_position}</p>
                     </div>
                   </div>
 
                   <span
                     className={`w-fit rounded-full px-3 py-1 text-xs font-semibold ${
-                      current ? "bg-lime/15 text-lime" : "border border-white/10 text-chalk-dim"
+                      current
+                        ? "bg-brand-dark text-content-inverse"
+                        : "border border-border-default text-content-tertiary"
                     }`}
                   >
                     {current ? "Online" : "Anterior"}
@@ -125,11 +126,11 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
 
       {showModal && active && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-brand-dark/70 p-4 backdrop-blur-sm"
           onClick={closeModal}
         >
           <div
-            className="experience-modal-panel max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-white/10 bg-ink-soft p-8"
+            className="experience-modal-panel max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-4xl bg-surface-base p-8"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4">
@@ -144,35 +145,35 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
                   />
                 ) : null}
                 <div>
-                  <h3 className="font-display text-2xl font-semibold text-chalk">
+                  <h3 className="font-display text-2xl font-medium text-content-primary">
                     {active.experience_company_name}
                   </h3>
-                  <p className="text-sm text-chalk-muted">{active.experience_location}</p>
+                  <p className="text-sm text-content-secondary">{active.experience_location}</p>
                 </div>
               </div>
-              <button onClick={closeModal} className="text-sm text-chalk-muted hover:text-lime">
+              <button onClick={closeModal} className="text-sm text-content-tertiary hover:text-content-primary">
                 Fechar
               </button>
             </div>
 
             <dl className="mt-8 space-y-5 text-sm">
               <div>
-                <dt className="text-chalk-dim">Cargo</dt>
-                <dd className="mt-1 text-chalk">{active.experience_position}</dd>
+                <dt className="text-content-muted">Cargo</dt>
+                <dd className="mt-1 text-content-primary">{active.experience_position}</dd>
               </div>
               <div>
-                <dt className="text-chalk-dim">Modelo</dt>
-                <dd className="mt-1 text-chalk">{active.experience_operating_model}</dd>
+                <dt className="text-content-muted">Modelo</dt>
+                <dd className="mt-1 text-content-primary">{active.experience_operating_model}</dd>
               </div>
               {active.experience_company_website ? (
                 <div>
-                  <dt className="text-chalk-dim">Site</dt>
+                  <dt className="text-content-muted">Site</dt>
                   <dd className="mt-1">
                     <a
                       href={active.experience_company_website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-lime underline-offset-2 hover:underline"
+                      className="text-accent-link hover:underline"
                     >
                       {active.experience_company_website}
                     </a>
@@ -180,8 +181,8 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
                 </div>
               ) : null}
               <div>
-                <dt className="text-chalk-dim">Sobre</dt>
-                <dd className="mt-1 leading-relaxed text-chalk-muted">{active.experience_about}</dd>
+                <dt className="text-content-muted">Sobre</dt>
+                <dd className="mt-1 leading-relaxed text-content-secondary">{active.experience_about}</dd>
               </div>
             </dl>
           </div>
