@@ -20,11 +20,6 @@ const config: Config = {
           muted: "#9a9a9a",
           dim: "#6b6b6b",
         },
-        lime: {
-          DEFAULT: "#d4ff4f",
-          soft: "#eaff99",
-          ink: "#10180a",
-        },
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],
@@ -38,9 +33,7 @@ const config: Config = {
       },
       backgroundImage: {
         "hero-wash":
-          "radial-gradient(ellipse 80% 60% at 70% 40%, rgba(212,255,79,0.12), transparent 55%), linear-gradient(180deg, #0a0a0a 0%, #141414 100%)",
-        "noise-fade":
-          "linear-gradient(180deg, transparent, #0a0a0a)",
+          "radial-gradient(ellipse 80% 60% at 70% 40%, rgba(255,255,255,0.08), transparent 55%), linear-gradient(180deg, #0a0a0a 0%, #141414 100%)",
       },
     },
   },

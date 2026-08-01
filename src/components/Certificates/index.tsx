@@ -75,7 +75,7 @@ export default function Certificates(
                 key={certificate.certificate_id}
                 type="button"
                 onClick={() => openModal(certificate.certificate_file_sync)}
-                className="group overflow-hidden rounded-2xl border border-white/10 bg-ink text-left transition hover:border-lime/40 hover:-translate-y-1"
+                className="group overflow-hidden rounded-2xl border border-white/10 bg-ink text-left transition hover:border-white/30 hover:-translate-y-1"
                 data-reveal="card"
               >
                 <div className="relative aspect-[4/3] overflow-hidden bg-ink-muted" data-reveal="clip">

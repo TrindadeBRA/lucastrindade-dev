@@ -3,7 +3,7 @@ export const getBadgeConfig = (category: string) => {
     case "Pós-Graduação":
       return {
         text: "Pós-Graduação",
-        bgColor: "bg-lime text-lime-ink",
+        bgColor: "bg-chalk text-ink",
         importance: "highest",
       };
     case "Tecnólogo":

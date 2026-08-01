@@ -42,7 +42,7 @@ const Presentation = (profileData: Profile) => {
           <h2 className="section-title mt-4" data-reveal="title">
             Um pouco sobre mim
           </h2>
-          <div className="mt-8 h-px w-16 origin-left bg-lime" data-reveal="from-left" />
+          <div className="mt-8 h-px w-16 origin-left bg-chalk" data-reveal="from-left" />
         </div>
 
         <div className="space-y-8">

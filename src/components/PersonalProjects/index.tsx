@@ -71,13 +71,13 @@ export default function PersonalProjects(
               data-reveal="card"
             >
               <div className="lg:col-span-5">
-                <p className="font-display text-5xl font-semibold text-white/10 transition group-hover:text-lime/30">
+                <p className="font-display text-5xl font-semibold text-white/10 transition group-hover:text-white/25">
                   {String(index + 1).padStart(2, "0")}
                 </p>
                 <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-chalk sm:text-4xl">
                   {project.project_title || project.project_name}
                 </h3>
-                <p className="mt-2 text-sm text-lime">{project.project_name}</p>
+                <p className="mt-2 text-sm text-chalk-muted">{project.project_name}</p>
                 <p className="mt-5 max-w-md text-sm leading-relaxed text-chalk-muted sm:text-base">
                   {project.project_description}
                 </p>
@@ -86,7 +86,7 @@ export default function PersonalProjects(
                     href={project.project_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-chalk transition group-hover:gap-3 group-hover:text-lime"
+                    className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-chalk transition group-hover:gap-3 group-hover:text-white"
                   >
                     Ver projeto
                     <span aria-hidden="true">→</span>
@@ -109,7 +109,7 @@ export default function PersonalProjects(
                       className="object-cover"
                       sizes="(max-width: 1024px) 100vw, 55vw"
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-ink/40 via-transparent to-lime/10 opacity-0 transition duration-500 group-hover:opacity-100" />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-ink/40 via-transparent to-white/10 opacity-0 transition duration-500 group-hover:opacity-100" />
                   </Link>
                 ) : (
                   <div className="flex aspect-video items-center justify-center rounded-2xl border border-white/10 bg-ink-muted text-chalk-dim">

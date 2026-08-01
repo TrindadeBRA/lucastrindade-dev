@@ -68,7 +68,7 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
 
         <div className="relative mt-16">
           <div
-            className="absolute bottom-4 left-[7px] top-4 hidden w-px bg-lime/70 md:block"
+            className="absolute bottom-4 left-[7px] top-4 hidden w-px bg-white/40 md:block"
             data-reveal="line"
             aria-hidden="true"
           />
@@ -83,7 +83,7 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
                   className="group relative grid cursor-pointer gap-4 border-t border-white/10 py-8 transition hover:bg-white/[0.02] md:grid-cols-[200px_1fr_auto] md:items-center md:gap-8 md:pl-10"
                   onClick={() => openModal(experience)}
                 >
-                  <span className="absolute left-0 top-1/2 hidden h-3.5 w-3.5 -translate-y-1/2 rounded-full border-2 border-lime bg-ink transition group-hover:scale-125 group-hover:bg-lime md:block" />
+                  <span className="absolute left-0 top-1/2 hidden h-3.5 w-3.5 -translate-y-1/2 rounded-full border-2 border-white/50 bg-ink transition group-hover:scale-125 group-hover:bg-chalk md:block" />
 
                   <p className="text-sm text-chalk-dim">
                     {formatMonthYear(experience.experience_date_start)}
@@ -98,11 +98,11 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
                         alt=""
                         width={44}
                         height={44}
-                        className="h-11 w-11 rounded-full border border-white/10 object-cover transition group-hover:border-lime/50"
+                        className="h-11 w-11 rounded-full border border-white/10 object-cover transition group-hover:border-white/40"
                       />
                     ) : null}
                     <div>
-                      <h3 className="font-display text-xl font-semibold text-chalk transition group-hover:text-lime sm:text-2xl">
+                      <h3 className="font-display text-xl font-semibold text-chalk transition group-hover:text-white sm:text-2xl">
                         {experience.experience_company_name}
                       </h3>
                       <p className="text-sm text-chalk-muted">{experience.experience_position}</p>
@@ -111,7 +111,7 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
 
                   <span
                     className={`w-fit rounded-full px-3 py-1 text-xs font-semibold ${
-                      current ? "bg-lime/15 text-lime" : "border border-white/10 text-chalk-dim"
+                      current ? "bg-white/10 text-chalk-muted" : "border border-white/10 text-chalk-dim"
                     }`}
                   >
                     {current ? "Online" : "Anterior"}
@@ -150,7 +150,7 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
                   <p className="text-sm text-chalk-muted">{active.experience_location}</p>
                 </div>
               </div>
-              <button onClick={closeModal} className="text-sm text-chalk-muted hover:text-lime">
+              <button onClick={closeModal} className="text-sm text-chalk-muted hover:text-white">
                 Fechar
               </button>
             </div>
@@ -172,7 +172,7 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
                       href={active.experience_company_website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-lime underline-offset-2 hover:underline"
+                      className="text-chalk-muted underline-offset-2 hover:underline"
                     >
                       {active.experience_company_website}
                     </a>

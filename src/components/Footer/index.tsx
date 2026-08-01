@@ -57,7 +57,7 @@ const Footer = () => {
 
   return (
     <footer ref={sectionRef} className="relative overflow-hidden border-t border-white/5 bg-ink">
-      <div className="pointer-events-none absolute -left-20 bottom-0 h-72 w-72 rounded-full bg-lime/10 blur-[90px]" />
+      <div className="pointer-events-none absolute -left-20 bottom-0 h-72 w-72 rounded-full bg-white/5 blur-[90px]" />
       <div className="site-container py-20 sm:py-28">
         <div className="grid gap-12 lg:grid-cols-[1.3fr_0.7fr]">
           <div>
@@ -70,10 +70,10 @@ const Footer = () => {
               </span>
               <br />
               <span className="inline-block overflow-hidden pb-1">
-                <span className="footer-word inline-block text-lime">algo</span>
+                <span className="footer-word inline-block text-chalk-muted">algo</span>
               </span>{" "}
               <span className="inline-block overflow-hidden pb-1">
-                <span className="footer-word inline-block text-lime">juntos?</span>
+                <span className="footer-word inline-block text-chalk-muted">juntos?</span>
               </span>
             </p>
             <a
@@ -81,7 +81,7 @@ const Footer = () => {
               href="https://api.whatsapp.com/send?phone=5511952498126"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary mt-10 hover:bg-lime hover:text-lime-ink"
+              className="btn-primary mt-10 hover:bg-white hover:text-ink"
             >
               Fale comigo
             </a>
@@ -96,7 +96,7 @@ const Footer = () => {
                     <a
                       href={item.href}
                       onClick={(e) => handleNavClick(e, item.href)}
-                      className="text-sm text-chalk-muted transition hover:text-lime"
+                      className="text-sm text-chalk-muted transition hover:text-white"
                     >
                       {item.name}
                     </a>
@@ -108,7 +108,7 @@ const Footer = () => {
               <p className="text-xs uppercase tracking-[0.2em] text-chalk-dim">Links</p>
               <ul className="mt-4 space-y-3 text-sm">
                 <li>
-                  <Link href="/resume" target="_blank" className="text-chalk-muted transition hover:text-lime">
+                  <Link href="/resume" target="_blank" className="text-chalk-muted transition hover:text-white">
                     Currículo
                   </Link>
                 </li>
@@ -117,7 +117,7 @@ const Footer = () => {
                     href="https://github.com/TrindadeBRA/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-chalk-muted transition hover:text-lime"
+                    className="text-chalk-muted transition hover:text-white"
                   >
                     GitHub
                   </a>
@@ -127,7 +127,7 @@ const Footer = () => {
                     href="https://www.linkedin.com/in/trindadebra/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-chalk-muted transition hover:text-lime"
+                    className="text-chalk-muted transition hover:text-white"
                   >
                     LinkedIn
                   </a>

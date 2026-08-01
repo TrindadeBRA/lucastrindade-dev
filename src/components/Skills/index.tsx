@@ -75,7 +75,7 @@ export default function Skills(skillsData: Skill[] | Record<string, Skill>) {
             {[...loop].reverse().map((skill, index) => (
               <li
                 key={`b-${skill.skill_name}-${index}`}
-                className="whitespace-nowrap rounded-full border border-lime/20 bg-ink px-5 py-2.5 text-sm text-lime"
+                className="whitespace-nowrap rounded-full border border-white/20 bg-ink px-5 py-2.5 text-sm text-chalk-muted"
               >
                 {skill.skill_name}
               </li>

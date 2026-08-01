@@ -54,11 +54,11 @@ export default function Header() {
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-40 border-b border-white/5 bg-ink/80 backdrop-blur-xl"
+      className="sticky top-0 z-40 h-[4.75rem] border-b border-white/5 bg-ink/80 backdrop-blur-xl"
     >
-      <nav className="site-container flex items-center justify-between py-4" aria-label="Global">
+      <nav className="site-container flex h-full items-center justify-between" aria-label="Global">
         <a href="#hero" onClick={(e) => handleNavClick(e, "#hero")} className="nav-anim group">
-          <span className="font-display text-lg font-semibold tracking-tight text-chalk transition group-hover:text-lime">
+          <span className="font-display text-lg font-semibold tracking-tight text-chalk transition group-hover:text-white">
             Lucas Trindade
           </span>
         </a>
@@ -74,14 +74,19 @@ export default function Header() {
               {item.name}
             </a>
           ))}
-          <a
-            href="https://api.whatsapp.com/send?phone=5511952498126"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="nav-anim btn-primary"
-          >
-            Contato
-          </a>
+          <div className="nav-anim flex items-center gap-3">
+            <Link href="/resume" target="_blank" className="btn-ghost">
+              Currículo
+            </Link>
+            <a
+              href="https://api.whatsapp.com/send?phone=5511952498126"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+            >
+              Contato
+            </a>
+          </div>
         </div>
 
         <button
@@ -114,13 +119,18 @@ export default function Header() {
                 {item.name}
               </a>
             ))}
-            <Link
-              href="https://api.whatsapp.com/send?phone=5511952498126"
-              target="_blank"
-              className="btn-primary mt-4 w-fit"
-            >
-              Contato
-            </Link>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Link href="/resume" target="_blank" className="btn-ghost w-fit">
+                Currículo
+              </Link>
+              <Link
+                href="https://api.whatsapp.com/send?phone=5511952498126"
+                target="_blank"
+                className="btn-primary w-fit"
+              >
+                Contato
+              </Link>
+            </div>
           </div>
         </Dialog.Panel>
       </Dialog>

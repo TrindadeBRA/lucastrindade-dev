@@ -103,17 +103,21 @@ export default function HeroSectionAnimated(profileData: Profile) {
   );
 
   return (
-    <section ref={sectionRef} id="hero" className="relative min-h-[100svh] overflow-hidden bg-ink">
-      <div className="hero-glow pointer-events-none absolute -right-24 top-10 h-[28rem] w-[28rem] rounded-full bg-lime/20 blur-[100px]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(212,255,79,0.08),transparent_45%)]" />
+    <section
+      ref={sectionRef}
+      id="hero"
+      className="relative flex min-h-[calc(100svh-4.75rem)] flex-col overflow-hidden bg-ink"
+    >
+      <div className="hero-glow pointer-events-none absolute -right-24 top-10 h-[28rem] w-[28rem] rounded-full bg-white/10 blur-[100px]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_20%,rgba(255,255,255,0.06),transparent_45%)]" />
 
-      <div className="site-container relative grid min-h-[100svh] items-end gap-12 pb-20 pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pb-28 lg:pt-24">
+      <div className="site-container relative grid flex-1 items-center gap-10 py-10 pb-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-12 lg:pb-24">
         <div className="hero-content relative z-10 max-w-2xl">
-          <p className="hero-meta mb-6 text-xs font-semibold uppercase tracking-[0.28em] text-lime">
+          <p className="hero-meta mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-chalk-muted">
             {role}
           </p>
 
-          <h1 className="font-display text-[clamp(3.4rem,10vw,7rem)] font-semibold leading-[0.88] tracking-tighter2 text-chalk">
+          <h1 className="font-display text-[clamp(2.75rem,8vw,6rem)] font-semibold leading-[0.9] tracking-tighter2 text-chalk">
             {words.map((word, index) => (
               <span key={`${word}-${index}`} className="hero-word mr-[0.22em] last:mr-0">
                 <span>{word}</span>
@@ -122,18 +126,18 @@ export default function HeroSectionAnimated(profileData: Profile) {
           </h1>
 
           {bio ? (
-            <p className="hero-line mt-8 max-w-lg text-base leading-relaxed text-chalk-muted sm:text-lg">
+            <p className="hero-line mt-6 max-w-lg text-base leading-relaxed text-chalk-muted sm:text-lg">
               {bio}
             </p>
           ) : null}
 
-          <div className="mt-10 flex flex-wrap items-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <a
               ref={primaryCtaRef}
               href="https://api.whatsapp.com/send?phone=5511952498126"
               target="_blank"
               rel="noopener noreferrer"
-              className="hero-cta btn-primary hover:bg-lime hover:text-lime-ink"
+              className="hero-cta btn-primary hover:bg-white hover:text-ink"
             >
               Fale comigo
             </a>
@@ -141,29 +145,29 @@ export default function HeroSectionAnimated(profileData: Profile) {
               ref={ghostCtaRef}
               href="/resume"
               target="_blank"
-              className="hero-cta btn-ghost hover:border-lime hover:text-lime"
+              className="hero-cta btn-ghost hover:border-white/40 hover:text-white"
             >
               Ver currículo
             </Link>
             <div className="hero-cta ml-1 flex items-center gap-3 pl-2">
               <Link href="https://www.linkedin.com/in/trindadebra/" target="_blank" aria-label="LinkedIn">
-                <FaLinkedin className="text-chalk-muted transition hover:text-lime" size={18} />
+                <FaLinkedin className="text-chalk-muted transition hover:text-white" size={18} />
               </Link>
               <Link href="https://github.com/TrindadeBRA/" target="_blank" aria-label="GitHub">
-                <FaGithub className="text-chalk-muted transition hover:text-lime" size={18} />
+                <FaGithub className="text-chalk-muted transition hover:text-white" size={18} />
               </Link>
               <Link
                 href="https://api.whatsapp.com/send?phone=5511952498126"
                 target="_blank"
                 aria-label="WhatsApp"
               >
-                <FaWhatsapp className="text-chalk-muted transition hover:text-lime" size={18} />
+                <FaWhatsapp className="text-chalk-muted transition hover:text-white" size={18} />
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="hero-portrait relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-[2rem] border border-white/10 bg-ink-muted lg:max-w-none">
+        <div className="hero-portrait relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 bg-ink-muted lg:max-h-[min(68svh,34rem)] lg:max-w-none lg:w-full">
           {avatar ? (
             <Image
               src={avatar}
@@ -187,11 +191,11 @@ export default function HeroSectionAnimated(profileData: Profile) {
 
       <a
         href="#projetos"
-        className="hero-scroll absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
+        className="hero-scroll absolute bottom-5 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 md:flex"
       >
         <span className="text-[10px] uppercase tracking-[0.3em] text-chalk-dim">Scroll</span>
         <span className="flex h-9 w-5 items-start justify-center rounded-full border border-white/20 p-1">
-          <span className="hero-scroll-dot h-1.5 w-1.5 rounded-full bg-lime" />
+          <span className="hero-scroll-dot h-1.5 w-1.5 rounded-full bg-chalk" />
         </span>
       </a>
     </section>
