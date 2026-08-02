@@ -5,7 +5,6 @@ import { FaLinkedin, FaWhatsapp, FaGithub } from 'react-icons/fa';
 import Link from 'next/link';
 
 function HeroSection(profileData: Profile) {
-  // console.log("profileData", profileData)
   return (
     <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32 bg-cover" style={{ backgroundImage: 'url("/images/bg-profile.webp")' }} id="hero">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">

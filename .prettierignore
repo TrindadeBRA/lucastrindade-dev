@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+build
+dist
+coverage
+.yarn
+.vscode
+public/images-cache
+*.lock
+package-lock.json
+yarn.lock
+.env
+.env.local
