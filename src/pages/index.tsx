@@ -32,15 +32,15 @@ export default function Home({
   return (
     <>
       <Head>
-        <title>Lucas Trindade — Full Stack Tech Lead</title>
+        <title>Lucas Trindade — Desenvolvedor Fullstack Senior</title>
         <meta
           name="description"
-          content="Full Stack Tech Lead em SP, Brasil, aberto a remoto. Fundador da TrinityWeb. Experiência com Next.js, React, Node.js e liderança técnica."
+          content="Desenvolvedor Fullstack Senior em SP, Brasil, aberto a remoto. Fundador da TrinityWeb. Experiência com Next.js, React, Node.js e liderança técnica."
         />
-        <meta property="og:title" content="Lucas Trindade — Full Stack Tech Lead" />
+        <meta property="og:title" content="Lucas Trindade — Desenvolvedor Fullstack Senior" />
         <meta
           property="og:description"
-          content="Full Stack Tech Lead em SP, Brasil, aberto a remoto. Fundador da TrinityWeb. Experiência com Next.js, React, Node.js e liderança técnica."
+          content="Desenvolvedor Fullstack Senior em SP, Brasil, aberto a remoto. Fundador da TrinityWeb. Experiência com Next.js, React, Node.js e liderança técnica."
         />
         <meta
           property="og:image"

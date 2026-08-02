@@ -21,7 +21,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
 
   const name = profileData?.user_name || "Lucas Trindade";
   // Posicionamento para recrutamento (independente do texto cru do Notion)
-  const role = "Full Stack Tech Lead";
+  const role = "Desenvolvedor Fullstack Senior";
   const bio = profileData?.user_bio || "";
   const avatar = profileData?.user_avatar_sync || profileData?.user_avatar || "";
   const words = name.split(" ");
@@ -40,7 +40,7 @@ export default function HeroSectionAnimated(profileData: Profile) {
       });
 
       const section = sectionRef.current;
-      const flipDistance = () => window.innerHeight * (isMobile ? 0.42 : 0.5);
+      const flipDistance = () => window.innerHeight * (isMobile ? 0.84 : 1);
 
       gsap.to(".hero-portrait-scroll", {
         rotateY: 180,
