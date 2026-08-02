@@ -85,6 +85,8 @@ export default function MoneyRain({
             key={bill.id}
             src={imageSrc}
             alt=""
+            role="presentation"
+            aria-hidden="true"
             className={styles.bill}
             draggable={false}
             style={style}

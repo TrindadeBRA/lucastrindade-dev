@@ -299,7 +299,13 @@ export default function CertificateViewer({
                     aria-current={active ? "true" : undefined}
                   >
                     {src ? (
-                      <Image src={src} alt="" fill className="object-cover" sizes="112px" />
+                      <Image 
+                        src={src} 
+                        alt={`Miniatura do certificado ${cert.certificate_name}`} 
+                        fill 
+                        className="object-cover" 
+                        sizes="112px" 
+                      />
                     ) : (
                       <span className="flex h-full items-center justify-center bg-ink-muted text-[10px] text-chalk-dim">
                         —
