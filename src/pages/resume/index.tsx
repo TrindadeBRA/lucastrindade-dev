@@ -22,10 +22,16 @@ export default function Resume({ profileData, skillsData, certificateData, exper
     window.print();
   };
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lucastrindade.dev";
+
   return (
     <>
       <Head>
         <title>Currículo - Lucas Trindade</title>
+        <link rel="canonical" href={`${baseUrl}/resume`} />
+        <meta name="description" content="Currículo completo de Lucas Trindade - Desenvolvedor Fullstack Senior com experiência em Next.js, React, Node.js e WordPress." />
+        <meta property="og:title" content="Currículo - Lucas Trindade" />
+        <meta property="og:url" content={`${baseUrl}/resume`} />
       </Head>
 
       <div id="resume-content" className="bg-white text-black flex flex-col pt-4 pb-12 gap-y-8 px-4">

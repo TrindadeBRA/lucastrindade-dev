@@ -29,22 +29,50 @@ export default function Home({
   experienceData: Experience[];
   personalProjectsData: PersonalProject[];
 }) {
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lucastrindade.dev";
+  
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: profileData?.user_name || "Lucas Trindade",
+    jobTitle: profileData?.user_title || "Desenvolvedor Fullstack Senior",
+    description: profileData?.user_bio || "Desenvolvedor Fullstack Senior em SP, Brasil, aberto a remoto. Fundador da TrinityWeb. Experiência com Next.js, React, Node.js e liderança técnica.",
+    url: baseUrl,
+    image: profileData?.user_avatar_sync || `${baseUrl}/api/og`,
+    sameAs: [
+      "https://github.com/TrindadeBRA",
+      "https://www.linkedin.com/in/trindadebra/",
+      "https://api.whatsapp.com/send?phone=5511952498126"
+    ],
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "São Paulo",
+      addressRegion: "SP",
+      addressCountry: "BR"
+    },
+    knowsAbout: skillsData?.map(skill => skill.skill_name).slice(0, 10) || [
+      "Next.js", "React", "Node.js", "TypeScript", "JavaScript"
+    ]
+  };
+
   return (
     <>
       <Head>
         <title>Lucas Trindade — Desenvolvedor Fullstack Senior</title>
+        <link rel="canonical" href={baseUrl} />
         <meta
           name="description"
           content="Desenvolvedor Fullstack Senior em SP, Brasil, aberto a remoto. Fundador da TrinityWeb. Experiência com Next.js, React, Node.js e liderança técnica."
         />
         <meta property="og:title" content="Lucas Trindade — Desenvolvedor Fullstack Senior" />
+        <meta property="og:url" content={baseUrl} />
         <meta
           property="og:description"
           content="Desenvolvedor Fullstack Senior em SP, Brasil, aberto a remoto. Fundador da TrinityWeb. Experiência com Next.js, React, Node.js e liderança técnica."
         />
         <meta
           property="og:image"
-          content={`${process.env.NEXT_PUBLIC_SITE_URL || "https://lucastrindade.dev"}/api/og`}
+          content={`${baseUrl}/api/og`}
         />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
@@ -52,7 +80,11 @@ export default function Home({
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:image"
-          content={`${process.env.NEXT_PUBLIC_SITE_URL || "https://lucastrindade.dev"}/api/og`}
+          content={`${baseUrl}/api/og`}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
       </Head>
       <GsapInit />

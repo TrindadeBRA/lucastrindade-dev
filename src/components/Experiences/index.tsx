@@ -235,7 +235,7 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
                     {experience.experience_company_avatar_sync ? (
                       <Image
                         src={experience.experience_company_avatar_sync}
-                        alt=""
+                        alt={`Logo da empresa ${experience.experience_company_name}`}
                         width={44}
                         height={44}
                         className="h-11 w-11 shrink-0 rounded-full border border-white/10 object-cover transition group-hover:border-white/40"
@@ -277,7 +277,7 @@ const Experiences = (experienceData: Experience[] | Record<string, Experience>) 
                 {active.experience_company_avatar_sync ? (
                   <Image
                     src={active.experience_company_avatar_sync}
-                    alt=""
+                    alt={`Logo da empresa ${active.experience_company_name}`}
                     width={52}
                     height={52}
                     className="h-12 w-12 rounded-full object-cover"
