@@ -4,15 +4,15 @@ Portfolio pessoal de **Lucas Trindade** — Full Stack Developer.
 Construído com **Next.js**, conteúdo gerenciado via **Notion** e animações com **GSAP**.
 
 <div align="center">
-  <img src="public/images/screenshots/home-desktop.png" alt="Hero do portfolio lucastrindade.dev" width="900">
+  <img src="public/images/screenshots/home-desktop-20260801.png" alt="Hero do portfolio lucastrindade.dev" width="900">
 </div>
 
 <br />
 
 <div align="center">
-  <img src="public/images/screenshots/home-mobile.png" alt="Versão mobile do hero" width="280">
+  <img src="public/images/screenshots/home-mobile-20260801.png" alt="Versão mobile do hero" width="280">
   &nbsp;&nbsp;
-  <img src="public/images/screenshots/projetos-desktop.png" alt="Seção de projetos pessoais" width="560">
+  <img src="public/images/screenshots/projetos-desktop-20260801.png" alt="Seção de projetos pessoais" width="560">
 </div>
 
 ## Stack
