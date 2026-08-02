@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Client } from "@notionhq/client";
+import { env } from "@/lib/env";
 
-const notion = new Client({ auth: process.env.NOTION_TOKEN });
+const notion = new Client({ auth: env.notionToken });
 
 export interface Skill {
   skill_name: string;
@@ -31,9 +32,10 @@ function pickProp(properties: Record<string, any>, keys: string[]) {
 }
 
 export async function getSectionSkills(): Promise<Skill[]> {
-  const response = await notion.databases.query({
-    database_id: "f956ac4be74a42f8a9171149c1c9bc5a",
-  });
+  try {
+    const response = await notion.databases.query({
+      database_id: env.notionDb.skills,
+    });
 
   const skills = response.results.map((row: any) => {
     const properties = row.properties || {};
@@ -74,10 +76,22 @@ export async function getSectionSkills(): Promise<Skill[]> {
     return mapped;
   });
 
-  return skills.filter((skill) => skill.skill_name);
+    return skills.filter((skill) => skill.skill_name);
+  } catch (error) {
+    console.error('[getSectionSkills] Erro ao buscar skills:', error);
+    throw error;
+  }
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const profile = await getSectionSkills();
-  res.status(200).json(profile);
+  try {
+    const profile = await getSectionSkills();
+    res.status(200).json(profile);
+  } catch (error) {
+    console.error('[API /sectionSkills] Erro:', error);
+    res.status(500).json({ 
+      error: 'Erro ao buscar skills',
+      message: error instanceof Error ? error.message : 'Erro desconhecido'
+    });
+  }
 }

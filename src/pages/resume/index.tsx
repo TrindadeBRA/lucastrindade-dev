@@ -246,7 +246,7 @@ export default function Resume({ profileData, skillsData, certificateData, exper
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  console.log("Revalidating cache at:", new Date().toISOString());
+  console.info('[ISR] Revalidando cache em:', new Date().toISOString());
   const homeData = await fetchHomeData();
 
   return {

@@ -1,3 +1,20 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals"
+  ],
+  "rules": {
+    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "prefer-const": "error",
+    "no-var": "error",
+    "react/self-closing-comp": "error",
+    "react/jsx-curly-brace-presence": ["error", "never"]
+  }
 }

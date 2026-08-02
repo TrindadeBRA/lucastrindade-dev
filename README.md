@@ -37,19 +37,31 @@ yarn dev
 
 ### Variáveis de ambiente
 
-| Variável | Descrição |
-| --- | --- |
-| `NOTION_TOKEN` | Token da integração Notion |
-| `NSM_TOKEN` / `NSM_URL` | Sync de mídias do Notion |
-| `USE_MOCK_DATA` | `true` para forçar mocks locais |
+| Variável | Descrição | Obrigatório |
+| --- | --- | --- |
+| `NOTION_TOKEN` | Token da integração Notion | ✅ Sim |
+| `NOTION_DB_PROFILE` | ID do database de perfil | ✅ Sim |
+| `NOTION_DB_SKILLS` | ID do database de skills | ✅ Sim |
+| `NOTION_DB_CERTIFICATES` | ID do database de certificados | ✅ Sim |
+| `NOTION_DB_EXPERIENCES` | ID do database de experiências | ✅ Sim |
+| `NOTION_DB_PROJECTS` | ID do database de projetos | ✅ Sim |
+| `NSM_TOKEN` / `NSM_URL` | Sync de mídias do Notion | ⚠️ Opcional |
+| `NEXT_PUBLIC_SITE_URL` | URL pública do site | ⚠️ Opcional |
+| `USE_MOCK_DATA` | `true` para forçar mocks locais | ⚠️ Opcional |
+
+> **Nota:** Em produção, todas as variáveis obrigatórias são validadas no startup. Se alguma estiver faltando, a aplicação não iniciará.
 
 ## Scripts
 
 ```bash
-yarn dev      # desenvolvimento
-yarn build    # build de produção
-yarn start    # servir build
-yarn lint     # ESLint
+yarn dev           # desenvolvimento (localhost:3000)
+yarn build         # build de produção
+yarn start         # servir build local
+yarn lint          # executar ESLint
+yarn lint:fix      # corrigir problemas do ESLint automaticamente
+yarn format        # formatar código com Prettier
+yarn format:check  # verificar formatação sem modificar
+yarn type-check    # verificar tipos TypeScript sem compilar
 ```
 
 ## Estrutura relevante
