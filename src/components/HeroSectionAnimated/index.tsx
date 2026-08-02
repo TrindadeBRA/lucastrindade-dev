@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Profile } from "@/pages/api/sectionProfile";
@@ -10,7 +10,6 @@ import { useMagnetic } from "@/hooks/useMagnetic";
 import { useTilt3D } from "@/hooks/useTilt3D";
 import HeroGithubBg from "@/components/HeroGithubBg";
 
-/** Liga o grid de contribuições do GitHub como bg do hero. */
 const ENABLE_GITHUB_BG = false;
 
 export default function HeroSectionAnimated(profileData: Profile) {
@@ -20,11 +19,26 @@ export default function HeroSectionAnimated(profileData: Profile) {
   const ghostCtaRef = useMagnetic<HTMLAnchorElement>(0.3);
 
   const name = profileData?.user_name || "Lucas Trindade";
-  // Posicionamento para recrutamento (independente do texto cru do Notion)
   const role = "Desenvolvedor Fullstack Senior";
   const bio = profileData?.user_bio || "";
   const avatar = profileData?.user_avatar_sync || profileData?.user_avatar || "";
   const words = name.split(" ");
+
+  const handleScrollClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    const target = document.querySelector("#sobre");
+    if (!target) return;
+    registerGsap();
+    if (prefersReducedMotion()) {
+      target.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    gsap.to(window, {
+      duration: 1.1,
+      scrollTo: { y: target, offsetY: 80 },
+      ease: "power3.inOut",
+    });
+  };
 
   useGSAP(
     () => {
@@ -288,9 +302,9 @@ export default function HeroSectionAnimated(profileData: Profile) {
 
       <a
         href="#sobre"
+        onClick={handleScrollClick}
         className="hero-scroll absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 max-lg:!hidden lg:flex"
-        aria-hidden="true"
-        tabIndex={-1}
+        aria-label="Ir para a seção sobre"
       >
         <span className="text-[10px] uppercase tracking-[0.3em] text-chalk-dim">Scroll</span>
         <span className="flex h-9 w-5 items-start justify-center rounded-full border border-white/20 p-1">

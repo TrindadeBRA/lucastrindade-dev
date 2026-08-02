@@ -150,9 +150,9 @@ export default function PersonalProjects(
                   {String(index + 1).padStart(2, "0")}
                 </p>
                 <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-chalk sm:text-4xl">
-                  {project.project_title || project.project_name}
+                  {project.project_name || project.project_title}
                 </h3>
-                <p className="mt-2 text-sm text-chalk-muted">{project.project_name}</p>
+                <p className="mt-2 text-sm text-chalk-muted">{project.project_title}</p>
                 <p className="mt-5 max-w-md line-clamp-3 text-sm leading-relaxed text-chalk-muted sm:text-base">
                   {project.project_description}
                 </p>

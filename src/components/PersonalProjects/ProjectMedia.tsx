@@ -18,7 +18,7 @@ export default function ProjectMedia({ project, index }: ProjectMediaProps) {
   const ctaOverlayRef = useRef<HTMLDivElement>(null);
 
   const imageSrc = project.project_image_sync || project.project_image;
-  const title = project.project_title || project.project_name;
+  const title = project.project_name || project.project_title;
   const href = project.project_url || "#";
 
   useGSAP(
@@ -208,8 +208,8 @@ export default function ProjectMedia({ project, index }: ProjectMediaProps) {
           <p className="mt-1 font-display text-sm font-semibold text-chalk sm:text-base">
             {title}
           </p>
-          {project.project_name ? (
-            <p className="mt-0.5 text-[11px] text-chalk-dim/90">{project.project_name}</p>
+          {project.project_title ? (
+            <p className="mt-0.5 text-[11px] text-chalk-dim/90">{project.project_title}</p>
           ) : null}
         </div>
       </div>
